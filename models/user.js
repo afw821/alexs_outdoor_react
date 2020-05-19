@@ -1,38 +1,40 @@
+
+const bcrypt = require('bcryptjs');
+const hashPassword = async function (user){
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+    user.isAdmin = false;
+}
+
+
 module.exports = function (connection, Sequelize) {
     const User = connection.define('User', {
 
         // Giving the Author model a name of type STRING
         name: {
             type: Sequelize.STRING,
-            allowNull: false,
             validate: {
                 len: [2, 50],
-                notNull: true
+                
             }
         },
         email: {
             type: Sequelize.STRING,
-            allowNull: false,
             validate: {
                 len: [5,25],
-                notNull: true,
+            
                 isEmail: true
             }
         },
         password: {
             type: Sequelize.STRING,
-            allowNull: false,
             validate: {
                 len: [5,25],
-                notNull: true,
-                isLowerCase: true,
-                isUpperCase: true,
                 is: /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g
             }
         },
         isAdmin: {
             type: Sequelize.BOOLEAN,
-            allowNull: false 
         } 
     });
 
@@ -44,6 +46,8 @@ module.exports = function (connection, Sequelize) {
             onDelete: 'cascade'
         });
     };
+
+    User.beforeCreate(hashPassword)
     
 
     return User;

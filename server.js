@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const cors = require('cors');
 const db = require('./models');
+require('dotenv').config();
 
 //middleware
 //app.use(express.static(path.join(__dirname, "client", "build")));

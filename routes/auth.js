@@ -1,34 +1,32 @@
-const Joi = require('joi');
-const { User } = require('../models/user');
+const db = require('../models');
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const ash = require('express-async-handler');
 
-router.post('/', ash(async (req, res) => {
-    const { error } = validateUser(req.body);
-    const { email, password } = req.body;
-    let user = await User.findOne({ email });
-    if (!user) return res.status(400).send('Invalid Email and / or password');
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) return res.status(400).send('Invalid Email and / or password');
-    const token = generateAuthToken();
-    res.header('x-auth-token', token).send(token);
-}));
-
 function generateAuthToken(user){
-    const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin, name: user.name, email: user.email }, 'jwtPrivateKey');
+    const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin, name: user.name, email: user.email }, process.env.JWT_PRIVATEKEY);
 
     return token;
 }
 
-function validateUser(user) {
+router.post('/', ash(async (req, res) => {
+    const { email, password } = req.body;
+    let user = await db.User.findOne({ 
+        where: {
+            email: email
+        }
+     });
+    if (!user) return res.status(400).send('Invalid Email and / or password');
+    const validPassword = await bcrypt.compare(password, user.password);
 
-    const schema = {
-        email: Joi.string().min(5).max(255).required().email(),
-        password: Joi.string().min(5).max(255).required()
-    };
+    if (!validPassword) return res.status(400).send('Invalid Email and / or password');
+    const token = generateAuthToken(user);
 
-    return Joi.validate(user, schema);
-}
+    res.header('x-auth-token', token).send(token);
+}));
+
+
+
 module.exports = router;
