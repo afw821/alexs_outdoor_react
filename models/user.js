@@ -11,8 +11,50 @@ module.exports = function (connection, Sequelize) {
     const User = connection.define('User', {
 
         // Giving the Author model a name of type STRING
-        name: {
+        firstName: {
             type: Sequelize.STRING,
+            validate: {
+                len: [2, 50],
+                
+            }
+        },
+        lastName: {
+            type: Sequelize.STRING,
+            validate: {
+                len: [2, 50],
+                
+            }
+        },
+        address: {
+            type: Sequelize.STRING,
+            validate: {
+                len: [2, 50],
+                
+            }
+        },
+        address2: {
+            type: Sequelize.STRING,
+            validate: {
+                len: [2, 50],
+                
+            }
+        },
+        city: {
+            type: Sequelize.STRING,
+            validate: {
+                len: [2, 50],
+                
+            }
+        },
+        state: {
+            type: Sequelize.STRING,
+            validate: {
+                len: [2, 50],
+                
+            }
+        },
+        zipCode: {
+            type: Sequelize.INTEGER,
             validate: {
                 len: [2, 50],
                 

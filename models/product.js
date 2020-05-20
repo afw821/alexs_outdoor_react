@@ -27,6 +27,12 @@ module.exports = function (connection, Sequelize) {
         Product.hasMany(models.Purchase, {
             onDelete: 'cascade'
         });
+
+        Product.belongsTo(models.Category, { //creates CategoryId foreign key
+            foreignKey: {
+                allowNull: false
+            }
+        });
     };
 
     return Product;
