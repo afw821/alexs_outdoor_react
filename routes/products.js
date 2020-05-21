@@ -1,12 +1,27 @@
 const db = require('../models');
 const express = require('express');
 const router = express.Router();
+const upload = require("../middleware/upload");
 const ash = require('express-async-handler');
 //post a product
 router.post('/', ash(async (req, res) => {
-  
-    const product = await db.Product.create(req.body);
-
+    const { name, inStock } = req.body;
+    if (!req.file) return res.status(400).send(`You must select a file.`);
+        
+    
+    const product = await db.Product.create({
+        name: name,
+        inStock: inStock,
+        data: fs.readFileSync(
+            __basedir + "/resources/static/assets/uploads/" + req.file.filename
+        ),
+        dataName: req.file.filename
+    });
+    //write the file to a temp folder
+    fs.writeFileSync(
+        __basedir + "/resources/static/assets/tmp/" + product.dataName,
+        product.data
+    );
     res.json(product);
 }));
 //get all products

@@ -5,7 +5,7 @@ module.exports = function (connection, Sequelize) {
         name: {
             type: Sequelize.STRING,
             allowNull: false,
-            validate :{
+            validate: {
                 len: [2, 50],
                 notNull: true
             }
@@ -17,6 +17,12 @@ module.exports = function (connection, Sequelize) {
                 notNull: true,
                 isNumeric: true
             }
+        }, 
+        data: {
+            type: Sequelize.BLOB("long"),
+        },
+        dataName: {
+            type: Sequelize.STRING
         }
     });
 
