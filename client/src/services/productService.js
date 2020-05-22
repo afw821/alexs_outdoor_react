@@ -5,16 +5,16 @@ export function getProducts() {
   return http.get(deployedApiUrl + "/projects");
 }
 
-export function addProduct() {
-    const obj = {};
-  return http.post(apiUrl + "/products", obj);
+export function addProduct(formData) {
+  console.log('file from addProduct', formData);
+  return http.post(apiUrl + "/products", formData);
 }
 
 export function getProductById(projectId) {
-  
+
 
 }
 
 export function deleteProduct(id) {
-  
+
 }

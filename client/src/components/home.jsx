@@ -1,24 +1,41 @@
 import React, { Component } from "react";
+import { addProduct } from "../services/productService";
 
 class Home extends Component {
+
   state = {
     imageSrc: "",
+    file: null
   };
-  handleSubmit() {
-    console.log("submitted");
+  handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const { file } = this.state;
+
+      console.log("submitted");
+      const formData = new FormData();
+      formData.append('file', file, file.name);
+      const result = await addProduct(formData);
+      console.log('handle submit result', result);
+    } catch (ex) {
+      console.log('----ex----', ex);
+    }
+
   }
 
-  handleChange = (event) =>{
+  handleChange = (event) => {
     const files = event.target.files;
+    this.setState({
+      file: event.target.files[0]
+    });
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
-    reader.onload = function(e){
-        this.setState({
-            imageSrc: e.target.result
-        });
-    }.bind(this);
-
-  }
+    reader.onload = (e) => {
+      this.setState({
+        imageSrc: e.target.result
+      });
+    };
+  };
 
   render() {
     return (
@@ -30,6 +47,8 @@ class Home extends Component {
             <form
               className="mt-4"
               onSubmit={this.handleSubmit}
+              // action="http://localhost:3922/api/products"
+              // method="POST"
               encType="multipart/form-data"
             >
               <div className="form-group">
@@ -41,7 +60,7 @@ class Home extends Component {
                   className="form-control-file border"
                 />
               </div>
-              <button type="submit" className="btn btn-primary">
+              <button className="btn btn-primary">
                 Submit
               </button>
             </form>
@@ -50,7 +69,10 @@ class Home extends Component {
         <div className="row">
           <div className="col-sm-12">
             <div className="preview-images">
-                <img style={{ maxHeight: "200px", maxWidth: "200px" }} src={this.state.imageSrc}></img>
+              <img
+                style={{ maxHeight: "200px", maxWidth: "200px" }}
+                src={this.state.imageSrc}
+              ></img>
             </div>
           </div>
         </div>
