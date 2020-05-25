@@ -11,12 +11,13 @@ router.post('/', upload.single("file"), ash(async (req, res) => {
     console.log('----------------req.body------------', req.body);
 
     const product = await db.Product.create({
-        name: "it werks!!",
+        name: "5/24!!",
         inStock: 5,
         data: fs.readFileSync(
             __basedir + "/resources/static/assets/uploads/" + req.file.filename
         ),
-        dataName: req.file.filename
+        dataName: req.file.filename,
+        CategoryId: 1
     });
     //write the file to a temp folder
     fs.writeFileSync(
