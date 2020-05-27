@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Input from "./Input";
 import FileInput from "./FileInput";
 import { MDBInput, MDBBtn } from "mdbreact";
+import Joi from "joi-browser";
 
 class Form extends Component {
   state = {
@@ -9,11 +10,56 @@ class Form extends Component {
     errors: {},
   };
 
-  handleChange = ({ currentTarget: input }) => {
-    const data = { ...this.state.data };
-    data[input.name] = input.value;
+  doPasswordsMatch = (password, firstPassword) => {
+    if (firstPassword !== password) return "Passwords must match";
+    else return "Passwords match!";
+  };
+  doEmailsMatch = (email, firstEmail) => {
+    if (firstEmail !== email) return "Emails must match";
+    else return "They match!";
+  };
 
-    this.setState({ data });
+  validateOnSubmit = () => {
+    const options = { abortEarly: false };
+    const { error } = Joi.validate(this.state.data, this.schema, options);
+
+    if (!error) return null;
+    const errors = {};
+    for (let item of error.details) errors[item.path[0]] = item.message;
+    return errors;
+  };
+
+  handleChange = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
+    const data = { ...this.state.data };
+    switch (input.name) {
+      case "password":
+        const firstPassword = data.firstPassword;
+        const pwErrorMessage = this.doPasswordsMatch(
+          input.value,
+          firstPassword
+        );
+        errors[input.name] = pwErrorMessage;
+        break;
+      case "email":
+        const firstEmail = data.firstEmail;
+        const emailErrorMessage = this.doEmailsMatch(input.value, firstEmail);
+        errors[input.name] = emailErrorMessage;
+        break;
+      default:
+        const errorMessage = this.validateProperty(input);
+        if (errorMessage) errors[input.name] = errorMessage;
+        else delete errors[input.name];
+    }
+    data[input.name] = input.value;
+    this.setState({ data, errors });
+  };
+
+  validateProperty = ({ name, value }) => {
+    const obj = { [name]: value };
+    const schema = { [name]: this.schema[name] };
+    const { error } = Joi.validate(obj, schema);
+    return error ? error.details[0].message : null;
   };
 
   handleFileUpload = (event) => {
@@ -31,8 +77,13 @@ class Form extends Component {
   };
 
   handleSubmit = (e) => {
+    console.log("on submit");
     e.preventDefault();
     //error handling
+    const errors = this.validateOnSubmit();
+    this.setState({ errors: errors || {} });
+    console.log("after set state hs errors", errors);
+    if (errors) return;
 
     this.doSubmit();
   };
@@ -62,9 +113,11 @@ class Form extends Component {
     );
   }
 
-  renderSelect(label, options) {
+  renderSelect(label, options, name) {
     return (
       <select
+        name={name}
+        onChange={this.handleChange}
         className="browser-default custom-select"
         style={{ border: "0", borderBottom: "1px solid lightgray" }}
       >
@@ -79,16 +132,21 @@ class Form extends Component {
   renderMDBInput(label, icon, type, name) {
     const { data, errors } = this.state;
     return (
-      <MDBInput
-        name={name}
-        value={data[name]}
-        label={label}
-        icon={icon}
-        group
-        type={type}
-        id={name}
-        onChange={this.handleChange}
-      />
+      <>
+        <MDBInput
+          name={name}
+          value={data[name]}
+          label={label}
+          icon={icon}
+          group
+          type={type}
+          id={name}
+          onChange={this.handleChange}
+        />
+        {errors[name] && (
+          <div className="alert alert-danger">{errors[name]}</div>
+        )}
+      </>
     );
   }
 
@@ -106,6 +164,9 @@ class Form extends Component {
             type={type}
             onChange={this.handleChange}
           />
+          {errors[name] && (
+            <div className="alert alert-danger">{errors[name]}</div>
+          )}
         </div>
         <div className="col">
           <MDBInput
@@ -116,14 +177,41 @@ class Form extends Component {
             type={type2}
             onChange={this.handleChange}
           />
+          {name2 !== "password" && name2 !== "email" && errors[name2] && (
+            <div className="alert alert-danger">{errors[name2]}</div>
+          )}
+          {name2 === "password" && errors[name2] && (
+            <div
+              className={
+                errors.password === "Passwords must match"
+                  ? "alert alert-danger"
+                  : "alert alert-success"
+              }
+            >
+              {errors[name2]}
+            </div>
+          )}
+          {name2 === "email" && errors[name2] && (
+            <div
+              className={
+                errors.email === "Emails must match"
+                  ? "alert alert-danger"
+                  : "alert alert-success"
+              }
+            >
+              {errors[name2]}
+            </div>
+          )}
         </div>
       </div>
     );
   }
-  renderBtn(label, color) {
+  renderBtn(label, color, type) {
     return (
       <div className="text-center">
-        <MDBBtn color={color}>{label}</MDBBtn>
+        <MDBBtn type={type} color={color}>
+          {label}
+        </MDBBtn>
       </div>
     );
   }

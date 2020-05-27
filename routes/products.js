@@ -8,7 +8,6 @@ const fs = require('fs');
 router.post('/', upload.single("file"), ash(async (req, res) => {
     //const { name, inStock } = req.body;
     if (!req.file) return res.status(400).send(`You must select a file.`);
-    console.log('----------------req.body------------', req.body);
 
     const product = await db.Product.create({
         name: "5/24!!",

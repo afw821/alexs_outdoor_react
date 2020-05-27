@@ -21,6 +21,10 @@ module.exports = function (connection, Sequelize) {
         price: {
             type: Sequelize.FLOAT
         },
+        description: {
+            type: Sequelize.TEXT,
+            allowNull: false,
+        },
         data: {
             type: Sequelize.BLOB("long"),
         },

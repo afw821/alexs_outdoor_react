@@ -1,6 +1,6 @@
 
 const bcrypt = require('bcryptjs');
-const hashPassword = async function (user){
+const hashPassword = async function (user) {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     user.isAdmin = false;
@@ -15,69 +15,65 @@ module.exports = function (connection, Sequelize) {
             type: Sequelize.STRING,
             validate: {
                 len: [2, 50],
-                
+
             }
         },
         lastName: {
             type: Sequelize.STRING,
             validate: {
                 len: [2, 50],
-                
+
             }
         },
         address: {
             type: Sequelize.STRING,
             validate: {
                 len: [2, 50],
-                
+
             }
         },
         address2: {
             type: Sequelize.STRING,
-            validate: {
-                len: [2, 50],
-                
-            }
         },
         city: {
             type: Sequelize.STRING,
             validate: {
                 len: [2, 50],
-                
+
             }
         },
         state: {
             type: Sequelize.STRING,
             validate: {
                 len: [2, 50],
-                
+
             }
         },
         zipCode: {
             type: Sequelize.INTEGER,
             validate: {
                 len: [2, 50],
-                
+
             }
         },
         email: {
             type: Sequelize.STRING,
             validate: {
-                len: [5,25],
-            
+                len: [5, 50],
+
                 isEmail: true
             }
         },
         password: {
             type: Sequelize.STRING,
             validate: {
-                len: [5,25],
+                len: [5, 50],
                 is: /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g
             }
         },
         isAdmin: {
             type: Sequelize.BOOLEAN,
-        } 
+        }
     });
 
     User.associate = function (models) {
@@ -90,7 +86,7 @@ module.exports = function (connection, Sequelize) {
     };
 
     User.beforeCreate(hashPassword)
-    
+
 
     return User;
 };
