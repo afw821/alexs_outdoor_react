@@ -9,8 +9,9 @@ import auth from "./services/authService";
 import Home from "./components/Home";
 import Logout from "./components/Logout";
 import Footer from "./components/Footer";
-import UserDetails from "./components/UserDetails";
-
+import MyAccountTab from "./components/MyAccountTab";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 class App extends Component {
   state = { user: null };
 
@@ -20,12 +21,21 @@ class App extends Component {
   }
   render() {
     const { user } = this.state;
+    const h100 = {
+      minHeight: "100vh" /* will cover the 100% of viewport */,
+      overflow: "hidden",
+      display: "block",
+      position: "relative",
+      paddingBottom: "209px", //this needs to be the height of the footer
+      backgroundColor: "#fdf9f3" /* height of your footer */,
+    };
     return (
       <>
+        <ToastContainer />
         <NavBar user={user} />
-        <div style={{ backgroundColor: "#fdf9f3" }} className="container-fluid">
+        <div style={h100} className="container-fluid">
           <Switch>
-            <Route path="/account/:id" component={UserDetails} />
+            <Route path="/account/:id" component={MyAccountTab} />
             <Route path="/addProduct" component={ProductForm} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
@@ -35,8 +45,8 @@ class App extends Component {
             <Redirect from="/" exact to="/home" />
             <Redirect to="/not-found" />
           </Switch>
+          <Footer />
         </div>
-        <Footer />
       </>
     );
   }

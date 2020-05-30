@@ -15,18 +15,31 @@ router.post('/', ash(async (req, res) => {
     });
 
     if (user) return res.status(400).send('User already registered.');
-  
+
     user = await db.User.create(req.body);
 
     res.json(user);
 }));
 
-router.get('/', ash(async (req,res) =>{
+router.get('/:id', ash(async (req, res) => {
+    const users = await db.User.findOne({
+        where: {
+            id: req.params.id
+        },
+        include: [db.Purchase]
+    });
+
+    if (!users) return res.status(404).send('Error Finding Users');
+
+    res.json(users);
+}));
+
+router.get('/', ash(async (req, res) => {
     const users = await db.User.findAll({
         include: [db.Purchase]
     });
 
-    if(!users) return res.status(404).send('Error Finding Users');
+    if (!users) return res.status(404).send('Error Finding Users');
 
     res.json(users);
 }));

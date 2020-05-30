@@ -186,7 +186,7 @@ const NavBar = (props) => {
         </MDBCollapse>
       </MDBNavbar>
 
-      <MDBView src={OutdoorPic}>
+      {/* <MDBView src={OutdoorPic}>
         <MDBMask
           overlay="black-light"
           className="flex-center flex-column text-white text-center"
@@ -196,7 +196,7 @@ const NavBar = (props) => {
           <br />
           <p>Purchases online through our secure Stripe payment option </p>
         </MDBMask>
-      </MDBView>
+      </MDBView> */}
     </header>
   );
 };

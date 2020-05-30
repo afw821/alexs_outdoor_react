@@ -7,17 +7,30 @@ const FileInput = ({
   handleFileUpload,
   imageSrc,
   alt,
+  error,
 }) => {
   return (
-    <div className="form-group">
-      <label htmlFor={name}>{label}</label>
-      <input
-        onChange={handleFileUpload}
-        name={name}
-        type={type}
-        id={name}
-        className="form-control mb-4"
-      />
+    <>
+      <div className="input-group">
+        <div className="input-group-prepend">
+          <span className="input-group-text" id={name}>
+            Upload
+          </span>
+        </div>
+        <div className="custom-file">
+          <input
+            type={type}
+            className="custom-file-input"
+            id={name}
+            onChange={handleFileUpload}
+            aria-describedby="inputGroupFileAddon01"
+          />
+          <label className="custom-file-label" htmlFor={name}>
+            Choose file
+          </label>
+        </div>
+        {error && <div className="alert alert-danger">{error}</div>}
+      </div>
       <div className="row">
         <div className="col-sm-12">
           <div className="preview-images">
@@ -29,7 +42,7 @@ const FileInput = ({
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

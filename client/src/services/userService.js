@@ -23,9 +23,13 @@ export async function register(
     email,
     password,
   };
-  console.log("user service obj", obj);
   const { data: user } = await http.post(apiUrl + "/users", obj);
-  console.log("user from service", user);
+}
+
+export async function getUserById(id) {
+  const user = await http.get(apiUrl + `/users/${id}`);
+  console.log("user", user);
+  return user;
 }
 
 export default {

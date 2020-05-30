@@ -3,6 +3,8 @@ import Input from "./Input";
 import FileInput from "./FileInput";
 import { MDBInput, MDBBtn } from "mdbreact";
 import Joi from "joi-browser";
+import TextArea from "./TextArea";
+import DropDownList from "./DropDownList";
 
 class Form extends Component {
   state = {
@@ -46,11 +48,17 @@ class Form extends Component {
         const emailErrorMessage = this.doEmailsMatch(input.value, firstEmail);
         errors[input.name] = emailErrorMessage;
         break;
+      case "categories":
+        console.log("categories");
+        data["selectedCategoryId"] = input.value;
+        this.setState({ data, errors });
+        return;
       default:
         const errorMessage = this.validateProperty(input);
         if (errorMessage) errors[input.name] = errorMessage;
         else delete errors[input.name];
     }
+    console.log("made it here!!!!");
     data[input.name] = input.value;
     this.setState({ data, errors });
   };
@@ -63,16 +71,14 @@ class Form extends Component {
   };
 
   handleFileUpload = (event) => {
+    const data = { ...this.state.data };
     const files = event.target.files;
     const reader = new FileReader();
     const readerAsDataUrl = reader.readAsDataURL(files[0]);
     reader.onload = (e) => {
-      this.setState({
-        data: {
-          imageSrc: e.target.result,
-          file: files[0],
-        },
-      });
+      data.imageSrc = e.target.result;
+      data.file = files[0];
+      this.setState({ data: data });
     };
   };
 
@@ -92,6 +98,7 @@ class Form extends Component {
     const { data, errors } = this.state;
     return (
       <Input
+        error={errors[name]}
         name={name}
         value={data[name]}
         label={label}
@@ -101,9 +108,39 @@ class Form extends Component {
     );
   }
 
+  renderTextArea(name, label, type, rows) {
+    const { data, errors } = this.state;
+    return (
+      <TextArea
+        name={name}
+        value={data[name]}
+        label={label}
+        onChange={this.handleChange}
+        type={type}
+        error={errors[name]}
+        rows={rows}
+      />
+    );
+  }
+
+  renderDropDownList(name, label, type, options) {
+    const { data, errors } = this.state;
+    return (
+      <DropDownList
+        error={errors[name]}
+        name={name}
+        label={label}
+        options={options}
+        handleChange={this.handleChange}
+      />
+    );
+  }
+
   renderFileInput(name, label, type = "file", imageSrc, alt) {
+    const { data, errors } = this.state;
     return (
       <FileInput
+        error={errors[name]}
         name={name}
         label={label}
         type={type}

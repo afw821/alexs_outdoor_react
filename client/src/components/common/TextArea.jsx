@@ -1,20 +1,21 @@
 import React from "react";
 
-const Input = ({ name, label, value, handleChange, type, error }) => {
+const TextArea = ({ value, onChange, name, label, type, error, rows }) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
-      <input
+      <textarea
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
         name={name}
         type={type}
         id={name}
-        className="form-control mb-4"
-      />
+        rows={rows}
+        className="form-control"
+      ></textarea>
       {error && <div className="alert alert-danger">{error}</div>}
     </div>
   );
 };
 
-export default Input;
+export default TextArea;

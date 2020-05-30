@@ -3,8 +3,17 @@ import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const footerStyle = {
+    position: "absolute",
+    bottom: "0",
+    width: "100%",
+  };
   return (
-    <MDBFooter color="indigo" className="font-small pt-4 mt-4">
+    <MDBFooter
+      color="indigo"
+      className="font-small pt-4 mt-4"
+      style={footerStyle}
+    >
       <MDBContainer fluid className="text-center text-md-left">
         <MDBRow>
           <MDBCol md="6">

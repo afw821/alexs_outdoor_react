@@ -8,15 +8,23 @@ const fs = require('fs');
 router.post('/', upload.single("file"), ash(async (req, res) => {
     //const { name, inStock } = req.body;
     if (!req.file) return res.status(400).send(`You must select a file.`);
+    const { name, inStock, CategoryId, price, description } = req.body;
+    console.log('-------name--------', name);
+    console.log('-------in Stock-------', inStock);
+    console.log('--------price------', price);
+    console.log('--------description------', description);
 
     const product = await db.Product.create({
-        name: "5/24!!",
-        inStock: 5,
+
+        name: name,
+        price: price,
+        description: description,
+        inStock: inStock,
         data: fs.readFileSync(
             __basedir + "/resources/static/assets/uploads/" + req.file.filename
         ),
         dataName: req.file.filename,
-        CategoryId: 1
+        CategoryId: CategoryId
     });
     //write the file to a temp folder
     fs.writeFileSync(
