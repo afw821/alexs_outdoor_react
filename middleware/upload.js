@@ -1,7 +1,7 @@
 const multer = require("multer");
 
 const imageFilter = (req, file, cb) => {
-  console.log('------made it to upload js------')
+  console.log('------made it to upload js------', file)
   if (file.mimetype.startsWith("image")) {
 
     cb(null, true);

@@ -24,6 +24,7 @@ router.post('/', upload.single("file"), ash(async (req, res) => {
             __basedir + "/resources/static/assets/uploads/" + req.file.filename
         ),
         dataName: req.file.filename,
+        imgSrc: null,
         CategoryId: CategoryId
     });
     //write the file to a temp folder
@@ -35,7 +36,7 @@ router.post('/', upload.single("file"), ash(async (req, res) => {
 }));
 //get all products
 router.get('/', ash(async (req, res) => {
-    const products = await db.Product.findAll({
+    let products = await db.Product.findAll({
         include: [db.Purchase]
     });
 

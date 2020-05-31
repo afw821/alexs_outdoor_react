@@ -28,7 +28,7 @@ export async function register(
 
 export async function getUserById(id) {
   const user = await http.get(apiUrl + `/users/${id}`);
-  console.log("user", user);
+
   return user;
 }
 

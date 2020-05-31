@@ -13,6 +13,12 @@ function generateAuthToken(user) {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      address: user.address,
+      address2: user.address2,
+      city: user.city,
+      state: user.state,
+      zipCode: user.zipCode,
+      Purchases: user.Purchases
     },
     process.env.JWT_PRIVATEKEY
   );
@@ -28,11 +34,13 @@ router.post(
       where: {
         email: email,
       },
+      include: [db.Purchase]
     });
     if (!user) return res.status(400).send("Invalid Email and / or password");
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword)
       return res.status(400).send("Invalid Email and / or password");
+
     const token = generateAuthToken(user);
 
     res.header("x-auth-token", token).send(token);

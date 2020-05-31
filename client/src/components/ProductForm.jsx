@@ -4,6 +4,7 @@ import { addProduct } from "../services/productService";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
 import { getCategories } from "../services/categoryService";
+import _arrayBufferToBase64 from './../utils/toBase64String';
 
 class ProductForm extends Form {
   state = {
@@ -48,13 +49,18 @@ class ProductForm extends Form {
         description,
         price,
         selectedCategoryId,
+        imageSrc
       } = this.state.data;
+
+      // const imgSrc = _arrayBufferToBase64(file);
+      // console.log('img src', imgSrc);
       const formData = new FormData();
       formData.append("file", file, file.name);
       formData.append("name", name);
       formData.append("inStock", parseInt(stock));
       formData.append("description", description);
       formData.append("price", parseFloat(price));
+      //formData.append("imageSrc", imageSrc);
       formData.append("CategoryId", parseInt(selectedCategoryId));
       const { data } = await addProduct(formData);
 

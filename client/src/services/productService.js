@@ -10,6 +10,8 @@ export function addProduct(formData) {
   return http.post(apiUrl + "/products", formData);
 }
 
-export function getProductById(productId) {}
+export function getProductByPKId(productId) {
+  return http.get(apiUrl + `/products/byPK/${productId}`);
+}
 
 export function deleteProduct(productId) {}

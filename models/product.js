@@ -30,6 +30,9 @@ module.exports = function (connection, Sequelize) {
         },
         dataName: {
             type: Sequelize.STRING
+        },
+        imgSrc: {
+            type: Sequelize.STRING
         }
     });
 

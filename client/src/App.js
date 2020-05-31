@@ -9,14 +9,29 @@ import auth from "./services/authService";
 import Home from "./components/Home";
 import Logout from "./components/Logout";
 import Footer from "./components/Footer";
-import MyAccountTab from "./components/MyAccountTab";
+import UserDetails from "./components/UserDetails";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserContext from "./context/userContext";
+
 class App extends Component {
-  state = { user: null };
+  state = {
+    user: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      address: "",
+      address2: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      Purchases: [],
+    },
+  };
 
   componentDidMount() {
     const user = auth.getCurrentUser();
+
     this.setState({ user });
   }
   render() {
@@ -35,7 +50,18 @@ class App extends Component {
         <NavBar user={user} />
         <div style={h100} className="container-fluid">
           <Switch>
-            <Route path="/account/:id" component={MyAccountTab} />
+            {/* <UserContext.Provider
+              value={{
+                currentUser: this.state.user,
+              }}
+            > */}
+            {/* <Route path="/account/:id" component={UserDetails} /> */}
+            <Route
+              path="/account/:id"
+              render={(props) => (
+                <UserDetails {...props} user={this.state.user} />
+              )}
+            />
             <Route path="/addProduct" component={ProductForm} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
@@ -44,6 +70,7 @@ class App extends Component {
             <Route path="/not-found" component={NotFound} />
             <Redirect from="/" exact to="/home" />
             <Redirect to="/not-found" />
+            {/* </UserContext.Provider> */}
           </Switch>
           <Footer />
         </div>
