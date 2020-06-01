@@ -10,8 +10,10 @@ export async function register(
   state,
   zip,
   email,
-  password
+  password,
+  isAdmin
 ) {
+  console.log('made it into register');
   const obj = {
     firstName,
     lastName,
@@ -22,6 +24,7 @@ export async function register(
     zip,
     email,
     password,
+    isAdmin
   };
   const { data: user } = await http.post(apiUrl + "/users", obj);
 }

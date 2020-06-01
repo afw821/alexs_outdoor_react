@@ -20,6 +20,7 @@ class RegisterForm extends Form {
       email: "",
       firstPassword: "",
       password: "",
+      isAdmin: false
     },
     errors: {},
   };
@@ -37,6 +38,7 @@ class RegisterForm extends Form {
     email: Joi.string().email().required().min(5).max(50).label("Email"),
     firstPassword: Joi.string().required().label("Password"),
     password: Joi.string().required().label("Password"),
+    isAdmin: Joi.label("Administrator")
   };
 
   doSubmit = async () => {
@@ -52,7 +54,8 @@ class RegisterForm extends Form {
         data.selectedState,
         data.zip,
         data.email,
-        data.password
+        data.password,
+        data.isAdmin
       );
       window.location = "/home";
     } catch (ex) {

@@ -17,6 +17,7 @@ import UserContext from "./context/userContext";
 class App extends Component {
   state = {
     user: {
+      id: "",
       firstName: "",
       lastName: "",
       email: "",

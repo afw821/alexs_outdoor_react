@@ -1,53 +1,86 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { Component } from "react";
 import { getUserById } from "../services/userService";
 import AccountInfo from "./AccountInfo";
 import ListItem from "./common/ListItem";
 import OrderInfo from "./OrderInfo";
 
-const UserDetails = (props) => {
-  const [selectedTab, setTab] = useState("My Account");
-  const handleTabChange = (item) => {
-    setTab(item);
+class UserDetails extends Component {
+  state = {
+    showAccountInfoRow: true,
+    selectedTab: "My Account",
+    showEditBtn: true,
   };
-  //Because navbar position is fixed and its underneath navbar
-  return (
-    <div className="row" style={{ marginTop: "125px" }}>
-      <div className="col-3">
-        <ListItem
-          selectedTab={selectedTab}
-          handleChange={handleTabChange}
-          items={["My Account", "Orders"]}
-        />
-      </div>
-      <div className="col-7">
-        <div className="jumbotron">
-          <div className="row">
-            <div className="col d-flex justify-content-center">
-              <h5>My Account</h5>
+
+  handleTabChange = (item) => {
+    this.setState({ selectedTab: item });
+  };
+
+  handleEditClick = (e) => {
+    this.setState({
+      showAccountInfoRow: false,
+      showEditBtn: false,
+    });
+  };
+
+  handleCancelClick = (e) => {
+    this.setState({
+      showAccountInfoRow: true,
+      showEditBtn: true,
+    });
+  };
+
+  render() {
+    const { selectedTab, showAccountInfoRow, showEditBtn } = this.state;
+    return (
+      <div className="row" style={{ marginTop: "125px" }}>
+        <div className="col-3">
+          <ListItem
+            selectedTab={selectedTab}
+            handleChange={this.handleTabChange}
+            items={["My Account", "Orders"]}
+          />
+        </div>
+        <div className="col-7">
+          <div className="jumbotron">
+            <div className="row">
+              <div className="col d-flex justify-content-center">
+                <h5>My Account</h5>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              {selectedTab === "My Account" ? (
-                <AccountInfo user={props.user} />
-              ) : (
-                  <OrderInfo user={props.user} />
+            <div className="row">
+              <div className="col">
+                {selectedTab === "My Account" ? (
+                  <AccountInfo
+                    handleCancelClick={this.handleCancelClick}
+                    showAccountInfoRow={showAccountInfoRow}
+                    user={this.props.user}
+                  />
+                ) : (
+                  <OrderInfo user={this.props.user} />
                 )}
+              </div>
             </div>
 
-          </div>
-
-          <div className="row">
-            <div className="col-4"></div>
-            <div className="col">
-              {selectedTab === "My Account" ? <button className="btn btn-info">Edit</button> : ""}
-
+            <div className="row">
+              <div className="col-4"></div>
+              <div className="col">
+                {selectedTab === "My Account" && showEditBtn ? (
+                  <button
+                    onClick={(e) => this.handleEditClick(e)}
+                    className="btn btn-info"
+                  >
+                    Edit
+                  </button>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default UserDetails;

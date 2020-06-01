@@ -5,6 +5,7 @@ import { MDBInput, MDBBtn } from "mdbreact";
 import Joi from "joi-browser";
 import TextArea from "./TextArea";
 import DropDownList from "./DropDownList";
+import InlineFormGroup from "./InlineFormGroup";
 
 class Form extends Component {
   state = {
@@ -54,16 +55,18 @@ class Form extends Component {
         this.setState({ data, errors });
         return;
       default:
+        console.log("default");
         const errorMessage = this.validateProperty(input);
         if (errorMessage) errors[input.name] = errorMessage;
         else delete errors[input.name];
     }
-    console.log("made it here!!!!");
     data[input.name] = input.value;
     this.setState({ data, errors });
   };
 
   validateProperty = ({ name, value }) => {
+    console.log("validate property name", name);
+    console.log("validate property value", value);
     const obj = { [name]: value };
     const schema = { [name]: this.schema[name] };
     const { error } = Joi.validate(obj, schema);
@@ -83,16 +86,29 @@ class Form extends Component {
   };
 
   handleSubmit = (e) => {
-    console.log("on submit");
     e.preventDefault();
     //error handling
     const errors = this.validateOnSubmit();
     this.setState({ errors: errors || {} });
-    console.log("after set state hs errors", errors);
     if (errors) return;
 
     this.doSubmit();
   };
+
+  renderInlineFormGroup(name, label, type = "text") {
+    const { data, errors } = this.state;
+    console.log("value data name", data[name]);
+    return (
+      <InlineFormGroup
+        label={label}
+        name={name}
+        type={type}
+        value={data[name] || ""}
+        error={errors[name]}
+        handleChange={this.handleChange}
+      />
+    );
+  }
 
   renderInput(name, label, type = "text") {
     const { data, errors } = this.state;

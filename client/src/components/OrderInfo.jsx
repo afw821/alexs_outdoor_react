@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Component } from "react";
 import { getProductByPKId } from "../services/productService";
-import _arrayBufferToBase64 from '../utils/toBase64String';
+import _arrayBufferToBase64 from "../utils/toBase64String";
 
 class OrderInfo extends Component {
   state = {
@@ -10,8 +10,6 @@ class OrderInfo extends Component {
   async componentDidMount() {
     const productsArray = [];
     const { user } = this.props;
-    console.log("order info cdm user.purchases", this.props.user.Purchases);
-    console.log("made it into cdm");
     for (let i = 0; i < user.Purchases.length; i++) {
       const productId = user.Purchases[i].id;
       console.log("productId", productId);
@@ -21,7 +19,6 @@ class OrderInfo extends Component {
       productsArray.push(product);
       //this.setState({ products: product });
     }
-    console.log("products array", productsArray);
 
     this.setState({ products: productsArray });
   }
@@ -31,7 +28,6 @@ class OrderInfo extends Component {
     if (user.Purchases.length == 0)
       return <div>{`You have no purchases ${user.firstName}!`}</div>;
     else {
-      console.log("made it into the else gyt!!");
       return (
         <table className="table">
           <thead className="thead-dark">
@@ -45,13 +41,17 @@ class OrderInfo extends Component {
           </thead>
           <tbody>
             {this.state.products.map((product) => (
-
               <tr key={product.id}>
                 <th>{product.name}</th>
                 <td>${product.price}</td>
                 <td>{product.description}</td>
                 <td>{product.createdAt}</td>
-                <td><img style={{ maxHeight: "100px", maxWidth: "100px" }} src={`data:image/png;base64,${product.imgSrc}`} /></td>
+                <td>
+                  <img
+                    style={{ maxHeight: "100px", maxWidth: "100px" }}
+                    src={`data:image/png;base64,${product.imgSrc}`}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
