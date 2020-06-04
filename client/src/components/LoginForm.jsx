@@ -37,7 +37,7 @@ class LoginForm extends Form {
       <div className="row">
         <div className="col-4"></div>
         <div className="col-sm-4 mt-3">
-          <MDBCard style={{ backgroundColor: "whitesmoke" }}>
+          <MDBCard style={{ marginTop: "100px" }}>
             <MDBCardBody>
               <form className="mt-4" onSubmit={this.handleSubmit}>
                 <p className="h5 text-center mb-4">Log In</p>

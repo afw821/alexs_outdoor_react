@@ -34,7 +34,6 @@ class RegisterForm extends Form {
     selectedState: Joi.string().required().label("State"),
     states: Joi.array(),
     zipCode: Joi.string().required().min(2).max(50).label("Zip Code"),
-    // firstEmail: Joi.string().email().required().min(5).max(50).label("Email"),
     email: Joi.string().email().required().min(5).max(50).label("Email"),
     firstPassword: Joi.string().required().label("Password"),
     password: Joi.string().required().label("Password"),
@@ -57,7 +56,8 @@ class RegisterForm extends Form {
         data.password,
         data.isAdmin
       );
-      window.location = "/home";
+      this.props.history.push("/login");
+      // window.location = "/home";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
@@ -76,15 +76,15 @@ class RegisterForm extends Form {
   }
 
   render() {
+    console.log('register props', this.props);
     const { states } = this.state.data;
     return (
       <div className="row">
-        <div className="col-2"></div>
         <div
-          className="col-8"
+          className="col-12 d-flex justify-content-center"
           style={{ marginTop: "100px", marginBottom: "40px" }}
         >
-          <MDBCard style={{ backgroundColor: "white" }}>
+          <MDBCard style={{ backgroundColor: "white", width: "600px" }}>
             <MDBCardBody>
               <form className="mt-4" onSubmit={this.handleSubmit}>
                 <p className="h5 text-center mb-4">Sign up</p>
@@ -99,16 +99,6 @@ class RegisterForm extends Form {
                     "text",
                     "lastName"
                   )}
-                  {/* {this.renderInputFormRow(
-                    "Your email",
-                    "envelope",
-                    "email",
-                    "firstEmail",
-                    "Confirm your email",
-                    "exclamation-triangle",
-                    "email",
-                    "email"
-                  )} */}
                   <div className="form-row">
                     <div className="col">
                       {this.renderMDBInput(

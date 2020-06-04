@@ -23,7 +23,7 @@ router.post('/', ash(async (req, res) => {
     res.json(newUser);
 }));
 
-router.get('/:id', [auth], ash(async (req, res) => {
+router.get('/:id', ash(async (req, res) => {
     const users = await db.User.findOne({
         where: {
             id: req.params.id

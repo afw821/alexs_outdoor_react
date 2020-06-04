@@ -110,6 +110,32 @@ class Form extends Component {
     );
   }
 
+  renderInlineFormSelect(name, label, type = "text", options, value) {
+    return (
+      <div className="form-group row">
+        <label htmlFor={name} className="col-sm-2 col-form-label">
+          {label}
+        </label>
+        <div className="col-sm-10">
+          <select
+            className="custom-select my-1 mr-sm-2"
+            name={name}
+            value={value}
+            onChange={this.handleChange}
+            id={name}
+          >
+            <option>Choose...</option>
+            {options.map((state) => (
+              <option key={state.key} value={state.key}>
+                {state.value}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+    );
+  }
+
   renderInput(name, label, type = "text") {
     const { data, errors } = this.state;
     return (

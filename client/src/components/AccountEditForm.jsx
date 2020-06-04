@@ -2,6 +2,7 @@ import React from "react";
 import Form from "./common/Form";
 import Joi from "joi-browser";
 import { getUserById } from "../services/userService";
+import { getStates } from "../utils/getStates";
 import { updateUser } from "../services/userService";
 import { toast } from "react-toastify";
 import { regenerateToken, loginWithJwt } from "../services/authService";
@@ -20,7 +21,9 @@ class AccountEditForm extends Form {
       zipCode: "",
       Purchases: [],
     },
-    states: [],
+    options: {
+      states: [],
+    },
     errors: {},
   };
 
@@ -67,13 +70,19 @@ class AccountEditForm extends Form {
     }
   }
 
+  async populateStates() {
+    const options = { ...this.state.options };
+    const states = await getStates();
+    options.states = states;
+    this.setState({ options });
+  }
+
   async componentDidMount() {
-    console.log("account edit form cdm props", this.props.user);
     await this.populateUserInfo();
+    await this.populateStates();
   }
 
   doSubmit = async () => {
-    console.log("update user do submit");
     try {
       const { data } = this.state;
       const result = await updateUser(
@@ -98,7 +107,6 @@ class AccountEditForm extends Form {
       if (result.status === 200) {
         //get updated information and pass it into regenerate token (REFRESH ISSUE FIX)
         const { data: token } = await regenerateToken(updatedUser);
-        console.log("token", token);
         if (token) {
           //add new jwt with new updated user info into localstorage
           loginWithJwt(token);
@@ -118,7 +126,8 @@ class AccountEditForm extends Form {
   };
 
   render() {
-    console.log("account edit form render props", this.props.user);
+    const { states } = this.state.options;
+    console.log("render states", states);
     return (
       <form className="mt-4" onSubmit={this.handleSubmit}>
         {this.renderInlineFormGroup("firstName", "First Name", "text")}
@@ -127,7 +136,13 @@ class AccountEditForm extends Form {
         {this.renderInlineFormGroup("address", "Address", "text")}
         {this.renderInlineFormGroup("address2", "Address 2", "text")}
         {this.renderInlineFormGroup("city", "City", "text")}
-        {this.renderInlineFormGroup("state", "State", "text")}
+        {this.renderInlineFormSelect(
+          "state",
+          "State",
+          "text",
+          states,
+          this.state.data.state
+        )}
         {this.renderInlineFormGroup("zipCode", "Zip Code", "text")}
         <div className="row">
           <div className="col-3"></div>
