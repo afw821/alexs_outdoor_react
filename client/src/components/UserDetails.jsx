@@ -29,6 +29,14 @@ class UserDetails extends Component {
     });
   };
 
+  handleUserUpdate = (e) => {
+    console.log("handle user update");
+    this.setState({
+      showAccountInfoRow: true,
+      showEditBtn: true,
+    });
+  };
+
   render() {
     const { selectedTab, showAccountInfoRow, showEditBtn } = this.state;
     return (
@@ -51,6 +59,7 @@ class UserDetails extends Component {
               <div className="col">
                 {selectedTab === "My Account" ? (
                   <AccountInfo
+                    handleUserUpdate={this.handleUserUpdate}
                     handleCancelClick={this.handleCancelClick}
                     showAccountInfoRow={showAccountInfoRow}
                     user={this.props.user}

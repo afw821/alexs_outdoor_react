@@ -15,12 +15,12 @@ class RegisterForm extends Form {
       address2: "",
       city: "",
       selectedState: "",
-      zip: "",
-      firstEmail: "",
+      zipCode: "",
+      // firstEmail: "",
       email: "",
       firstPassword: "",
       password: "",
-      isAdmin: false
+      isAdmin: false,
     },
     errors: {},
   };
@@ -29,16 +29,16 @@ class RegisterForm extends Form {
     firstName: Joi.string().required().min(2).max(50).label("First Name"),
     lastName: Joi.string().required().min(2).max(50).label("Last Name"),
     address: Joi.string().required().min(2).max(50).label("Address"),
-    address2: Joi.string().label("Address2"),
+    address2: Joi.label("Address2"),
     city: Joi.string().required().min(2).max(50).label("City"),
     selectedState: Joi.string().required().label("State"),
     states: Joi.array(),
-    zip: Joi.string().required().min(2).max(50).label("Zip Code"),
-    firstEmail: Joi.string().email().required().min(5).max(50).label("Email"),
+    zipCode: Joi.string().required().min(2).max(50).label("Zip Code"),
+    // firstEmail: Joi.string().email().required().min(5).max(50).label("Email"),
     email: Joi.string().email().required().min(5).max(50).label("Email"),
     firstPassword: Joi.string().required().label("Password"),
     password: Joi.string().required().label("Password"),
-    isAdmin: Joi.label("Administrator")
+    isAdmin: Joi.label("Administrator"),
   };
 
   doSubmit = async () => {
@@ -52,7 +52,7 @@ class RegisterForm extends Form {
         data.address2,
         data.city,
         data.selectedState,
-        data.zip,
+        data.zipCode,
         data.email,
         data.password,
         data.isAdmin
@@ -79,8 +79,12 @@ class RegisterForm extends Form {
     const { states } = this.state.data;
     return (
       <div className="row">
-        <div className="col-sm-8 mt-3">
-          <MDBCard style={{ backgroundColor: "whitesmoke" }}>
+        <div className="col-2"></div>
+        <div
+          className="col-8"
+          style={{ marginTop: "100px", marginBottom: "40px" }}
+        >
+          <MDBCard style={{ backgroundColor: "white" }}>
             <MDBCardBody>
               <form className="mt-4" onSubmit={this.handleSubmit}>
                 <p className="h5 text-center mb-4">Sign up</p>
@@ -95,7 +99,7 @@ class RegisterForm extends Form {
                     "text",
                     "lastName"
                   )}
-                  {this.renderInputFormRow(
+                  {/* {this.renderInputFormRow(
                     "Your email",
                     "envelope",
                     "email",
@@ -104,7 +108,17 @@ class RegisterForm extends Form {
                     "exclamation-triangle",
                     "email",
                     "email"
-                  )}
+                  )} */}
+                  <div className="form-row">
+                    <div className="col">
+                      {this.renderMDBInput(
+                        "Your Email",
+                        "envelope",
+                        "email",
+                        "email"
+                      )}
+                    </div>
+                  </div>
                   <div className="form-row">
                     <div className="col">
                       {this.renderMDBInput(
@@ -137,7 +151,7 @@ class RegisterForm extends Form {
                       )}
                     </div>
                     <div className="col">
-                      {this.renderMDBInput("Zip", null, "text", "zip")}
+                      {this.renderMDBInput("Zip", null, "text", "zipCode")}
                     </div>
                   </div>
                   {this.renderInputFormRow(

@@ -18,7 +18,7 @@ function generateAuthToken(user) {
       city: user.city,
       state: user.state,
       zipCode: user.zipCode,
-      Purchases: user.Purchases
+      Purchases: user.Purchases,
     },
     process.env.JWT_PRIVATEKEY
   );
@@ -34,7 +34,7 @@ router.post(
       where: {
         email: email,
       },
-      include: [db.Purchase]
+      include: [db.Purchase],
     });
     if (!user) return res.status(400).send("Invalid Email and / or password");
     const validPassword = await bcrypt.compare(password, user.password);
@@ -42,6 +42,16 @@ router.post(
       return res.status(400).send("Invalid Email and / or password");
 
     const token = generateAuthToken(user);
+
+    res.header("x-auth-token", token).send(token);
+  })
+);
+//this is for refresh issue
+router.post(
+  "/generateToken/",
+  ash(async (req, res) => {
+    console.log("-------req.body-----", req.body);
+    const token = await generateAuthToken(req.body);
 
     res.header("x-auth-token", token).send(token);
   })

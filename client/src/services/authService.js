@@ -13,6 +13,7 @@ export async function login(email, password) {
 }
 
 export function loginWithJwt(jwt) {
+  console.log(" login with jwt auth funcvtion", jwt);
   localStorage.setItem("token", jwt);
 }
 
@@ -32,6 +33,12 @@ export function getCurrentUser() {
 
 export function getJwt() {
   return localStorage.getItem("token");
+}
+
+export async function regenerateToken(user) {
+  const token = await http.post(apiUrl + "/auth/generateToken/", user);
+
+  return token;
 }
 
 export default {

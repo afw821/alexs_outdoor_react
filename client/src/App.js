@@ -12,7 +12,6 @@ import Footer from "./components/Footer";
 import UserDetails from "./components/UserDetails";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import UserContext from "./context/userContext";
 
 class App extends Component {
   state = {
@@ -51,12 +50,6 @@ class App extends Component {
         <NavBar user={user} />
         <div style={h100} className="container-fluid">
           <Switch>
-            {/* <UserContext.Provider
-              value={{
-                currentUser: this.state.user,
-              }}
-            > */}
-            {/* <Route path="/account/:id" component={UserDetails} /> */}
             <Route
               path="/account/:id"
               render={(props) => (
@@ -71,7 +64,6 @@ class App extends Component {
             <Route path="/not-found" component={NotFound} />
             <Redirect from="/" exact to="/home" />
             <Redirect to="/not-found" />
-            {/* </UserContext.Provider> */}
           </Switch>
           <Footer />
         </div>

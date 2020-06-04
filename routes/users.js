@@ -6,7 +6,7 @@ const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 //registering user (hash pw in model hook)
 router.post('/', ash(async (req, res) => {
-
+    console.log('------post user req body------', req.body);
     const { email } = req.body;
     req.body.isAdmin = false;
     let user = await db.User.findOne({
@@ -18,9 +18,9 @@ router.post('/', ash(async (req, res) => {
     if (user) return res.status(400).send('User already registered.');
 
 
-    user = await db.User.create(req.body);
-
-    res.json(user);
+    const newUser = await db.User.create(req.body);
+    console.log('------new user------', newUser);
+    res.json(newUser);
 }));
 
 router.get('/:id', [auth], ash(async (req, res) => {
@@ -45,5 +45,19 @@ router.get('/', [auth], ash(async (req, res) => {
 
     res.json(users);
 }));
+
+router.put('/:id', [auth], ash(async (req, res) => {
+    console.log('---------put user--------------', req.params.id);
+    console.log('-------------put user req.body-----------', req.body);
+    const user = await db.User.update(
+        req.body,
+        {
+            where: {
+                id: req.params.id
+            }
+        });
+    res.json(user);
+}));
+
 
 module.exports = router;

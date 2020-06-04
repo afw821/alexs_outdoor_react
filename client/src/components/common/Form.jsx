@@ -44,11 +44,11 @@ class Form extends Component {
         );
         errors[input.name] = pwErrorMessage;
         break;
-      case "email":
-        const firstEmail = data.firstEmail;
-        const emailErrorMessage = this.doEmailsMatch(input.value, firstEmail);
-        errors[input.name] = emailErrorMessage;
-        break;
+      // case "email":
+      //   const firstEmail = data.firstEmail;
+      //   const emailErrorMessage = this.doEmailsMatch(input.value, firstEmail);
+      //   errors[input.name] = emailErrorMessage;
+      //   break;
       case "categories":
         console.log("categories");
         data["selectedCategoryId"] = input.value;

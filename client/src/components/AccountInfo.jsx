@@ -6,7 +6,12 @@ import AccountEditForm from "./AccountEditForm";
 
 class AccountInfo extends Component {
   render() {
-    const { user, showAccountInfoRow, handleCancelClick } = this.props;
+    const {
+      user,
+      showAccountInfoRow,
+      handleCancelClick,
+      handleUserUpdate,
+    } = this.props;
     if (showAccountInfoRow) {
       return (
         <div className="account-row-wrapper">
@@ -24,7 +29,11 @@ class AccountInfo extends Component {
       console.log("else user", user);
       return (
         <div className="account-edit-wrapper">
-          <AccountEditForm handleCancelClick={handleCancelClick} user={user} />
+          <AccountEditForm
+            handleUserUpdate={handleUserUpdate}
+            handleCancelClick={handleCancelClick}
+            user={user}
+          />
         </div>
       );
     }
