@@ -10,6 +10,8 @@ import Home from "./components/Home";
 import Logout from "./components/Logout";
 import Footer from "./components/Footer";
 import UserDetails from "./components/UserDetails";
+import Products from "./components/Products";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -50,13 +52,19 @@ class App extends Component {
         <NavBar user={user} />
         <div style={h100} className="container-fluid">
           <Switch>
-            <Route
+            <ProtectedRoute
               path="/account/:id"
+              exact
               render={(props) => (
                 <UserDetails {...props} user={this.state.user} />
               )}
             />
             <Route path="/addProduct" component={ProductForm} />
+            <Route
+              path="/products"
+              exact
+              render={(props) => <Products {...props} user={this.state.user} />}
+            />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/logout" component={Logout} />

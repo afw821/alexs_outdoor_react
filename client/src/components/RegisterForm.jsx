@@ -20,7 +20,7 @@ class RegisterForm extends Form {
       email: "",
       firstPassword: "",
       password: "",
-      isAdmin: false,
+      isAdmin: 0,
     },
     errors: {},
   };
@@ -76,7 +76,7 @@ class RegisterForm extends Form {
   }
 
   render() {
-    console.log('register props', this.props);
+    console.log("register props", this.props);
     const { states } = this.state.data;
     return (
       <div className="row">

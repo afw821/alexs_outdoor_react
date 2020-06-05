@@ -63,7 +63,7 @@ module.exports = function (connection, Sequelize) {
       },
     },
     isAdmin: {
-      type: Sequelize.TINYINT,
+      type: Sequelize.INTEGER,
     },
   });
 

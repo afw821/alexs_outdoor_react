@@ -6,9 +6,10 @@ const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 //registering user (hash pw in model hook)
 router.post('/', ash(async (req, res) => {
-    console.log('------post user req body------', req.body);
+
     const { email } = req.body;
-    req.body.isAdmin = false;
+    req.body.isAdmin = 0;
+    console.log('------post user req body.isAdmin------', req.body.isAdmin);
     let user = await db.User.findOne({
         where: {
             email: email
@@ -19,6 +20,7 @@ router.post('/', ash(async (req, res) => {
 
 
     const newUser = await db.User.create(req.body);
+
     console.log('------new user------', newUser);
     res.json(newUser);
 }));

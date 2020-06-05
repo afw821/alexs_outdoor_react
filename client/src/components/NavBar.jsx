@@ -16,7 +16,6 @@ import {
 } from "mdbreact";
 const NavBar = (props) => {
   const user = props.user;
-  console.log("navbar user", user);
 
   const [collapse, setCollapse] = useState(false);
   const [isWideEnough, setWideEnough] = useState(false);
