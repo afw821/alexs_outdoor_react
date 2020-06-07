@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import OutdoorPic from "../assets/OutdoorGear1.jpg";
 
 import {
   MDBNavbar,
@@ -10,9 +8,6 @@ import {
   MDBCollapse,
   MDBNavItem,
   MDBNavLink,
-  MDBContainer,
-  MDBView,
-  MDBMask,
 } from "mdbreact";
 const NavBar = (props) => {
   const user = props.user;

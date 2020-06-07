@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Component } from "react";
+import React, { Component } from "react";
 import { getProductByPKId } from "../services/productService";
 import _arrayBufferToBase64 from "../utils/toBase64String";
 
@@ -17,7 +17,6 @@ class OrderInfo extends Component {
       console.log("data renamed to product", product);
       product.imgSrc = _arrayBufferToBase64(product.data.data);
       productsArray.push(product);
-      //this.setState({ products: product });
     }
 
     this.setState({ products: productsArray });
@@ -25,7 +24,7 @@ class OrderInfo extends Component {
 
   render() {
     const { user } = this.props;
-    if (user.Purchases.length == 0)
+    if (user.Purchases.length === 0)
       return <div>{`You have no purchases ${user.firstName}!`}</div>;
     else {
       return (

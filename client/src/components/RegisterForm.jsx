@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Form from "./common/Form";
 import { MDBCard, MDBCardBody } from "mdbreact";
 import { getStates } from "../utils/getStates";

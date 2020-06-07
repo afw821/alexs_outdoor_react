@@ -11,6 +11,7 @@ import Logout from "./components/Logout";
 import Footer from "./components/Footer";
 import UserDetails from "./components/UserDetails";
 import Products from "./components/Products";
+import ProductDetails from "./components/ProductDetails";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -57,6 +58,12 @@ class App extends Component {
               exact
               render={(props) => (
                 <UserDetails {...props} user={this.state.user} />
+              )}
+            />
+            <Route
+              path="/product/:id"
+              render={(props) => (
+                <ProductDetails {...props} user={this.state.user} />
               )}
             />
             <Route path="/addProduct" component={ProductForm} />

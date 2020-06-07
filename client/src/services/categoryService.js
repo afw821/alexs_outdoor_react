@@ -9,6 +9,8 @@ export function addCategory() {
   return http.post(apiUrl + "/categories");
 }
 
-export function getProductById(productId) {}
+export function getCategoryByPKId(categoryId) {
+  return http.get(apiUrl + `/categories/byPK/${categoryId}`);
+}
 
-export function deleteProduct(productId) {}
+export function deleteCategory(categoryId) {}

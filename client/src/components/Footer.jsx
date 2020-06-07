@@ -6,7 +6,8 @@ const Footer = () => {
   const footerStyle = {
     position: "absolute",
     bottom: "0",
-    width: "100%",
+    width: "115%",
+    marginLeft: "-20px",
   };
   return (
     <MDBFooter

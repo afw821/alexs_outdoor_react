@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import Form from "./common/Form";
 import { addProduct } from "../services/productService";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
 import { getCategories } from "../services/categoryService";
-import _arrayBufferToBase64 from './../utils/toBase64String';
+import _arrayBufferToBase64 from "./../utils/toBase64String";
 
 class ProductForm extends Form {
   state = {
@@ -49,7 +49,7 @@ class ProductForm extends Form {
         description,
         price,
         selectedCategoryId,
-        imageSrc
+        imageSrc,
       } = this.state.data;
 
       // const imgSrc = _arrayBufferToBase64(file);
