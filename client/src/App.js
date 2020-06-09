@@ -13,8 +13,10 @@ import UserDetails from "./components/UserDetails";
 import Products from "./components/Products";
 import ProductDetails from "./components/ProductDetails";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import { addItemToCart } from "./services/cartService";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CartDetails from "./components/CartDetails";
 
 class App extends Component {
   state = {
@@ -29,6 +31,7 @@ class App extends Component {
       state: "",
       zipCode: "",
       Purchases: [],
+      Carts: [],
     },
   };
 
@@ -37,8 +40,23 @@ class App extends Component {
 
     this.setState({ user });
   }
+
+  handleAddToCart = async (state) => {
+    // add item to cart
+    const { data } = await addItemToCart(
+      "cart22",
+      state.userQuantity,
+      this.state.user.id,
+      state.data.id
+    );
+    //set cart counter
+    const user = { ...this.state.user };
+    user.Carts.push(data);
+    this.setState({ user });
+  };
   render() {
-    const { user } = this.state;
+    const { user, count } = this.state;
+    // console.log(this.state.user.Carts.length);
     const h100 = {
       minHeight: "100vh" /* will cover the 100% of viewport */,
       overflow: "hidden",
@@ -50,7 +68,7 @@ class App extends Component {
     return (
       <>
         <ToastContainer />
-        <NavBar user={user} />
+        <NavBar count={count} user={user} />
         <div style={h100} className="container-fluid">
           <Switch>
             <ProtectedRoute
@@ -60,10 +78,21 @@ class App extends Component {
                 <UserDetails {...props} user={this.state.user} />
               )}
             />
+            <ProtectedRoute
+              path="/cart/:id"
+              exact
+              render={(props) => (
+                <CartDetails {...props} user={this.state.user} />
+              )}
+            />
             <Route
               path="/product/:id"
               render={(props) => (
-                <ProductDetails {...props} user={this.state.user} />
+                <ProductDetails
+                  {...props}
+                  handleAddToCart={this.handleAddToCart}
+                  user={this.state.user}
+                />
               )}
             />
             <Route path="/addProduct" component={ProductForm} />

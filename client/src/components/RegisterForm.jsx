@@ -16,7 +16,6 @@ class RegisterForm extends Form {
       city: "",
       selectedState: "",
       zipCode: "",
-      // firstEmail: "",
       email: "",
       firstPassword: "",
       password: "",

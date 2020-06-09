@@ -36,6 +36,7 @@ class ProductDetails extends Component {
   }
 
   addQuantity = () => {
+    if (this.state.userQuantity === this.state.data.inStock) return;
     this.setState({ userQuantity: this.state.userQuantity + 1 });
   };
 
@@ -55,12 +56,13 @@ class ProductDetails extends Component {
 
   render() {
     const { data, userQuantity } = this.state;
+    const { handleAddToCart } = this.props;
     return (
       <div className="row" style={{ marginTop: "155px" }}>
         <div className="col-6 d-flex justify-content-center">
           <div className="row">
             <div className="col">
-              <div className="card" style={{ width: "18rem" }}>
+              <div className="card" style={{ width: "17vw" }}>
                 <img
                   className="card-img-top"
                   src={`data:image/png;base64,${data.imgSrc}`}
@@ -73,7 +75,7 @@ class ProductDetails extends Component {
         <div className="col-6">
           <div className="row">
             <div
-              className="col-6 d-flex justify-content-center"
+              className="col-7 d-flex justify-content-center"
               style={{ borderBottom: "2px solid black" }}
             >
               <h2>{data.name}</h2>
@@ -81,17 +83,20 @@ class ProductDetails extends Component {
           </div>
           <div className="row mt-4">
             <div
-              className="col-6 d-flex justify-content-center"
+              className="col-7 d-flex justify-content-center"
               style={{ borderBottom: "2px solid black" }}
             >
               <p>{data.description}</p>
             </div>
           </div>
           <div className="row mt-4">
-            <div className="col-6" style={{ borderBottom: "2px solid black" }}>
+            <div
+              className="col-sm-7"
+              style={{ borderBottom: "2px solid black" }}
+            >
               <div className="row">
-                <div className="col-4">
-                  <div className="def-number-input number-input">
+                <div className="col-sm-7">
+                  <div className="def-number-input number-input mt-2">
                     <button
                       onClick={this.subtractQuantity}
                       className="minus"
@@ -99,8 +104,8 @@ class ProductDetails extends Component {
                     <input
                       className="quantity"
                       name="quantity"
+                      onChange={() => console.log('changed')}
                       value={userQuantity}
-                      onChange={() => console.log("change")}
                       type="number"
                     />
                     <button
@@ -109,7 +114,14 @@ class ProductDetails extends Component {
                     ></button>
                   </div>
                 </div>
-                <div className="col-4">
+                <div className="col-sm-5">
+                  <button onClick={() => handleAddToCart(this.state)} className="btn btn-sm btn-primary mt-2">
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
                   <p>${data.price}</p>
                 </div>
               </div>

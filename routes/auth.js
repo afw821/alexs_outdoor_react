@@ -19,6 +19,7 @@ function generateAuthToken(user) {
       state: user.state,
       zipCode: user.zipCode,
       Purchases: user.Purchases,
+      Carts: user.Carts
     },
     process.env.JWT_PRIVATEKEY
   );
@@ -34,7 +35,7 @@ router.post(
       where: {
         email: email,
       },
-      include: [db.Purchase],
+      include: [db.Purchase, db.Cart],
     });
     if (!user) return res.status(400).send("Invalid Email and / or password");
     const validPassword = await bcrypt.compare(password, user.password);

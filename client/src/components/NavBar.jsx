@@ -8,10 +8,11 @@ import {
   MDBCollapse,
   MDBNavItem,
   MDBNavLink,
+  MDBIcon,
 } from "mdbreact";
 const NavBar = (props) => {
   const user = props.user;
-
+  const count = props.count;
   const [collapse, setCollapse] = useState(false);
   const [isWideEnough, setWideEnough] = useState(false);
   const [isHomeActive, setHomeActive] = useState(true);
@@ -156,6 +157,27 @@ const NavBar = (props) => {
             </MDBNavItem>
           </MDBNavbarNav>
           <MDBNavbarNav right>
+            {props.user && (
+              <MDBNavItem
+                className="d-flex align-items-center"
+                style={{ marginRight: "10px" }}
+                onClick={(e) => console.log("Cart Clicked")}
+              >
+                <MDBNavLink name="Account" to={`/cart/${user.id}`}>
+                  <MDBIcon icon="shopping-cart" />
+                </MDBNavLink>
+              </MDBNavItem>
+            )}
+            {props.user && (
+              <MDBNavItem
+                className="d-flex align-items-center"
+                style={{ marginRight: "10px" }}
+              >
+                <MDBNavLink name="Account" to={`/cart/${user.id}`}>
+                  {user.Carts.length}
+                </MDBNavLink>
+              </MDBNavItem>
+            )}
             {props.user && (
               <MDBNavItem
                 onClick={(e) => handleToggleActive(e.target.name)}

@@ -12,9 +12,7 @@ class OrderInfo extends Component {
     const { user } = this.props;
     for (let i = 0; i < user.Purchases.length; i++) {
       const productId = user.Purchases[i].id;
-      console.log("productId", productId);
       let { data: product } = await getProductByPKId(productId);
-      console.log("data renamed to product", product);
       product.imgSrc = _arrayBufferToBase64(product.data.data);
       productsArray.push(product);
     }

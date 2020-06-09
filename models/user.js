@@ -73,6 +73,14 @@ module.exports = function (connection, Sequelize) {
     User.hasMany(models.Purchase, {
       onDelete: "cascade",
     });
+
+    User.hasMany(models.Cart, {
+      onDelete: "cascade",
+    });
+
+    User.hasMany(models.Review, {
+      onDelete: "cascade",
+    });
   };
 
   User.beforeCreate(hashPassword);

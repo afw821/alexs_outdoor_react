@@ -30,7 +30,7 @@ router.get('/:id', ash(async (req, res) => {
         where: {
             id: req.params.id
         },
-        include: [db.Purchase]
+        include: [db.Purchase, db.Cart]
     });
 
     if (!users) return res.status(404).send('Error Finding Users');
@@ -38,9 +38,9 @@ router.get('/:id', ash(async (req, res) => {
     res.json(users);
 }));
 
-router.get('/', [auth], ash(async (req, res) => {
+router.get('/', ash(async (req, res) => {
     const users = await db.User.findAll({
-        include: [db.Purchase]
+        include: [db.Purchase, db.Cart]
     });
 
     if (!users) return res.status(404).send('Error Finding Users');
