@@ -37,25 +37,35 @@ class App extends Component {
 
   componentDidMount() {
     const user = auth.getCurrentUser();
+    console.log("cdm app user", user);
 
     this.setState({ user });
   }
 
   handleAddToCart = async (state) => {
-    // add item to cart
+    const { data: product, userQuantity } = state;
+    const productName = product.name;
+    const description = product.description;
+    const inStock = product.inStock;
+    const userId = this.state.user.id;
+    const productId = product.id;
+    //add item to cart
     const { data } = await addItemToCart(
-      "cart22",
-      state.userQuantity,
-      this.state.user.id,
-      state.data.id
+      `user-cart-${userId}`,
+      userQuantity,
+      userId,
+      productId
     );
-    //set cart counter
+
     const user = { ...this.state.user };
+    console.log("user cloned object", user);
     user.Carts.push(data);
+    console.log("user after push", user);
     this.setState({ user });
   };
   render() {
     const { user, count } = this.state;
+    console.log("render app user", user);
     // console.log(this.state.user.Carts.length);
     const h100 = {
       minHeight: "100vh" /* will cover the 100% of viewport */,
