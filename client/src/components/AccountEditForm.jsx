@@ -20,6 +20,7 @@ class AccountEditForm extends Form {
       state: "",
       zipCode: "",
       Purchases: [],
+      Carts: [],
     },
     options: {
       states: [],
@@ -37,10 +38,15 @@ class AccountEditForm extends Form {
     state: Joi.string().required().label("State"),
     zipCode: Joi.number().required().label("Zip Code"),
     Purchases: Joi.array().label("Purchases"),
+    Carts: Joi.array().label("Carts"),
     id: Joi.label("ID"),
   };
   mapPurchases(Purchases) {
     return Purchases;
+  }
+
+  mapCarts(Carts) {
+    return Carts;
   }
   mapToViewModel(user) {
     return {
@@ -54,6 +60,7 @@ class AccountEditForm extends Form {
       state: user.state,
       zipCode: user.zipCode,
       Purchases: this.mapPurchases(user.Purchases),
+      Carts: this.mapCarts(user.Carts),
     };
   }
 
@@ -61,6 +68,7 @@ class AccountEditForm extends Form {
     try {
       const userId = this.props.user.id;
       const { data: user } = await getUserById(userId);
+      console.log("populate user info user", user);
       this.setState({ data: this.mapToViewModel(user) }); //returns array maybe before re-render
       //it passes in empty string??
     } catch (ex) {
@@ -103,6 +111,7 @@ class AccountEditForm extends Form {
       updatedUser.id = userId;
       //add purchases to user object
       updatedUser.Purchases = this.state.data.Purchases;
+      updatedUser.Carts = this.state.data.Carts;
 
       if (result.status === 200) {
         //get updated information and pass it into regenerate token (REFRESH ISSUE FIX)

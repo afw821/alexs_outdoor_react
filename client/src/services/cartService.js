@@ -15,8 +15,20 @@ export function addItemToCart(name, quantity, UserId, ProductId) {
   return http.post(apiUrl + "/carts", obj);
 }
 
+export function updateCart(id, name, quantity, UserId, ProductId) {
+  const reqBody = {
+    name,
+    quantity,
+    UserId,
+    ProductId,
+  };
+  return http.put(apiUrl + `/carts/byPKId/${id}`, reqBody);
+}
+
 export function getCartByUserId(userId) {
   return http.get(apiUrl + `/carts/byUserId/${userId}`);
 }
-
-export function deleteCart(cartId) {}
+//delete cart by PK Id
+export function deleteCartByPkId(cartId) {
+  return http.delete(apiUrl + `/carts/byPK/${cartId}`);
+}

@@ -4,14 +4,23 @@ import { Link } from "react-router-dom";
 
 const ProductCard = ({ products, user, handleDelete }) => {
   return products.map((product) => (
-    <div className="col-4" key={product.id}>
-      <div className="card" style={{ width: "18rem" }}>
+    <div className="col-4 d-flex justify-content-center" key={product.id}>
+      <div
+        className="card"
+        style={{
+          width: "18rem",
+          minWidth: "288px",
+          minHeight: "378px",
+          marginBottom: "60px",
+        }}
+      >
         <img
           className="card-img-top"
           src={`data:image/png;base64,${(product.imgSrc = _arrayBufferToBase64(
             product.data.data
           ))}`}
           alt="Card image cap"
+          style={{ height: "200px", width: "200px" }}
         />
         <div className="card-body">
           <div className="row title-row">
