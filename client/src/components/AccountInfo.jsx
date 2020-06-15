@@ -26,7 +26,6 @@ class AccountInfo extends Component {
         </div>
       );
     } else {
-      console.log("else user", user);
       return (
         <div className="account-edit-wrapper">
           <AccountEditForm

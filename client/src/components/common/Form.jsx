@@ -44,18 +44,12 @@ class Form extends Component {
         );
         errors[input.name] = pwErrorMessage;
         break;
-      // case "email":
-      //   const firstEmail = data.firstEmail;
-      //   const emailErrorMessage = this.doEmailsMatch(input.value, firstEmail);
-      //   errors[input.name] = emailErrorMessage;
-      //   break;
+
       case "categories":
-        console.log("categories");
         data["selectedCategoryId"] = input.value;
         this.setState({ data, errors });
         return;
       default:
-        console.log("default");
         const errorMessage = this.validateProperty(input);
         if (errorMessage) errors[input.name] = errorMessage;
         else delete errors[input.name];
@@ -65,8 +59,6 @@ class Form extends Component {
   };
 
   validateProperty = ({ name, value }) => {
-    console.log("validate property name", name);
-    console.log("validate property value", value);
     const obj = { [name]: value };
     const schema = { [name]: this.schema[name] };
     const { error } = Joi.validate(obj, schema);
@@ -97,7 +89,6 @@ class Form extends Component {
 
   renderInlineFormGroup(name, label, type = "text") {
     const { data, errors } = this.state;
-    console.log("value data name", data[name]);
     return (
       <InlineFormGroup
         label={label}

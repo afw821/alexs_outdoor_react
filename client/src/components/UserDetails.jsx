@@ -30,7 +30,6 @@ class UserDetails extends Component {
   };
 
   handleUserUpdate = (e) => {
-    console.log("handle user update");
     this.setState({
       showAccountInfoRow: true,
       showEditBtn: true,

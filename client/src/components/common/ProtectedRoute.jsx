@@ -3,7 +3,6 @@ import auth from "../../services/authService";
 import { Route, Redirect } from "react-router-dom";
 
 const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
-  console.log("protected route");
   return (
     <Route
       {...rest}
@@ -15,7 +14,6 @@ const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
             />
           );
         } else {
-          console.log("made it into the else");
           return Component ? <Component {...props} /> : render(props);
         }
       }}

@@ -13,10 +13,11 @@ import UserDetails from "./components/UserDetails";
 import Products from "./components/Products";
 import ProductDetails from "./components/ProductDetails";
 import ProtectedRoute from "./components/common/ProtectedRoute";
-import { addItemToCart } from "./services/cartService";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CartDetails from "./components/CartDetails";
+import { addItemToCart } from "./services/cartService";
+import { regenerateToken, loginWithJwt } from "./services/authService";
 
 class App extends Component {
   state = {
@@ -37,36 +38,46 @@ class App extends Component {
 
   componentDidMount() {
     const user = auth.getCurrentUser();
-    console.log("cdm app user", user);
 
     this.setState({ user });
   }
 
   handleAddToCart = async (state) => {
-    const { data: product, userQuantity } = state;
-    const productName = product.name;
-    const description = product.description;
-    const inStock = product.inStock;
-    const userId = this.state.user.id;
-    const productId = product.id;
-    //add item to cart
-    const { data } = await addItemToCart(
-      `user-cart-${userId}`,
-      userQuantity,
-      userId,
-      productId
-    );
+    try {
+      const { data: product, userQuantity } = state;
+      const productName = product.name;
+      const description = product.description;
+      const inStock = product.inStock;
+      const userId = this.state.user.id;
+      const productId = product.id;
+      //add item to cart
+      const { data } = await addItemToCart(
+        `user-cart-${userId}`,
+        userQuantity,
+        userId,
+        productId
+      );
 
-    const user = { ...this.state.user };
-    console.log("user cloned object", user);
-    user.Carts.push(data);
-    console.log("user after push", user);
-    this.setState({ user });
+      const user = { ...this.state.user };
+      user.Carts.push(data);
+      this.setState({ user });
+
+      //refresh issue (same as in AccountEditForm.jsx line 115)
+      //we have to do this to regenerate a new JWT so the user can be read off of it
+      const { data: token } = await regenerateToken(user);
+
+      if (token) {
+        loginWithJwt(token);
+        //window.location = `/cart/${userId}`;
+      }
+    } catch (ex) {
+      if (ex.response.status === 400) toast.error(ex.response.data);
+    }
   };
   render() {
     const { user, count } = this.state;
-    console.log("render app user", user);
-    // console.log(this.state.user.Carts.length);
+    console.log("count from render in app", count);
+
     const h100 = {
       minHeight: "100vh" /* will cover the 100% of viewport */,
       overflow: "hidden",

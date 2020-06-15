@@ -1,7 +1,6 @@
 import React from "react";
 
 const InlineFormGroup = ({ label, value, name, type, error, handleChange }) => {
-  console.log("inline form group value...", value);
   return (
     <div className="form-group row">
       <label htmlFor={name} className="col-2 col-form-label">

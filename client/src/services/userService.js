@@ -25,7 +25,6 @@ export async function register(
     password,
     isAdmin,
   };
-  console.log("u service register", obj);
   const { data: user } = await http.post(apiUrl + "/users", obj);
 
   return user;
@@ -59,7 +58,6 @@ export async function updateUser(
     email,
   };
   const result = await http.put(apiUrl + `/users/${id}`, reqBody);
-  console.log("user from user service put", result);
 
   return result;
 }

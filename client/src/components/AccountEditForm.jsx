@@ -68,7 +68,6 @@ class AccountEditForm extends Form {
     try {
       const userId = this.props.user.id;
       const { data: user } = await getUserById(userId);
-      console.log("populate user info user", user);
       this.setState({ data: this.mapToViewModel(user) }); //returns array maybe before re-render
       //it passes in empty string??
     } catch (ex) {
@@ -136,7 +135,6 @@ class AccountEditForm extends Form {
 
   render() {
     const { states } = this.state.options;
-    console.log("render states", states);
     return (
       <form className="mt-4" onSubmit={this.handleSubmit}>
         {this.renderInlineFormGroup("firstName", "First Name", "text")}

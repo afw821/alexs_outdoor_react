@@ -8,9 +8,12 @@ const TotalRow = ({ totalPrice }) => {
           <div className="col-2">
             <h5>Total:</h5>
           </div>
-          <div className="col-8">
+          <div
+            className="col-8 d-flex justify-content-end"
+            style={{ paddingRight: "80px" }}
+          >
             <span>
-              <strong>{totalPrice}</strong>
+              <strong>${parseFloat(totalPrice.toFixed(2))}</strong>
             </span>
           </div>
         </div>

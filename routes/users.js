@@ -1,65 +1,67 @@
-const db = require('../models');
-const express = require('express');
+const db = require("../models");
+const express = require("express");
 const router = express.Router();
-const ash = require('express-async-handler');
+const ash = require("express-async-handler");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 //registering user (hash pw in model hook)
-router.post('/', ash(async (req, res) => {
-
+router.post(
+  "/",
+  ash(async (req, res) => {
     const { email } = req.body;
     req.body.isAdmin = 0;
-    console.log('------post user req body.isAdmin------', req.body.isAdmin);
     let user = await db.User.findOne({
-        where: {
-            email: email
-        }
+      where: {
+        email: email,
+      },
     });
 
-    if (user) return res.status(400).send('User already registered.');
-
-
+    if (user) return res.status(400).send("User already registered.");
     const newUser = await db.User.create(req.body);
-
-    console.log('------new user------', newUser);
     res.json(newUser);
-}));
+  })
+);
 
-router.get('/:id', ash(async (req, res) => {
+router.get(
+  "/:id",
+  ash(async (req, res) => {
     const users = await db.User.findOne({
-        where: {
-            id: req.params.id
-        },
-        include: [db.Purchase, db.Cart]
+      where: {
+        id: req.params.id,
+      },
+      include: [db.Purchase, db.Cart],
     });
 
-    if (!users) return res.status(404).send('Error Finding Users');
+    if (!users) return res.status(404).send("Error Finding Users");
 
     res.json(users);
-}));
+  })
+);
 
-router.get('/', ash(async (req, res) => {
+router.get(
+  "/",
+  ash(async (req, res) => {
     const users = await db.User.findAll({
-        include: [db.Purchase, db.Cart]
+      include: [db.Purchase, db.Cart],
     });
 
-    if (!users) return res.status(404).send('Error Finding Users');
+    if (!users) return res.status(404).send("Error Finding Users");
 
     res.json(users);
-}));
+  })
+);
 
-router.put('/:id', [auth], ash(async (req, res) => {
-    console.log('---------put user--------------', req.params.id);
-    console.log('-------------put user req.body-----------', req.body);
-    const user = await db.User.update(
-        req.body,
-        {
-            where: {
-                id: req.params.id
-            }
-        });
+router.put(
+  "/:id",
+  [auth],
+  ash(async (req, res) => {
+    const user = await db.User.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
     res.json(user);
-}));
-
+  })
+);
 
 module.exports = router;

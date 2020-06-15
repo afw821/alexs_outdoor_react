@@ -7,11 +7,20 @@ const ash = require("express-async-handler");
 router.post(
   "/",
   ash(async (req, res) => {
-    const cart = await db.Cart.create(req.body);
+    console.log("---------REQ.BODY------------  ", req.body);
+    let cart = await db.Cart.findOne({
+      where: {
+        ProductId: req.body.ProductId,
+      },
+    });
+    console.log("---------found cart------------  ", cart);
+    if (cart) return res.status(400).send("Item already added to the cart");
 
-    if (!cart) return res.status(400).send("Error creating cart");
+    const cartitem = await db.Cart.create(req.body);
 
-    res.json(cart);
+    if (!cartitem) return res.status(400).send("Error creating cart");
+
+    res.json(cartitem);
   })
 );
 
@@ -73,7 +82,6 @@ router.put(
       },
     });
     if (!cart) return res.status(404).send("Unable to locate this cart item");
-    console.log("----------------put cart cart----------------", cart);
     res.json(cart);
   })
 );
@@ -87,7 +95,6 @@ router.put(
       },
     });
     if (!cart) return res.status(404).send("Unable to locate this cart item");
-    console.log("----------------put cart cart by PK Id----------------", cart);
     res.json(cart);
   })
 );

@@ -6,7 +6,6 @@ export function getProducts() {
 }
 
 export function addProduct(formData) {
-  console.log("file from addProduct", formData);
   return http.post(apiUrl + "/products", formData);
 }
 

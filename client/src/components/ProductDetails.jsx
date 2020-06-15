@@ -45,6 +45,11 @@ class ProductDetails extends Component {
     this.setState({ userQuantity: this.state.userQuantity - 1 });
   };
 
+  calculatePrice = (price, quantity) => {
+    const totalPrice = price * quantity;
+    return parseFloat(totalPrice.toFixed(2));
+  };
+
   async componentDidMount() {
     const { data: product } = await getProductByPKId(
       this.props.match.params.id
@@ -104,7 +109,7 @@ class ProductDetails extends Component {
                     <input
                       className="quantity"
                       name="quantity"
-                      onChange={() => console.log('changed')}
+                      onChange={() => console.log("changed")}
                       value={userQuantity}
                       type="number"
                     />
@@ -115,14 +120,17 @@ class ProductDetails extends Component {
                   </div>
                 </div>
                 <div className="col-sm-5">
-                  <button onClick={() => handleAddToCart(this.state)} className="btn btn-sm btn-primary mt-2">
+                  <button
+                    onClick={() => handleAddToCart(this.state)}
+                    className="btn btn-sm btn-primary mt-2"
+                  >
                     Add to Cart
                   </button>
                 </div>
               </div>
               <div className="row">
                 <div className="col">
-                  <p>${data.price}</p>
+                  <p>${this.calculatePrice(data.price, userQuantity)}</p>
                 </div>
               </div>
             </div>

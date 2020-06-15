@@ -52,8 +52,6 @@ class ProductForm extends Form {
         imageSrc,
       } = this.state.data;
 
-      // const imgSrc = _arrayBufferToBase64(file);
-      // console.log('img src', imgSrc);
       const formData = new FormData();
       formData.append("file", file, file.name);
       formData.append("name", name);

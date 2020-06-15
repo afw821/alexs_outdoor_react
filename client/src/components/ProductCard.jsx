@@ -30,7 +30,9 @@ const ProductCard = ({ products, user, handleDelete }) => {
           </div>
           <div className="row price-row">
             <div className="col d-flex justify-content-center price-col">
-              <p className="card-text">${product.price}</p>
+              <p className="card-text" style={{ color: "black" }}>
+                <strong>${product.price}</strong>
+              </p>
             </div>
           </div>
           <div className="row shop-btn-row">

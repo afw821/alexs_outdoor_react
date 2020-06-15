@@ -41,7 +41,6 @@ class RegisterForm extends Form {
 
   doSubmit = async () => {
     try {
-      console.log("do submit");
       const { data } = this.state;
       await register(
         data.firstName,
@@ -75,7 +74,6 @@ class RegisterForm extends Form {
   }
 
   render() {
-    console.log("register props", this.props);
     const { states } = this.state.data;
     return (
       <div className="row">

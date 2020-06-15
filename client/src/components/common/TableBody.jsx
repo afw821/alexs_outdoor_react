@@ -6,9 +6,8 @@ const TableBody = (props) => {
     handleHover,
     handleLeave,
     handleRemoveFromCart,
-    subtractQuantity,
     handleChangeQuantity,
-    addQuantity,
+    calculateQuantity,
     calculatePrice,
     removeBtn,
   } = props;
@@ -44,18 +43,22 @@ const TableBody = (props) => {
               {" "}
               <div className="def-number-input number-input mt-2">
                 <button
-                  onClick={() => subtractQuantity(product.quantity, index)}
+                  onClick={() =>
+                    calculateQuantity(product.quantity, index, false)
+                  }
                   className="minus"
                 ></button>
                 <input
                   className="quantity"
                   name="quantity"
-                  onChange={() => handleChangeQuantity(product.quantity, index)}
+                  onChange={() => handleChangeQuantity(product.quantity, index)} //Deprecated
                   value={product.quantity}
                   type="number"
                 />
                 <button
-                  onClick={() => addQuantity(product.quantity, index)}
+                  onClick={() =>
+                    calculateQuantity(product.quantity, index, true)
+                  }
                   className="plus"
                 ></button>
               </div>

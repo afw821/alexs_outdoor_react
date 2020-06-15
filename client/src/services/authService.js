@@ -13,7 +13,6 @@ export async function login(email, password) {
 }
 
 export function loginWithJwt(jwt) {
-  console.log(" login with jwt auth funcvtion", jwt);
   localStorage.setItem("token", jwt);
 }
 

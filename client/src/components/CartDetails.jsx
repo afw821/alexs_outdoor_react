@@ -3,6 +3,8 @@ import { getProductByPKId } from "../services/productService";
 import { deleteCartByPkId } from "../services/cartService";
 import _arrayBufferToBase64 from "../utils/toBase64String";
 import { updateCart } from "../services/cartService";
+import { getUserById } from "../services/userService";
+import { regenerateToken, loginWithJwt } from "../services/authService";
 import { toast } from "react-toastify";
 import TableHead from "./common/TableHead";
 import TableBody from "./common/TableBody";
@@ -18,8 +20,20 @@ class CartDetails extends Component {
     totalPrice: 0,
   };
 
-  calculateTotalPrice = (array) => {
-    console.log("calculate total price Array", array);
+  calculateTotalPrice = (prices) => {
+    const _prices = [];
+    prices.forEach((val, i) => {
+      const calculated = val.price * val.quantity;
+      _prices.push(calculated);
+    });
+
+    let totalPrice = 0;
+
+    for (let i = 0; i < _prices.length; i++) {
+      totalPrice += _prices[i];
+    }
+
+    this.setState({ totalPrice });
   };
 
   async componentDidMount() {
@@ -32,15 +46,18 @@ class CartDetails extends Component {
       const productId = user.Carts[i].ProductId;
       let { data: product } = await getProductByPKId(productId);
       product.imgSrc = _arrayBufferToBase64(product.data.data);
-      //productsArray.push(product);
+
       const obj = {
         product: product,
         cartId: user.Carts[i].id,
         quantity: user.Carts[i].quantity,
       };
+      const calculatePriceObject = {
+        price: product.price,
+        quantity: user.Carts[i].quantity,
+      };
       productsArray.push(obj);
-      console.log(product.price);
-      priceArray.push(product.price);
+      priceArray.push(calculatePriceObject);
     }
 
     this.calculateTotalPrice(priceArray);
@@ -54,42 +71,26 @@ class CartDetails extends Component {
     if (this.state.products.length === 0) this.componentDidMount();
   }
 
-  addQuantity = async (currentQuantity, currentIndex) => {
-    try {
-      const products = [...this.state.products];
-      const userId = this.props.user.id;
-      const cartId = this.props.user.Carts[currentIndex].id;
-      const productName = products[currentIndex].product.name;
-      const productId = products[currentIndex].product.id;
-      const quantityInCart = products[currentIndex].quantity + 1;
-      products[currentIndex].quantity += 1;
-
-      const cart = await updateCart(
-        cartId,
-        productName,
-        quantityInCart,
-        userId,
-        productId
-      );
-      this.setState({ products });
-    } catch (ex) {
-      toast.error("Error Updating cart");
-    }
-  };
-
-  subtractQuantity = async (currentQuantity, currentIndex) => {
+  calculateQuantity = async (currentQuantity, currentIndex, add) => {
     try {
       const products = [...this.state.products];
 
       if (products[currentIndex].quantity === 0) return;
-
+      let totalPrice = this.state.totalPrice;
+      const pricePerUnit = products[currentIndex].product.price;
       const userId = this.props.user.id;
       const cartId = this.props.user.Carts[currentIndex].id;
       const productName = products[currentIndex].product.name;
       const productId = products[currentIndex].product.id;
-      const quantityInCart = products[currentIndex].quantity - 1;
+      const quantityInCart = add
+        ? products[currentIndex].quantity + 1
+        : products[currentIndex].quantity - 1;
 
-      products[currentIndex].quantity -= 1;
+      add
+        ? (products[currentIndex].quantity += 1)
+        : (products[currentIndex].quantity -= 1);
+
+      add ? (totalPrice += pricePerUnit) : (totalPrice -= pricePerUnit);
 
       const { data: cart } = await updateCart(
         cartId,
@@ -98,14 +99,25 @@ class CartDetails extends Component {
         userId,
         productId
       );
-      this.setState({ products });
+      this.setState({ products, totalPrice });
+      //refresh issue (same as in AccountEditForm.jsx line 115)
+      //we have to do this to regenerate a new JWT so the user can be read off of it
+      const { data: updatedUser } = await getUserById(userId);
+      const { data: token } = await regenerateToken(updatedUser);
+
+      if (token) {
+        loginWithJwt(token);
+        //window.location = `/cart/${userId}`;
+      }
     } catch (ex) {
       toast.error("Error Updating cart");
     }
   };
 
   calculatePrice = (quantity, price) => {
-    return quantity * price;
+    const total = quantity * price;
+
+    return parseFloat(total.toFixed(2));
   };
 
   handleHover = (e, index) => {
@@ -118,23 +130,40 @@ class CartDetails extends Component {
     this.setState({ removeBtn: { row: null, show: false } });
   };
   handleRemoveFromCart = async (e, product) => {
-    //clone array
-    const originalProducts = [...this.state.products];
-    const products = originalProducts.filter(
-      (item) => item.product.id !== product.product.id
-    );
-    this.setState({ products });
     try {
       await deleteCartByPkId(product.cartId);
+      //clone array
+      var originalProducts = [...this.state.products];
+      var originalTotalPrice = this.state.totalPrice;
+      let totalPrice = this.state.totalPrice;
+      const quantity = product.quantity;
+      const priceToSubtract = quantity * product.product.price;
+      const products = originalProducts.filter(
+        (item) => item.product.id !== product.product.id
+      );
+      totalPrice -= priceToSubtract;
+      this.setState({ products, totalPrice });
+      //refresh issue (same as in AccountEditForm.jsx line 115)
+      //we have to do this to regenerate a new JWT so the user can be read off of it
+      const { data: updatedUser } = await getUserById(this.props.user.id);
+      const { data: token } = await regenerateToken(updatedUser);
+
+      if (token) {
+        loginWithJwt(token);
+        //window.location = `/cart/${userId}`;
+      }
     } catch (ex) {
       if (ex.response.status === 404) {
         toast.error("Unable to delete this cart item");
-        this.setState({ products: originalProducts });
+        this.setState({
+          products: originalProducts,
+          totalPrice: originalTotalPrice,
+        });
       }
     }
   };
   handleChangeQuantity() {
-    console.log("changed");
+    //console.log("changed");
   }
 
   render() {
@@ -171,9 +200,8 @@ class CartDetails extends Component {
                 handleHover={this.handleHover}
                 handleLeave={this.handleLeave}
                 handleRemoveFromCart={this.handleRemoveFromCart}
-                subtractQuantity={this.subtractQuantity}
                 handleChangeQuantity={this.handleChangeQuantity}
-                addQuantity={this.addQuantity}
+                calculateQuantity={this.calculateQuantity}
                 calculatePrice={this.calculatePrice}
                 removeBtn={this.state.removeBtn}
               />

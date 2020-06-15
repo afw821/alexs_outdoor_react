@@ -19,7 +19,7 @@ function generateAuthToken(user) {
       state: user.state,
       zipCode: user.zipCode,
       Purchases: user.Purchases,
-      Carts: user.Carts
+      Carts: user.Carts,
     },
     process.env.JWT_PRIVATEKEY
   );
@@ -51,7 +51,6 @@ router.post(
 router.post(
   "/generateToken/",
   ash(async (req, res) => {
-    console.log("-------req.body-----", req.body);
     const token = await generateAuthToken(req.body);
 
     res.header("x-auth-token", token).send(token);
