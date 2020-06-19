@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const ash = require("express-async-handler");
-
+require("dotenv").config();
 function generateAuthToken(user) {
   const token = jwt.sign(
     {
@@ -37,6 +37,7 @@ router.post(
       },
       include: [db.Purchase, db.Cart],
     });
+    console.log('-------------------USER---------------------------', user);
     if (!user) return res.status(400).send("Invalid Email and / or password");
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword)

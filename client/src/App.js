@@ -32,8 +32,8 @@ class App extends Component {
       city: "",
       state: "",
       zipCode: "",
-      Purchases: [],
-      Carts: [],
+      Purchases: [{}],
+      Carts: [{}],
     },
   };
 
