@@ -63,7 +63,7 @@ class ContactForm extends Form {
               {this.renderInput("name", "Name")}
               {this.renderInput("email", "E-mail", "email")}
               {this.renderTextArea("message", "Message", "text", 5)}
-              {this.renderBtn("Submit")}
+              {this.renderBtn("Add")}
             </form>
           </div>
         </div>
