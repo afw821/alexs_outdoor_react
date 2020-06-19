@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import CartDetails from "./components/CartDetails";
 import { addItemToCart } from "./services/cartService";
 import { regenerateToken, loginWithJwt } from "./services/authService";
+import ContactForm from "./components/ContactForm";
 
 class App extends Component {
   state = {
@@ -124,6 +125,7 @@ class App extends Component {
             />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
+            <Route path="/contact" component={ContactForm} />
             <Route path="/logout" component={Logout} />
             <Route path="/home" component={Home} />
             <Route path="/not-found" component={NotFound} />

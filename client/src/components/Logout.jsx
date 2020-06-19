@@ -4,7 +4,7 @@ import auth from "../services/authService";
 const Logout = () => {
   useEffect(() => {
     auth.logout();
-    window.location = "/";
+    window.location = "/register";
   });
   return null;
 };
