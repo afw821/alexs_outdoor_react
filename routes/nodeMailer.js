@@ -6,7 +6,7 @@ function sendEmail(email, message, name) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "afw821@gmail.com",
+      user: process.env.EMAIL_ADDRESS,
       pass: process.env.EMAIL_PASSWORD,
     },
   });
@@ -20,10 +20,11 @@ function sendEmail(email, message, name) {
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log("transporter error", error);
+      console.log("-------------transporter error-----------------", error);
       return false;
     } else {
-      console.log("Email sent: " + info.response);
+      console.log("-----------------Email sent:--------------------- " + info.response);
+      
     }
   });
 

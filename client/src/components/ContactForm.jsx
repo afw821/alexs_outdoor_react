@@ -27,6 +27,7 @@ class ContactForm extends Form {
 
   doSubmit = async () => {
     try {
+      console.log('made it here!');
       const { data } = this.state;
       const result = await sendEmail(data.email, data.message, data.name);
 
@@ -53,7 +54,7 @@ class ContactForm extends Form {
           body="Your message has successfully been sent"
           onClose={this.handleModalClick}
         />
-        <div className="row">
+        <div className="row" style={{ marginTop: "100px"}}>
           <div className="col-4"></div>
           <div className="col-4">
             <form
@@ -63,7 +64,7 @@ class ContactForm extends Form {
               {this.renderInput("name", "Name")}
               {this.renderInput("email", "E-mail", "email")}
               {this.renderTextArea("message", "Message", "text", 5)}
-              {this.renderBtn("Submit")}
+              {this.renderBtn("Submit", "blue", "submit")}
             </form>
           </div>
         </div>

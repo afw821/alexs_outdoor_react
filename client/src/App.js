@@ -38,6 +38,7 @@ class App extends Component {
   };
 
   componentDidMount() {
+    console.log('cdm from App.js state', this.state.user);
     const user = auth.getCurrentUser();
 
     this.setState({ user });
@@ -78,6 +79,7 @@ class App extends Component {
   render() {
     const { user, count } = this.state;
     console.log("count from render in app", count);
+    console.log('render from App.js state', this.state.user);
 
     const h100 = {
       minHeight: "100vh" /* will cover the 100% of viewport */,

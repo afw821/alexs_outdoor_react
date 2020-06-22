@@ -36,14 +36,14 @@ class CartDetails extends Component {
     this.setState({ totalPrice });
   };
 
-  async componentDidMount() {
+  getProductsOnPageLoad = async (user) => {//gets products by product id from
+     //user prop when page loads or updates
     const productsArray = [];
     const priceArray = [];
-    const user = this.props.user;
-    const userId = this.props.match.params.id;
 
     for (let i = 0; i < user.Carts.length; i++) {
       const productId = user.Carts[i].ProductId;
+      console.log('product id', productId);
       let { data: product } = await getProductByPKId(productId);
       product.imgSrc = _arrayBufferToBase64(product.data.data);
 
@@ -60,15 +60,36 @@ class CartDetails extends Component {
       priceArray.push(calculatePriceObject);
     }
 
-    this.calculateTotalPrice(priceArray);
-
-    this.setState({ products: productsArray });
+    return {
+      priceArray: priceArray,
+      productsArray: productsArray
+    }
   }
 
-  componentDidUpdate() {
+  async componentDidMount() {
+    
+    const user = this.props.user;
+    const userId = this.props.match.params.id;
+
+    const { priceArray, productsArray } = await this.getProductsOnPageLoad(user);
+
+     this.calculateTotalPrice(priceArray);
+
+     this.setState({ products: productsArray });
+  }
+
+  async componentDidUpdate(prevProps) { //goes into here when updated
+    const user = this.props.user;
+    if (this.props.user.id !== prevProps.user.id){
+      const { priceArray, productsArray } = await this.getProductsOnPageLoad(user);
+
+      this.calculateTotalPrice(priceArray);
+
+      this.setState({ products: productsArray });
+    }
     //refresh issue fix. when refresh
     //tab is clicked from cardetails component page
-    if (this.state.products.length === 0) this.componentDidMount();
+    //if (this.state.products.length === 0) this.componentDidMount();
   }
 
   calculateQuantity = async (currentQuantity, currentIndex, add) => {
@@ -168,6 +189,8 @@ class CartDetails extends Component {
 
   render() {
     const { products } = this.state;
+    console.log('render from Cart Details user prop', this.props.user);
+    console.log('render from Cart Details products from state', products);
     const options = [
       {
         id: 1,
