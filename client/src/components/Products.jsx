@@ -6,6 +6,7 @@ import { getCategories } from '../services/categoryService';
 import _ from "lodash";
 import Paginator from './common/Paginator';
 import { paginate } from './../utils/paginate';
+import SearchBox from './common/SearchBox';
 
 class Products extends Component {
   state = {
@@ -35,6 +36,10 @@ class Products extends Component {
     this.setState({ currentPage: page });
   };
 
+  handleSearch = (query) => {
+    this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
+  };
+
   getPagedData = () => {
     const {    
       products: allProducts,
@@ -47,8 +52,8 @@ class Products extends Component {
 
     let filter = allProducts;
     if(searchQuery){
-      filter = allProducts.filter(p => 
-        p.name.toLowercase().startsWith(searchQuery.toLowercase())
+      filter = allProducts.filter(p =>      
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     } else if(selectedTab && selectedTab.id){
       filter = allProducts.filter(p => p.CategoryId === selectedTab.id);
@@ -75,12 +80,24 @@ class Products extends Component {
     return (
       <div className="row" style={{ marginTop: "65px" }}>
         <div className="col-2">
-          <h5>Filter By Category:</h5>
-        <ListItem items={categories} 
-        selectedTab={selectedTab} 
-        handleChange={this.handleTabChange} 
-        />
-
+        <div className="row">
+            <div className="col">
+              <SearchBox value={searchQuery} onChange={this.handleSearch}/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col d-flex justify-content-center">
+              <h5 style={{fontWeight: "bolder"}}>Filter By Category</h5>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <ListItem items={categories} 
+                selectedTab={selectedTab} 
+                handleChange={this.handleTabChange} 
+                />
+            </div>
+          </div>         
         </div>
         <div className="col-8">
           <div className="row">
