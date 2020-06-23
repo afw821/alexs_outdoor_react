@@ -7,7 +7,7 @@ import OrderInfo from "./OrderInfo";
 class UserDetails extends Component {
   state = {
     showAccountInfoRow: true,
-    selectedTab: "My Account",
+    selectedTab: { id: 1, name: "My Account"},
     showEditBtn: true,
   };
 
@@ -44,7 +44,7 @@ class UserDetails extends Component {
           <ListItem
             selectedTab={selectedTab}
             handleChange={this.handleTabChange}
-            items={["My Account", "Orders"]}
+            items={[{ id: 1, name: "My Account"}, {id: 2, name: "Orders"}]}
           />
         </div>
         <div className="col-7">
@@ -56,7 +56,7 @@ class UserDetails extends Component {
             </div>
             <div className="row">
               <div className="col">
-                {selectedTab === "My Account" ? (
+                {selectedTab.name === "My Account" ? (
                   <AccountInfo
                     handleUserUpdate={this.handleUserUpdate}
                     handleCancelClick={this.handleCancelClick}
@@ -72,7 +72,7 @@ class UserDetails extends Component {
             <div className="row">
               <div className="col-4"></div>
               <div className="col">
-                {selectedTab === "My Account" && showEditBtn ? (
+                {selectedTab.name === "My Account" && showEditBtn ? (
                   <button
                     onClick={(e) => this.handleEditClick(e)}
                     className="btn btn-info"
