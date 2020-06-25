@@ -1,6 +1,6 @@
 import React from "react";
 
-const TotalRow = ({ totalPrice }) => {
+const TotalRow = ({ totalPrice, toggleModal }) => {
   return (
     <div className="card" style={{ backgroundColor: "whitesmoke" }}>
       <div className="card-body">
@@ -15,6 +15,11 @@ const TotalRow = ({ totalPrice }) => {
             <span>
               <strong>${parseFloat(totalPrice.toFixed(2))}</strong>
             </span>
+          </div>
+          <div className="col-2">
+            <button onClick={toggleModal} className="btn btn-sm btn-primary">
+              Checkout
+            </button>
           </div>
         </div>
       </div>

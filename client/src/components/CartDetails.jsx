@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import TableHead from "./common/TableHead";
 import TableBody from "./common/TableBody";
 import TotalRow from "./common/TotalRow";
+import CheckoutModal from "./common/CheckoutModal";
 
 class CartDetails extends Component {
   state = {
@@ -18,6 +19,7 @@ class CartDetails extends Component {
       show: false,
     },
     totalPrice: 0,
+    showModal: false,
   };
 
   calculateTotalPrice = (prices) => {
@@ -36,14 +38,15 @@ class CartDetails extends Component {
     this.setState({ totalPrice });
   };
 
-  getProductsOnPageLoad = async (user) => {//gets products by product id from
-     //user prop when page loads or updates
+  getProductsOnPageLoad = async (user) => {
+    //gets products by product id from
+    //user prop when page loads or updates
     const productsArray = [];
     const priceArray = [];
 
     for (let i = 0; i < user.Carts.length; i++) {
       const productId = user.Carts[i].ProductId;
-      console.log('product id', productId);
+      console.log("product id", productId);
       let { data: product } = await getProductByPKId(productId);
       product.imgSrc = _arrayBufferToBase64(product.data.data);
 
@@ -59,37 +62,29 @@ class CartDetails extends Component {
       productsArray.push(obj);
       priceArray.push(calculatePriceObject);
     }
-
     return {
       priceArray: priceArray,
-      productsArray: productsArray
-    }
-  }
-
+      productsArray: productsArray,
+    };
+  };
   async componentDidMount() {
-    
     const user = this.props.user;
     const userId = this.props.match.params.id;
-
-    const { priceArray, productsArray } = await this.getProductsOnPageLoad(user);
-
-     this.calculateTotalPrice(priceArray);
-
-     this.setState({ products: productsArray });
+    const { priceArray, productsArray } = await this.getProductsOnPageLoad(
+      user
+    );
+    this.calculateTotalPrice(priceArray);
+    this.setState({ products: productsArray });
   }
-
-  async componentDidUpdate(prevProps) { //goes into here when updated
+  async componentDidUpdate(prevProps) {
     const user = this.props.user;
-    if (this.props.user.id !== prevProps.user.id){
-      const { priceArray, productsArray } = await this.getProductsOnPageLoad(user);
-
+    if (this.props.user.id !== prevProps.user.id) {
+      const { priceArray, productsArray } = await this.getProductsOnPageLoad(
+        user
+      );
       this.calculateTotalPrice(priceArray);
-
       this.setState({ products: productsArray });
     }
-    //refresh issue fix. when refresh
-    //tab is clicked from cardetails component page
-    //if (this.state.products.length === 0) this.componentDidMount();
   }
 
   calculateQuantity = async (currentQuantity, currentIndex, add) => {
@@ -187,10 +182,12 @@ class CartDetails extends Component {
     //console.log("changed");
   }
 
+  toggleModal = () => {
+    this.setState({ showModal: !this.state.showModal });
+  };
+
   render() {
-    const { products } = this.state;
-    console.log('render from Cart Details user prop', this.props.user);
-    console.log('render from Cart Details products from state', products);
+    const { products, showModal } = this.state;
     const options = [
       {
         id: 1,
@@ -211,6 +208,7 @@ class CartDetails extends Component {
     ];
     return (
       <>
+        <CheckoutModal isOpen={showModal} closeModal={this.toggleModal} />
         <div
           className="row d-flex justify-content-center"
           style={{ marginTop: "100px" }}
@@ -233,7 +231,10 @@ class CartDetails extends Component {
         </div>
         <div className="row d-flex justify-content-center">
           <div className="col-8">
-            <TotalRow totalPrice={this.state.totalPrice} />
+            <TotalRow
+              totalPrice={this.state.totalPrice}
+              toggleModal={this.toggleModal}
+            />
           </div>
         </div>
       </>
