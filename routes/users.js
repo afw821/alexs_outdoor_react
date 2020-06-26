@@ -24,6 +24,7 @@ router.post(
 
 router.get(
   "/:id",
+  auth,
   ash(async (req, res) => {
     const users = await db.User.findOne({
       where: {
@@ -40,6 +41,7 @@ router.get(
 
 router.get(
   "/",
+  [auth, admin],
   ash(async (req, res) => {
     const users = await db.User.findAll({
       include: [db.Purchase, db.Cart],

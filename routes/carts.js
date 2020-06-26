@@ -2,10 +2,11 @@ const db = require("../models");
 const express = require("express");
 const router = express.Router();
 const ash = require("express-async-handler");
-
+const auth = require("../middleware/auth");
 //add item to cart
 router.post(
   "/",
+  auth,
   ash(async (req, res) => {
     let cart = await db.Cart.findOne({
       where: {
@@ -26,6 +27,7 @@ router.post(
 //get all carts Left Join Product and User
 router.get(
   "/",
+  auth,
   ash(async (req, res) => {
     const carts = await db.Cart.findAll({
       include: [db.Product, db.User],
@@ -39,6 +41,7 @@ router.get(
 //get carts by cart PK (cartId)
 router.get(
   "/byPK/:cartId",
+  auth,
   ash(async (req, res) => {
     const cart = await db.Cart.findOne({
       where: {
@@ -56,6 +59,7 @@ router.get(
 //get cart by FK (userId)
 router.get(
   "/byUserId/:userId",
+  auth,
   ash(async (req, res) => {
     const cart = await db.Cart.findAll({
       where: {
@@ -74,6 +78,7 @@ router.get(
 //find and update by Foreign key UserId
 router.put(
   "/byUserId/:userId",
+  auth,
   ash(async (req, res) => {
     const cart = await db.Cart.update(req.body, {
       where: {
@@ -87,6 +92,7 @@ router.put(
 //update by PK Id
 router.put(
   "/byPKId/:cartId",
+  auth,
   ash(async (req, res) => {
     const cart = await db.Cart.update(req.body, {
       where: {
@@ -101,6 +107,7 @@ router.put(
 //delete cart by PK (cartId) //this called when user clicks to remove one item
 router.delete(
   "/byPK/:cartId",
+  auth,
   ash(async (req, res) => {
     const cart = await db.Cart.destroy({
       where: {
@@ -117,6 +124,7 @@ router.delete(
 //delete cart by FK (userId) //this route called when user clicks empty cart
 router.delete(
   "/byUserId/:userId",
+  auth,
   ash(async (req, res) => {
     const cart = await db.Cart.destroy({
       where: {

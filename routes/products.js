@@ -4,9 +4,12 @@ const router = express.Router();
 const upload = require("../middleware/upload");
 const ash = require("express-async-handler");
 const fs = require("fs");
+const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 //post a product
 router.post(
   "/",
+  [auth, admin],
   upload.single("file"),
   ash(async (req, res) => {
     //const { name, inStock } = req.body;
@@ -81,6 +84,7 @@ router.put(
 //delete existing product byPK id
 router.delete(
   "/byPK/:id",
+  [auth, admin],
   ash(async (req, res) => {
     const product = await db.Product.destroy({
       where: {
