@@ -10,6 +10,7 @@ router.post(
     let cart = await db.Cart.findOne({
       where: {
         ProductId: req.body.ProductId,
+        UserId: req.body.UserId,
       },
     });
     if (cart) return res.status(400).send("Item already added to the cart");

@@ -116,7 +116,7 @@ class AccountEditForm extends Form {
         //get updated information and pass it into regenerate token (REFRESH ISSUE FIX)
         const { data: token } = await regenerateToken(updatedUser);
         if (token) {
-          //add new jwt with new updated user info into localstorage
+          //add new jwt with new updated user info into sessionStorage
           loginWithJwt(token);
           //need page refresh to show updated info
           window.location = `/account/${data.id}`;

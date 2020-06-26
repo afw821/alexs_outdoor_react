@@ -9,20 +9,20 @@ export async function login(email, password) {
     email,
     password,
   });
-  localStorage.setItem("token", jwt);
+  sessionStorage.setItem("token", jwt);
 }
 
 export function loginWithJwt(jwt) {
-  localStorage.setItem("token", jwt);
+  sessionStorage.setItem("token", jwt);
 }
 
 export function logout() {
-  localStorage.removeItem("token");
+  sessionStorage.removeItem("token");
 }
 
 export function getCurrentUser() {
   try {
-    const jwt = localStorage.getItem("token");
+    const jwt = sessionStorage.getItem("token");
 
     return jwtDecode(jwt);
   } catch (ex) {
@@ -31,7 +31,7 @@ export function getCurrentUser() {
 }
 
 export function getJwt() {
-  return localStorage.getItem("token");
+  return sessionStorage.getItem("token");
 }
 
 export async function regenerateToken(user) {
