@@ -127,7 +127,6 @@ class AccountEditForm extends Form {
         this.props.handleUserUpdate();
       }
     } catch (ex) {
-      console.log("Error updating the user", ex);
       if (ex.response === 400 || ex.response === 404)
         toast.error("Error updating information.");
     }

@@ -46,7 +46,6 @@ class CartDetails extends Component {
 
     for (let i = 0; i < user.Carts.length; i++) {
       const productId = user.Carts[i].ProductId;
-      console.log("product id", productId);
       let { data: product } = await getProductByPKId(productId);
       product.imgSrc = _arrayBufferToBase64(product.data.data);
 
@@ -178,9 +177,7 @@ class CartDetails extends Component {
       }
     }
   };
-  handleChangeQuantity() {
-    //console.log("changed");
-  }
+  handleChangeQuantity() {}
 
   toggleModal = () => {
     this.setState({ showModal: !this.state.showModal });

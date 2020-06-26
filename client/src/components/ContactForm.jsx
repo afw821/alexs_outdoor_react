@@ -3,7 +3,7 @@ import Form from "./common/Form";
 import Joi from "joi-browser";
 import { sendEmail } from "../services/emailService";
 import PopUpModal from "./common/PopUpModal";
-
+import { toast } from "react-toastify";
 class ContactForm extends Form {
   state = {
     data: {
@@ -27,7 +27,6 @@ class ContactForm extends Form {
 
   doSubmit = async () => {
     try {
-      console.log('made it here!');
       const { data } = this.state;
       const result = await sendEmail(data.email, data.message, data.name);
 
@@ -40,8 +39,10 @@ class ContactForm extends Form {
         this.setState({ data, show: true });
       }
     } catch (ex) {
-      console.log("error", ex);
-      //toast here
+      if (ex.response.stauts === 400 || ex.response.status === 404)
+        toast.error("Error sending message");
+      else if (ex.response.stauts === 500)
+        toast.error("There was an unexpected error");
     }
   };
 
@@ -54,7 +55,7 @@ class ContactForm extends Form {
           body="Your message has successfully been sent"
           onClose={this.handleModalClick}
         />
-        <div className="row" style={{ marginTop: "100px"}}>
+        <div className="row" style={{ marginTop: "100px" }}>
           <div className="col-4"></div>
           <div className="col-4">
             <form

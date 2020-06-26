@@ -36,7 +36,10 @@ class ProductForm extends Form {
       const { data: categories } = await getCategories();
       this.setState({ categories });
     } catch (ex) {
-      console.log("There was an exception", ex);
+      if (ex.response.stauts === 400 || ex.response.status === 404)
+        toast.error("Error loading categories");
+      else if (ex.response.stauts === 500)
+        toast.error("There was an unexpected error");
     }
   }
 
@@ -58,7 +61,6 @@ class ProductForm extends Form {
       formData.append("inStock", parseInt(stock));
       formData.append("description", description);
       formData.append("price", parseFloat(price));
-      //formData.append("imageSrc", imageSrc);
       formData.append("CategoryId", parseInt(selectedCategoryId));
       const { data } = await addProduct(formData);
 
@@ -80,7 +82,6 @@ class ProductForm extends Form {
         toast.success("Product Successfully Added.");
       }
     } catch (ex) {
-      console.log("Do submit error product", ex);
       if (ex.response)
         toast.error("There was an error. Please clear the form and try again");
     }

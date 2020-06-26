@@ -12,9 +12,6 @@ import {
 } from "mdbreact";
 const NavBar = (props) => {
   const user = props.user;
-
-  console.log("navbar props user", user);
-  //console.log("isAdmin from navbar", props.user.isAdmin);
   const [collapse, setCollapse] = useState(false);
   const [isWideEnough, setWideEnough] = useState(false);
   const [isHomeActive, setHomeActive] = useState(true);

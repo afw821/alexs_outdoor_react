@@ -37,7 +37,6 @@ router.post(
       },
       include: [db.Purchase, db.Cart],
     });
-    console.log("-------------------USER---------------------------", user);
     if (!user) return res.status(400).send("Invalid Email and / or password");
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword)

@@ -7,13 +7,11 @@ const ash = require("express-async-handler");
 router.post(
   "/",
   ash(async (req, res) => {
-    console.log("---------REQ.BODY------------  ", req.body);
     let cart = await db.Cart.findOne({
       where: {
         ProductId: req.body.ProductId,
       },
     });
-    console.log("---------found cart------------  ", cart);
     if (cart) return res.status(400).send("Item already added to the cart");
 
     const cartitem = await db.Cart.create(req.body);
