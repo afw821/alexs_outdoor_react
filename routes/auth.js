@@ -9,7 +9,7 @@ function generateAuthToken(user) {
   const token = jwt.sign(
     {
       id: user.id,
-      isAdmin: user.isAdmin,
+      isAdmin: user.isAdmin === 0 ? false : true,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
@@ -37,7 +37,7 @@ router.post(
       },
       include: [db.Purchase, db.Cart],
     });
-    console.log('-------------------USER---------------------------', user);
+    console.log("-------------------USER---------------------------", user);
     if (!user) return res.status(400).send("Invalid Email and / or password");
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword)

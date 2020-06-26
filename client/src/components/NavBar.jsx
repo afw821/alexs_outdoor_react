@@ -12,7 +12,9 @@ import {
 } from "mdbreact";
 const NavBar = (props) => {
   const user = props.user;
-  const count = props.count;
+
+  console.log("navbar props user", user);
+  //console.log("isAdmin from navbar", props.user.isAdmin);
   const [collapse, setCollapse] = useState(false);
   const [isWideEnough, setWideEnough] = useState(false);
   const [isHomeActive, setHomeActive] = useState(true);
@@ -157,6 +159,16 @@ const NavBar = (props) => {
             </MDBNavItem>
           </MDBNavbarNav>
           <MDBNavbarNav right>
+            {props.user && props.user.isAdmin && (
+              <MDBNavItem
+                onClick={(e) => handleToggleActive(e.target.name)}
+                // active={isAccountActive}
+              >
+                <MDBNavLink name="AddProduct" to="/addProduct">
+                  Add Products
+                </MDBNavLink>
+              </MDBNavItem>
+            )}
             {props.user && (
               <MDBNavItem
                 className="d-flex align-items-center"
