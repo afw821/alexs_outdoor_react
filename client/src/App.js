@@ -19,6 +19,7 @@ import CartDetails from "./components/CartDetails";
 import { addItemToCart } from "./services/cartService";
 import { regenerateToken, loginWithJwt } from "./services/authService";
 import ContactForm from "./components/ContactForm";
+import AdminProtectedRoute from "./components/common/AdminProctedRoute";
 
 class App extends Component {
   state = {
@@ -76,6 +77,8 @@ class App extends Component {
       if (ex.response.status === 400) toast.error(ex.response.data);
     }
   };
+
+  handleRemoveFro;
   render() {
     const { user, count } = this.state;
 
@@ -117,7 +120,7 @@ class App extends Component {
                 />
               )}
             />
-            <ProtectedRoute
+            <AdminProtectedRoute
               path="/addProduct"
               exact
               render={(props) => (

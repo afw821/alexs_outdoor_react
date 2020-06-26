@@ -182,7 +182,11 @@ const NavBar = (props) => {
                 className="d-flex align-items-center"
                 style={{ marginRight: "10px" }}
               >
-                <MDBNavLink name="Account" to={`/cart/${user.id}`}>
+                <MDBNavLink
+                  id="cart-number"
+                  name="Account"
+                  to={`/cart/${user.id}`}
+                >
                   {user.Carts.length}
                 </MDBNavLink>
               </MDBNavItem>

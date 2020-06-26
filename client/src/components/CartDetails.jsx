@@ -146,6 +146,13 @@ class CartDetails extends Component {
   };
   handleRemoveFromCart = async (e, product) => {
     try {
+      //dirty fix for cart length
+      //this function should really be lifted to app.js
+      let cartLength = parseInt(
+        document.getElementById("cart-number").innerText
+      );
+      cartLength -= 1;
+      document.getElementById("cart-number").innerText = cartLength;
       await deleteCartByPkId(product.cartId);
       //clone array
       var originalProducts = [...this.state.products];
