@@ -14,6 +14,7 @@ class AccountEditForm extends Form {
       firstName: "",
       lastName: "",
       email: "",
+      isAdmin: "",
       address: "",
       address2: "",
       city: "",
@@ -32,6 +33,7 @@ class AccountEditForm extends Form {
     firstName: Joi.string().required().label("First Name"),
     lastName: Joi.string().required().label("Last Name"),
     email: Joi.string().required().email().label("Email"),
+    isAdmin: Joi.label("Is Admin"),
     address: Joi.string().required().label("Address"),
     address2: Joi.label("Address 2"),
     city: Joi.string().required().label("City"),
@@ -54,6 +56,7 @@ class AccountEditForm extends Form {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      isAdmin: user.isAdmin,
       address: user.address,
       address2: user.address2,
       city: user.city,
@@ -92,6 +95,7 @@ class AccountEditForm extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
+      console.log("data from do submit", data);
       const result = await updateUser(
         data.id,
         data.firstName,
@@ -101,7 +105,8 @@ class AccountEditForm extends Form {
         data.city,
         data.state,
         data.zipCode,
-        data.email
+        data.email,
+        data.isAdmin
       );
       // to regenerate token THIS IS TO FIX REFRESH ISSUE
       const userId = this.state.data.id;

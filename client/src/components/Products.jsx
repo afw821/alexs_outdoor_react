@@ -29,7 +29,7 @@ class Products extends Component {
   handleTabChange = (item) => {
     const id = item.id;
     const name = item.name;
-    this.setState({ selectedTab: { id: id, name: name } });
+    this.setState({ selectedTab: { id: id, name: name }, currentPage: 1 });
   };
 
   handlePageChange = (page) => {
@@ -37,7 +37,11 @@ class Products extends Component {
   };
 
   handleSearch = (query) => {
-    this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
+    this.setState({
+      searchQuery: query,
+      SelectedTab: { id: "", name: "All Categories" },
+      currentPage: 1,
+    });
   };
 
   handleDelete = async (id) => {

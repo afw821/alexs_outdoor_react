@@ -45,7 +45,8 @@ export async function updateUser(
   city,
   state,
   zipCode,
-  email
+  email,
+  isAdmin
 ) {
   const reqBody = {
     firstName,
@@ -56,6 +57,7 @@ export async function updateUser(
     state,
     zipCode,
     email,
+    isAdmin,
   };
   const result = await http.put(apiUrl + `/users/${id}`, reqBody);
 
