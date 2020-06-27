@@ -39,7 +39,7 @@ class Products extends Component {
   handleSearch = (query) => {
     this.setState({
       searchQuery: query,
-      SelectedTab: { id: "", name: "All Categories" },
+      selectedTab: { id: "", name: "All Categories" },
       currentPage: 1,
     });
   };
