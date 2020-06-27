@@ -42,6 +42,19 @@ const ProductCard = ({ products, user, handleDelete }) => {
               </Link>
             </div>
           </div>
+          {user && user.isAdmin && (
+            <div className="row">
+              <div className="col d-flex justify-content-center shop-btn-col">
+                <button
+                  type="button"
+                  onClick={() => handleDelete(product.id)}
+                  className="btn btn-danger btn-sm"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

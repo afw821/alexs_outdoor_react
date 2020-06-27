@@ -13,4 +13,6 @@ export function getProductByPKId(productId) {
   return http.get(apiUrl + `/products/byPK/${productId}`);
 }
 
-export function deleteProduct(productId) {}
+export function deleteProduct(productId) {
+  return http.delete(apiUrl + `/products/byPK/${productId}`);
+}

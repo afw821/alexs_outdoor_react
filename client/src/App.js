@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import ProductForm from "./components/ProductForm";
+import AdminPortal from "./components/AdminPortal";
 import RegisterForm from "./components/RegisterForm";
 import NotFound from "./components/NotFound";
 import LoginForm from "./components/LoginForm";
@@ -121,10 +121,10 @@ class App extends Component {
               )}
             />
             <AdminProtectedRoute
-              path="/addProduct"
+              path="/adminPortal"
               exact
               render={(props) => (
-                <ProductForm {...props} user={this.state.user} />
+                <AdminPortal {...props} user={this.state.user} />
               )}
             />
             <Route

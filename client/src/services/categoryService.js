@@ -5,8 +5,11 @@ export function getCategories() {
   return http.get(apiUrl + "/categories");
 }
 
-export function addCategory() {
-  return http.post(apiUrl + "/categories");
+export function addCategory(category) {
+  const obj = {
+    name: category,
+  };
+  return http.post(apiUrl + "/categories", obj);
 }
 
 export function getCategoryByPKId(categoryId) {

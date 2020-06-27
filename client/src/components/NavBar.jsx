@@ -161,8 +161,8 @@ const NavBar = (props) => {
                 onClick={(e) => handleToggleActive(e.target.name)}
                 // active={isAccountActive}
               >
-                <MDBNavLink name="AddProduct" to="/addProduct">
-                  Add Products
+                <MDBNavLink name="AdminPortal" to="/adminPortal">
+                  Admin Portal
                 </MDBNavLink>
               </MDBNavItem>
             )}
