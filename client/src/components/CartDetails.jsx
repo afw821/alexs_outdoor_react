@@ -88,9 +88,11 @@ class CartDetails extends Component {
 
   calculateQuantity = async (currentQuantity, currentIndex, add) => {
     try {
+      console.log("quantity change");
       const products = [...this.state.products];
 
-      if (products[currentIndex].quantity === 0) return;
+      if (products[currentIndex].quantity === 0 && !add) return;
+
       let totalPrice = this.state.totalPrice;
       const pricePerUnit = products[currentIndex].product.price;
       const userId = this.props.user.id;
@@ -115,6 +117,7 @@ class CartDetails extends Component {
         productId
       );
       this.setState({ products, totalPrice });
+
       //refresh issue (same as in AccountEditForm.jsx line 115)
       //we have to do this to regenerate a new JWT so the user can be read off of it
       const { data: updatedUser } = await getUserById(userId);
@@ -192,6 +195,9 @@ class CartDetails extends Component {
 
   render() {
     const { products, showModal } = this.state;
+    console.log("products render cart page", products.length);
+    if (products.length === 0)
+      return <h1 style={{ marginTop: "100px" }}>Cart is Empty</h1>;
     const options = [
       {
         id: 1,

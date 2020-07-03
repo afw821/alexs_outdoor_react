@@ -110,7 +110,7 @@ class App extends Component {
                 <CartDetails {...props} user={this.state.user} />
               )}
             />
-            <Route
+            <ProtectedRoute
               path="/product/:id"
               render={(props) => (
                 <ProductDetails

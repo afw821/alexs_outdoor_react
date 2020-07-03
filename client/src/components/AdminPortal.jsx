@@ -23,9 +23,9 @@ class AdminPortal extends Component {
             items={[
               { id: 1, name: "Manage Products" },
               { id: 2, name: "Manage Categories" },
-              { id: 2, name: "Manage Purchases" },
-              { id: 2, name: "Manage Carts" },
-              { id: 2, name: "Manage Users" },
+              { id: 3, name: "Manage Purchases" },
+              { id: 4, name: "Manage Carts" },
+              { id: 5, name: "Manage Users" },
             ]}
           />
         </div>
