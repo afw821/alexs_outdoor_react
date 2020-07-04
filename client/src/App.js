@@ -49,12 +49,15 @@ class App extends Component {
   async componentDidMount() {
     const user = auth.getCurrentUser();
 
-    const {
-      priceArray,
-      productsArray: productsInCart,
-    } = await this.getProductsOnPageLoad(user);
-    const totalPrice = this.calculateTotalPrice(priceArray);
-    this.setState({ user, totalPrice, productsInCart });
+    if (user) {
+      const {
+        priceArray,
+        productsArray: productsInCart,
+      } = await this.getProductsOnPageLoad(user);
+      const totalPrice = this.calculateTotalPrice(priceArray);
+      this.setState({ user, totalPrice, productsInCart });
+    }
+    this.setState({ user });
   }
 
   calculateTotalPrice = (prices) => {
