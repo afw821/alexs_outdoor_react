@@ -20,6 +20,11 @@ import { addItemToCart } from "./services/cartService";
 import { regenerateToken, loginWithJwt } from "./services/authService";
 import ContactForm from "./components/ContactForm";
 import AdminProtectedRoute from "./components/common/AdminProctedRoute";
+import { getProductByPKId } from "./services/productService";
+import _arrayBufferToBase64 from "./utils/toBase64String";
+import { getUserById } from "./services/userService";
+import { deleteCartByPkId } from "./services/cartService";
+import { updateCart } from "./services/cartService";
 
 class App extends Component {
   state = {
@@ -37,20 +42,68 @@ class App extends Component {
       Purchases: [{}],
       Carts: [{}],
     },
+    totalPrice: 0,
+    productsInCart: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const user = auth.getCurrentUser();
 
-    this.setState({ user });
+    const {
+      priceArray,
+      productsArray: productsInCart,
+    } = await this.getProductsOnPageLoad(user);
+    const totalPrice = this.calculateTotalPrice(priceArray);
+    this.setState({ user, totalPrice, productsInCart });
   }
+
+  calculateTotalPrice = (prices) => {
+    const _prices = [];
+    prices.forEach((val, i) => {
+      const calculated = val.price * val.quantity;
+      _prices.push(calculated);
+    });
+
+    let totalPrice = 0;
+
+    for (let i = 0; i < _prices.length; i++) {
+      totalPrice += _prices[i];
+    }
+    return totalPrice;
+  };
+
+  getProductsOnPageLoad = async (user) => {
+    //gets products by product id from
+    //user prop when page loads or updates
+    const productsArray = [];
+    const priceArray = [];
+
+    for (let i = 0; i < user.Carts.length; i++) {
+      const productId = user.Carts[i].ProductId;
+      let { data: product } = await getProductByPKId(productId);
+      product.imgSrc = _arrayBufferToBase64(product.data.data);
+
+      const obj = {
+        product: product,
+        cartId: user.Carts[i].id,
+        quantity: user.Carts[i].quantity,
+      };
+      const calculatePriceObject = {
+        price: product.price,
+        quantity: user.Carts[i].quantity,
+      };
+      productsArray.push(obj);
+      priceArray.push(calculatePriceObject);
+    }
+    return {
+      priceArray: priceArray,
+      productsArray: productsArray,
+    };
+  };
 
   handleAddToCart = async (state) => {
     try {
       const { data: product, userQuantity } = state;
-      const productName = product.name;
-      const description = product.description;
-      const inStock = product.inStock;
       const userId = this.state.user.id;
       const productId = product.id;
       //add item to cart
@@ -63,7 +116,12 @@ class App extends Component {
 
       const user = { ...this.state.user };
       user.Carts.push(data);
-      this.setState({ user });
+      const {
+        priceArray,
+        productsArray: productsInCart,
+      } = await this.getProductsOnPageLoad(user);
+      const totalPrice = this.calculateTotalPrice(priceArray);
+      this.setState({ user, totalPrice, productsInCart });
 
       //refresh issue (same as in AccountEditForm.jsx line 115)
       //we have to do this to regenerate a new JWT so the user can be read off of it
@@ -78,9 +136,94 @@ class App extends Component {
     }
   };
 
-  handleRemoveFro;
+  handleRemoveFromCart = async (e, product) => {
+    try {
+      await deleteCartByPkId(product.cartId);
+      //clone array
+      var originalProducts = [...this.state.productsInCart];
+      var user = { ...this.state.user };
+      var totalPrice = this.state.totalPrice;
+      const quantity = product.quantity;
+      const priceToSubtract = quantity * product.product.price;
+      const Carts = user.Carts.filter(
+        (item) => item.ProductId !== product.product.id
+      );
+      user.Carts = Carts;
+      const productsInCart = originalProducts.filter(
+        (item) => item.product.id !== product.product.id
+      );
+      totalPrice -= priceToSubtract;
+      this.setState({ productsInCart, totalPrice, user });
+      //refresh issue (same as in AccountEditForm.jsx line 115)
+      //we have to do this to regenerate a new JWT so the user can be read off of it
+      const { data: updatedUser } = await getUserById(this.state.user.id);
+      const { data: token } = await regenerateToken(updatedUser);
+
+      if (token) {
+        loginWithJwt(token);
+      }
+    } catch (ex) {
+      if (ex.response.status === 404) {
+        toast.error("Unable to delete this cart item");
+        this.setState({
+          productsInCart: originalProducts,
+          user: user,
+          totalPrice: totalPrice,
+        });
+      }
+    }
+  };
+  calculateQuantity = async (currentQuantity, currentIndex, add) => {
+    try {
+      //clone state
+      const productsInCart = [...this.state.productsInCart];
+      var user = { ...this.state.user };
+
+      if (productsInCart[currentIndex].quantity === 0 && !add) return;
+
+      let totalPrice = this.state.totalPrice;
+      const pricePerUnit = productsInCart[currentIndex].product.price;
+      const userId = this.state.user.id;
+      const cartId = user.Carts[currentIndex].id;
+      const productName = productsInCart[currentIndex].product.name;
+      const productId = productsInCart[currentIndex].product.id;
+      const quantityInCart = add
+        ? productsInCart[currentIndex].quantity + 1
+        : productsInCart[currentIndex].quantity - 1;
+
+      add
+        ? (productsInCart[currentIndex].quantity += 1)
+        : (productsInCart[currentIndex].quantity -= 1);
+
+      add ? (totalPrice += pricePerUnit) : (totalPrice -= pricePerUnit);
+
+      add
+        ? (user.Carts[currentIndex].quantity += 1)
+        : (user.Carts[currentIndex].quantity -= 1);
+
+      const { data: cart } = await updateCart(
+        cartId,
+        productName,
+        quantityInCart,
+        userId,
+        productId
+      );
+      this.setState({ productsInCart, totalPrice, user });
+
+      //refresh issue (same as in AccountEditForm.jsx line 115)
+      //we have to do this to regenerate a new JWT so the user can be read off of it
+      const { data: updatedUser } = await getUserById(userId);
+      const { data: token } = await regenerateToken(updatedUser);
+
+      if (token) {
+        loginWithJwt(token);
+      }
+    } catch (ex) {
+      toast.error("Error Updating cart");
+    }
+  };
   render() {
-    const { user, count } = this.state;
+    const { user, count, totalPrice, productsInCart } = this.state;
 
     const h100 = {
       minHeight: "100vh" /* will cover the 100% of viewport */,
@@ -107,7 +250,14 @@ class App extends Component {
               path="/cart/:id"
               exact
               render={(props) => (
-                <CartDetails {...props} user={this.state.user} />
+                <CartDetails
+                  {...props}
+                  handleRemoveFromCart={this.handleRemoveFromCart}
+                  calculateQuantity={this.calculateQuantity}
+                  totalPrice={totalPrice}
+                  productsInCart={productsInCart}
+                  user={this.state.user}
+                />
               )}
             />
             <ProtectedRoute
