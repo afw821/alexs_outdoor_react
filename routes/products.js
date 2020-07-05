@@ -67,7 +67,7 @@ router.get(
   })
 );
 //updating existing product byPK id
-//use this when user checksout to subtract from db
+//use this when admin need to update product
 router.put(
   "/byPK/:id",
   ash(async (req, res) => {
@@ -78,6 +78,39 @@ router.put(
     });
 
     res.json(product);
+  })
+);
+//call this when a user purchases to update quantity
+router.put(
+  "/byPK/purchase/:id",
+  ash(async (req, res) => {
+    let product = await db.Product.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    let userQuant = req.body.userQuant;
+
+    const updatedStock = (product.inStock -= userQuant);
+
+    const newProduct = {
+      name: product.name,
+      price: product.price,
+      description: product.description,
+      inStock: updatedStock,
+      data: product.data,
+      dataName: product.dataName,
+      imgSrc: product.imgSrc,
+      CategoryId: product.CategoryId,
+    };
+    const result = await db.Product.update(newProduct, {
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    res.json(result);
   })
 );
 

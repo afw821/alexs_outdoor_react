@@ -3,7 +3,6 @@ import _arrayBufferToBase64 from "../utils/toBase64String";
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ products, user, handleDelete }) => {
-  console.log("user from ProductCard", user);
   return products.map((product) => (
     <div className="col-4 d-flex justify-content-center" key={product.id}>
       <div
@@ -29,6 +28,21 @@ const ProductCard = ({ products, user, handleDelete }) => {
               <h5 className="card-title">{product.name}</h5>
             </div>
           </div>
+          <div className="row in-stock-row">
+            {product.inStock === 0 ? (
+              <div className="col d-flex justify-content-center stock-col">
+                <p className="card-title" style={{ color: "red" }}>
+                  Out of Stock
+                </p>
+              </div>
+            ) : (
+              <div className="col d-flex justify-content-center stock-col">
+                <p className="card-title" style={{ color: "green" }}>
+                  Only {product.inStock} in Stock
+                </p>
+              </div>
+            )}
+          </div>
           <div className="row price-row">
             <div className="col d-flex justify-content-center price-col">
               <p className="card-text" style={{ color: "black" }}>
@@ -36,7 +50,7 @@ const ProductCard = ({ products, user, handleDelete }) => {
               </p>
             </div>
           </div>
-          {user && (
+          {user && product.inStock > 0 && (
             <div className="row shop-btn-row">
               <div className="col d-flex justify-content-center shop-btn-col">
                 <Link to={`/product/${product.id}`} className="btn btn-primary">

@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { getProductByPKId } from "../services/productService";
+import {
+  getProductByPKId,
+  updateProductQuant,
+} from "../services/productService";
 import { deleteCartByPkId } from "../services/cartService";
 import _arrayBufferToBase64 from "../utils/toBase64String";
 import { updateCart } from "../services/cartService";
@@ -10,6 +13,7 @@ import TableHead from "./common/TableHead";
 import TableBody from "./common/TableBody";
 import TotalRow from "./common/TotalRow";
 import CheckoutModal from "./common/CheckoutModal";
+import { purchase } from "../services/purchaseService";
 
 class CartDetails extends Component {
   state = {
@@ -41,6 +45,12 @@ class CartDetails extends Component {
     this.setState({ showModal: !this.state.showModal });
   };
 
+  handlePurchase = async (userQuant, ProductId, name, UserId) => {
+    console.log("purchase made");
+    await updateProductQuant(userQuant, ProductId);
+    await purchase(name, UserId, ProductId, userQuant);
+  };
+
   render() {
     const { showModal } = this.state;
     const {
@@ -51,7 +61,13 @@ class CartDetails extends Component {
       calculateQuantity,
     } = this.props;
     if (productsInCart.length === 0)
-      return <h1 style={{ marginTop: "100px" }}>Cart is Empty</h1>;
+      return (
+        <div style={{ marginTop: "100px" }} className="row">
+          <div className="col d-flex justify-content-center">
+            <h2>{user.firstName}, your cart is Empty</h2>
+          </div>
+        </div>
+      );
     const options = [
       {
         id: 1,
@@ -72,7 +88,12 @@ class CartDetails extends Component {
     ];
     return (
       <>
-        <CheckoutModal isOpen={showModal} closeModal={this.toggleModal} />
+        <CheckoutModal
+          user={user}
+          isOpen={showModal}
+          handlePurchase={this.handlePurchase}
+          closeModal={this.toggleModal}
+        />
         <div
           className="row d-flex justify-content-center"
           style={{ marginTop: "100px" }}

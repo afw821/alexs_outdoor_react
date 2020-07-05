@@ -7,7 +7,7 @@ import {
   MDBModalFooter,
 } from "mdbreact";
 
-const CheckoutModal = ({ isOpen, closeModal }) => {
+const CheckoutModal = ({ isOpen, closeModal, user, handlePurchase }) => {
   return (
     <MDBModal
       isOpen={isOpen}
@@ -15,7 +15,9 @@ const CheckoutModal = ({ isOpen, closeModal }) => {
       fullHeight
       position="top"
     >
-      <MDBModalHeader>MDBModal title</MDBModalHeader>
+      <MDBModalHeader>
+        {user.firstName}, review your purchase information below
+      </MDBModalHeader>
       <MDBModalBody>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
@@ -33,7 +35,12 @@ const CheckoutModal = ({ isOpen, closeModal }) => {
         <MDBBtn color="secondary" onClick={closeModal}>
           Close
         </MDBBtn>
-        <MDBBtn color="primary">Save changes</MDBBtn>
+        <MDBBtn
+          color="primary"
+          onClick={() => handlePurchase(2, 1, "purchase 1", 1)}
+        >
+          Purchase
+        </MDBBtn>
       </MDBModalFooter>
     </MDBModal>
   );
