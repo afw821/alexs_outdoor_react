@@ -1,4 +1,7 @@
 import React from "react";
+import TableHead from "./TableHead";
+import TableBody from "./TableBody";
+import { getCartTableOptions } from "./../../utils/cartOptions";
 import {
   MDBBtn,
   MDBModal,
@@ -7,7 +10,35 @@ import {
   MDBModalFooter,
 } from "mdbreact";
 
-const CheckoutModal = ({ isOpen, closeModal, user, handlePurchase }) => {
+const CheckoutModal = ({
+  isOpen,
+  closeModal,
+  user,
+  handlePurchase,
+  productsInCart,
+  handleHover,
+  handleLeave,
+  handleRemoveFromCart,
+  handleChangeQuantity,
+  calculateQuantity,
+  calculatePrice,
+  removeBtn,
+}) => {
+  function makePurchase(productsInCart) {
+    productsInCart.forEach(function (product, index) {
+      const userQuant = product.quantity;
+      const ProductId = product.product.id;
+      const purchaseName = `UserId# ${user.id} ${user.lastName}, ${user.firstName} - ID# ${ProductId} / ${product.product.name}`;
+      const result = handlePurchase(
+        userQuant,
+        ProductId,
+        purchaseName,
+        user.id
+      );
+      console.log("result from purchase", result);
+    });
+  }
+
   return (
     <MDBModal
       isOpen={isOpen}
@@ -16,29 +47,31 @@ const CheckoutModal = ({ isOpen, closeModal, user, handlePurchase }) => {
       position="top"
     >
       <MDBModalHeader>
-        {user.firstName}, review your purchase information below
+        {user.firstName}, review your purchase information below and make any
+        changes
       </MDBModalHeader>
       <MDBModalBody>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
+        <table className="table">
+          <TableHead options={getCartTableOptions()} />
+          <TableBody
+            items={productsInCart}
+            handleHover={handleHover}
+            handleLeave={handleLeave}
+            handleRemoveFromCart={handleRemoveFromCart}
+            handleChangeQuantity={handleChangeQuantity} //deprecated
+            calculateQuantity={calculateQuantity}
+            calculatePrice={calculatePrice}
+            removeBtn={removeBtn}
+          />
+        </table>
       </MDBModalBody>
-      <MDBModalBody>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-      </MDBModalBody>
+      <MDBModalBody></MDBModalBody>
 
       <MDBModalFooter>
         <MDBBtn color="secondary" onClick={closeModal}>
           Close
         </MDBBtn>
-        <MDBBtn
-          color="primary"
-          onClick={() => handlePurchase(2, 1, "purchase 1", 1)}
-        >
+        <MDBBtn color="primary" onClick={() => makePurchase(productsInCart)}>
           Purchase
         </MDBBtn>
       </MDBModalFooter>

@@ -1,19 +1,14 @@
 import React, { Component } from "react";
-import {
-  getProductByPKId,
-  updateProductQuant,
-} from "../services/productService";
-import { deleteCartByPkId } from "../services/cartService";
+import { updateProductQuant } from "../services/productService";
 import _arrayBufferToBase64 from "../utils/toBase64String";
-import { updateCart } from "../services/cartService";
-import { getUserById } from "../services/userService";
-import { regenerateToken, loginWithJwt } from "../services/authService";
-import { toast } from "react-toastify";
 import TableHead from "./common/TableHead";
 import TableBody from "./common/TableBody";
 import TotalRow from "./common/TotalRow";
 import CheckoutModal from "./common/CheckoutModal";
 import { purchase } from "../services/purchaseService";
+import { getCartTableOptions } from "../utils/cartOptions";
+import { toast } from "react-toastify";
+import { result } from "lodash";
 
 class CartDetails extends Component {
   state = {
@@ -46,9 +41,13 @@ class CartDetails extends Component {
   };
 
   handlePurchase = async (userQuant, ProductId, name, UserId) => {
-    console.log("purchase made");
-    await updateProductQuant(userQuant, ProductId);
-    await purchase(name, UserId, ProductId, userQuant);
+    try {
+      await updateProductQuant(userQuant, ProductId);
+      const result = await purchase(name, UserId, ProductId, userQuant);
+      return result;
+    } catch (ex) {
+      toast.error("There was an error making your purchase");
+    }
   };
 
   render() {
@@ -68,24 +67,6 @@ class CartDetails extends Component {
           </div>
         </div>
       );
-    const options = [
-      {
-        id: 1,
-        header: "Name",
-      },
-      {
-        id: 2,
-        header: "Quantity",
-      },
-      {
-        id: 3,
-        header: "Price",
-      },
-      {
-        id: 4,
-        header: "",
-      },
-    ];
     return (
       <>
         <CheckoutModal
@@ -93,6 +74,14 @@ class CartDetails extends Component {
           isOpen={showModal}
           handlePurchase={this.handlePurchase}
           closeModal={this.toggleModal}
+          productsInCart={productsInCart}
+          handleHover={this.handleHover}
+          handleLeave={this.handleLeave}
+          handleRemoveFromCart={handleRemoveFromCart}
+          handleChangeQuantity={this.handleChangeQuantity}
+          calculateQuantity={calculateQuantity}
+          calculatePrice={this.calculatePrice}
+          removeBtn={this.state.removeBtn}
         />
         <div
           className="row d-flex justify-content-center"
@@ -100,7 +89,7 @@ class CartDetails extends Component {
         >
           <div className="col-8">
             <table className="table">
-              <TableHead options={options} />
+              <TableHead options={getCartTableOptions()} />
               <TableBody
                 items={productsInCart}
                 handleHover={this.handleHover}
