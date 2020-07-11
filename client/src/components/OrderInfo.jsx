@@ -11,13 +11,15 @@ class OrderInfo extends Component {
     const productsArray = [];
     const { user } = this.props;
     for (let i = 0; i < user.Purchases.length; i++) {
-      const productId = user.Purchases[i].id;
+      const productId = user.Purchases[i].ProductId;
       const purchaseQuant = user.Purchases[i].quantity;
+      const purchaseDate = user.Purchases[i].createdAt;
       let { data: product } = await getProductByPKId(productId);
       product.imgSrc = _arrayBufferToBase64(product.data.data);
       const purchaseObj = {
         product: product,
         quantity: purchaseQuant,
+        purchaseDate: purchaseDate,
       };
       productsArray.push(purchaseObj);
     }
@@ -73,11 +75,11 @@ class OrderInfo extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.products.map((product) => (
-              <tr key={product.product.id}>
+            {this.state.products.map((product, i) => (
+              <tr key={i}>
                 <th>{product.product.name}</th>
                 <td>{product.quantity}</td>
-                <td>{this.formatDate(product.product.createdAt)}</td>
+                <td>{this.formatDate(product.purchaseDate)}</td>
                 <td>
                   <img
                     style={{ maxHeight: "100px", maxWidth: "100px" }}

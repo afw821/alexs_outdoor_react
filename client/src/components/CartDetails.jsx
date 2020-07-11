@@ -17,6 +17,7 @@ class CartDetails extends Component {
       show: false,
     },
     showModal: false,
+    showLoader: false,
   };
 
   calculatePrice = (quantity, price) => {
@@ -48,6 +49,13 @@ class CartDetails extends Component {
     } catch (ex) {
       toast.error("There was an error making your purchase");
     }
+  };
+  handleToggleLoader = () => {
+    this.setState({ showLoader: !this.state.showLoader });
+
+    // setTimeout(() => {
+    //   this.setState({ showLoader: !this.state.showLoader });
+    // }, 4000);
   };
 
   render() {
@@ -82,6 +90,8 @@ class CartDetails extends Component {
           calculateQuantity={calculateQuantity}
           calculatePrice={this.calculatePrice}
           removeBtn={this.state.removeBtn}
+          showLoader={this.state.showLoader}
+          handleToggleLoader={this.handleToggleLoader}
         />
         <div
           className="row d-flex justify-content-center"

@@ -9,7 +9,7 @@ function generateAuthToken(user) {
   const token = jwt.sign(
     {
       id: user.id,
-      isAdmin: user.isAdmin === 0 ? false : true,
+      isAdmin: !user.isAdmin ? false : true,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
@@ -51,6 +51,7 @@ router.post(
 router.post(
   "/generateToken/",
   ash(async (req, res) => {
+    console.log("--------------REQ BODY", req.body);
     const token = await generateAuthToken(req.body);
 
     res.header("x-auth-token", token).send(token);

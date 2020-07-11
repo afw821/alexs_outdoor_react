@@ -44,10 +44,11 @@ class Products extends Component {
     });
   };
 
+  handleUpdate = (productId) => {};
+
   handleDelete = async (id) => {
     const originalProducts = [...this.state.products];
     const products = originalProducts.filter((p) => p.id !== id);
-    console.log("products", products);
     this.setState({ products });
     try {
       await deleteProduct(id);
@@ -55,7 +56,6 @@ class Products extends Component {
       if (ex.response && ex.response.status === 404) {
         this.setState({ products: originalProducts });
       } else if (ex.response && ex.response.status === 500) {
-        console.log("made it ehre");
         this.setState({ products: originalProducts });
         toast.error("Product cannot be deleted because it is in a cart");
       }
@@ -128,6 +128,7 @@ class Products extends Component {
               products={products}
               user={user}
               handleDelete={this.handleDelete}
+              handleUpdate={this.handleUpdate}
             />
           </div>
           <div className="row">
