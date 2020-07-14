@@ -44,6 +44,7 @@ class App extends Component {
     },
     totalPrice: 0,
     productsInCart: [],
+    activeTab: "Products",
   };
 
   async componentDidMount() {

@@ -9,6 +9,7 @@ import { paginate } from "./../utils/paginate";
 import SearchBox from "./common/SearchBox";
 import { toast } from "react-toastify";
 import UpdateProduct from "./common/UpdateProduct";
+import ModalPrompt from "./common/ModalPrompt";
 
 class Products extends Component {
   state = {
@@ -20,6 +21,8 @@ class Products extends Component {
     searchQuery: "",
     isUpdateOpen: false,
     productId: "",
+    isPromptOpen: false,
+    productIdToDelete: "",
   };
 
   async componentDidMount() {
@@ -56,10 +59,23 @@ class Products extends Component {
     });
   };
 
-  handleDelete = async (id) => {
+  handleTogglePrompt = (id) => {
+    console.log("id", id);
+    this.setState({
+      isPromptOpen: !this.state.isPromptOpen,
+      productIdToDelete: id,
+    });
+  };
+
+  handleDelete = async () => {
+    const id = this.state.productIdToDelete;
     const originalProducts = [...this.state.products];
     const products = originalProducts.filter((p) => p.id !== id);
-    this.setState({ products });
+    this.setState({
+      products: products,
+      isPromptOpen: !this.state.isPromptOpen,
+      productIdToDelete: "",
+    });
     try {
       await deleteProduct(id);
     } catch (ex) {
@@ -107,6 +123,7 @@ class Products extends Component {
       searchQuery,
       isUpdateOpen,
       productId,
+      isPromptOpen,
     } = this.state;
 
     const { user } = this.props;
@@ -118,6 +135,14 @@ class Products extends Component {
           toggleUpdateModal={this.handleToggleUpdate}
           productId={productId}
           user={user}
+        />
+        <ModalPrompt
+          isOpen={isPromptOpen}
+          toggleModal={this.handleTogglePrompt}
+          title={"Warning"}
+          body={"Are you sure you want to delete this product?"}
+          btnText={"Delete Product"}
+          handleClick={this.handleDelete}
         />
         <div className="row" style={{ marginTop: "65px" }}>
           <div className="col-2">
@@ -146,7 +171,7 @@ class Products extends Component {
               <ProductCard
                 products={products}
                 user={user}
-                handleDelete={this.handleDelete}
+                handleDelete={this.handleTogglePrompt}
                 handleToggleUpdate={this.handleToggleUpdate}
               />
             </div>

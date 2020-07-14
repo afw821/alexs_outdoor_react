@@ -50,28 +50,26 @@ const ProductCard = ({ products, user, handleDelete, handleToggleUpdate }) => {
               </p>
             </div>
           </div>
-          {user && product.inStock > 0 && (
-            <div className="row shop-btn-row">
-              <div className="col d-flex justify-content-center shop-btn-col">
-                <Link to={`/product/${product.id}`} className="btn btn-primary">
+          <div className="row shop-button-row">
+            <div className="col d-flex justify-content-center">
+              {user && product.inStock > 0 && (
+                <Link
+                  to={`/product/${product.id}`}
+                  className="btn btn-primary btn-sm"
+                >
                   Shop
                 </Link>
-              </div>
-            </div>
-          )}
-          {!user && (
-            <div className="row">
-              <div className="col d-flex justify-content-center shop-btn-col">
+              )}
+              {!user && (
                 <Link to="/login" className="btn btn-primary">
                   Login to Shop
                 </Link>
-              </div>
+              )}
             </div>
-          )}
-
-          {user && user.isAdmin && (
-            <div className="row">
-              <div className="col d-flex justify-content-center shop-btn-col">
+          </div>
+          <div className="row">
+            <div className="col d-flex justify-content-center">
+              {user && user.isAdmin && (
                 <button
                   type="button"
                   onClick={() => handleDelete(product.id)}
@@ -79,22 +77,18 @@ const ProductCard = ({ products, user, handleDelete, handleToggleUpdate }) => {
                 >
                   Delete
                 </button>
-              </div>
-            </div>
-          )}
-          {user && user.isAdmin && (
-            <div className="row">
-              <div className="col d-flex justify-content-center shop-btn-col">
+              )}
+              {user && user.isAdmin && (
                 <button
                   type="button"
                   onClick={() => handleToggleUpdate(product.id)}
-                  className="btn btn-danger btn-sm"
+                  className="btn btn-info btn-sm"
                 >
                   Update
                 </button>
-              </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
