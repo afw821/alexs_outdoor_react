@@ -156,7 +156,7 @@ class Form extends Component {
     );
   }
 
-  renderDropDownList(name, label, type, options) {
+  renderDropDownList(name, label, type, options, selectedItem) {
     const { data, errors } = this.state;
     return (
       <DropDownList
@@ -165,6 +165,7 @@ class Form extends Component {
         label={label}
         options={options}
         handleChange={this.handleChange}
+        selectedItem={selectedItem}
       />
     );
   }

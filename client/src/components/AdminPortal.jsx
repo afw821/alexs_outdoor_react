@@ -29,9 +29,10 @@ class AdminPortal extends Component {
             ]}
           />
         </div>
-        <div className="col-10">
+        <div className="col-2"></div>
+        <div className="col-4">
           {selectedTab.name === "Manage Products" ? (
-            <ProductForm user={this.props.user} />
+            <ProductForm user={this.props.user} productId={null} />
           ) : (
             <CategoryManager user={this.props.user} />
           )}

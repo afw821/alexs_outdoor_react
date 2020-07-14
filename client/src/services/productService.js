@@ -20,6 +20,10 @@ export function updateProductQuant(userQuant, productId) {
   return http.put(apiUrl + `/products/byPK/purchase/${productId}`, obj);
 }
 
+export function updateProduct(product, productId) {
+  return http.post(apiUrl + `/products/byPK/${productId}`, product);
+}
+
 export function deleteProduct(productId) {
   return http.delete(apiUrl + `/products/byPK/${productId}`);
 }

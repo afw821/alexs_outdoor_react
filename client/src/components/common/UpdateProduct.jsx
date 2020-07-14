@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   MDBBtn,
   MDBModal,
@@ -6,20 +6,27 @@ import {
   MDBModalHeader,
   MDBModalFooter,
 } from "mdbreact";
+import ProductForm from "./../ProductForm";
 
-const UpdateProduct = ({ isUpdateOpen, toggleUpdateModal }) => {
-  return (
-    <MDBModal isOpen={isUpdateOpen} size="lg">
-      <MDBModalHeader>Update Product</MDBModalHeader>
-      <MDBModalBody>Update Product</MDBModalBody>
-      <MDBModalFooter>
-        <MDBBtn color="secondary" onClick={toggleUpdateModal}>
-          Close
-        </MDBBtn>
-        <MDBBtn color="primary">Save changes</MDBBtn>
-      </MDBModalFooter>
-    </MDBModal>
-  );
-};
+class UpdateProduct extends Component {
+  render() {
+    const { isUpdateOpen, toggleUpdateModal, productId, user } = this.props;
+
+    return (
+      <MDBModal isOpen={isUpdateOpen} size="lg">
+        <MDBModalHeader>Update Product</MDBModalHeader>
+        <MDBModalBody>
+          <ProductForm user={user} productId={productId} />
+        </MDBModalBody>
+        <MDBModalFooter>
+          <MDBBtn color="secondary" onClick={toggleUpdateModal}>
+            Close
+          </MDBBtn>
+          <MDBBtn color="primary">Save changes</MDBBtn>
+        </MDBModalFooter>
+      </MDBModal>
+    );
+  }
+}
 
 export default UpdateProduct;

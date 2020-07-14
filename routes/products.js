@@ -15,7 +15,7 @@ router.post(
     //const { name, inStock } = req.body;
     if (!req.file) return res.status(400).send(`You must select a file.`);
     const { name, inStock, CategoryId, price, description } = req.body;
-
+    console.log("----------REQ.BODY------------", req.body);
     const product = await db.Product.create({
       name: name,
       price: price,
@@ -68,16 +68,34 @@ router.get(
 );
 //updating existing product byPK id
 //use this when admin need to update product
-router.put(
+router.post(
   "/byPK/:id",
+  [auth, admin],
+  upload.single("file"),
   ash(async (req, res) => {
-    const product = await db.Product.update(req.body, {
+    if (!req.file) return res.status(400).send("You must select a file.");
+    const { name, inStock, CategoryId, price, description } = req.body;
+
+    const product = {
+      name: name,
+      price: price,
+      description: description,
+      inStock: inStock,
+      data: fs.readFileSync(
+        __basedir + "/resources/static/assets/uploads/" + req.file.filename
+      ),
+      dataName: req.file.filename,
+      imgSrc: null,
+      CategoryId: CategoryId,
+    };
+
+    const result = await db.Product.update(product, {
       where: {
         id: req.params.id,
       },
     });
 
-    res.json(product);
+    res.json(result);
   })
 );
 //call this when a user purchases to update quantity

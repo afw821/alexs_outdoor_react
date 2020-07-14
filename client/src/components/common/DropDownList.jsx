@@ -1,6 +1,13 @@
 import React from "react";
 
-const DropDownList = ({ name, label, options, handleChange, error }) => {
+const DropDownList = ({
+  name,
+  label,
+  options,
+  handleChange,
+  error,
+  selectedItem,
+}) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
@@ -9,6 +16,7 @@ const DropDownList = ({ name, label, options, handleChange, error }) => {
         name={name}
         id={name}
         onChange={handleChange}
+        value={selectedItem}
       >
         <option value="select" id="select">
           Select...

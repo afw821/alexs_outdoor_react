@@ -13,9 +13,7 @@ const FileInput = ({
     <>
       <div className="input-group">
         <div className="input-group-prepend">
-          <span className="input-group-text" id={name}>
-            Upload
-          </span>
+          <span className="input-group-text">Upload</span>
         </div>
         <div className="custom-file">
           <input

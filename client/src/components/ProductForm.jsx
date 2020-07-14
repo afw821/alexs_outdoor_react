@@ -1,6 +1,10 @@
 import React from "react";
 import Form from "./common/Form";
-import { addProduct } from "../services/productService";
+import {
+  addProduct,
+  getProductByPKId,
+  updateProduct,
+} from "../services/productService";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
 import { getCategories } from "../services/categoryService";
@@ -15,7 +19,7 @@ class ProductForm extends Form {
       stock: "",
       description: "",
       price: "",
-      selectedCategoryId: null,
+      selectedCategoryId: "select", //this will also be the tab from ddl that's selected
     },
     categories: [],
     errors: {},
@@ -31,7 +35,7 @@ class ProductForm extends Form {
     selectedCategoryId: Joi.number().required().label("Category"),
   };
 
-  async componentDidMount() {
+  async populateCategories() {
     try {
       const { data: categories } = await getCategories();
       this.setState({ categories });
@@ -40,6 +44,36 @@ class ProductForm extends Form {
         toast.error("Error loading categories");
       else if (ex.response.stauts === 500)
         toast.error("There was an unexpected error");
+    }
+  }
+
+  mapToViewModel(product) {
+    return {
+      name: product.name,
+      stock: product.inStock,
+      description: product.description,
+      price: product.price,
+      selectedCategoryId: product.CategoryId,
+    };
+  }
+
+  async populateProduct(id) {
+    try {
+      const { data: product } = await getProductByPKId(id);
+      this.setState({ data: this.mapToViewModel(product) });
+    } catch (ex) {
+      if (ex.response.status === 400 || ex.response.status === 404)
+        toast.error("Error getting product info");
+      else if (ex.response.stauts === 500)
+        toast.error("There was an unexpected error");
+    }
+  }
+
+  async componentDidMount() {
+    const productId = this.props.productId;
+    this.populateCategories();
+    if (productId) {
+      this.populateProduct(productId);
     }
   }
 
@@ -55,6 +89,7 @@ class ProductForm extends Form {
         imageSrc,
       } = this.state.data;
 
+      const productId = this.props.productId;
       const formData = new FormData();
       formData.append("file", file, file.name);
       formData.append("name", name);
@@ -62,7 +97,8 @@ class ProductForm extends Form {
       formData.append("description", description);
       formData.append("price", parseFloat(price));
       formData.append("CategoryId", parseInt(selectedCategoryId));
-      const { data } = await addProduct(formData);
+      if (productId) var { data } = await updateProduct(formData, productId);
+      else var { data } = await addProduct(formData);
 
       if (data) {
         this.setState({
@@ -73,11 +109,9 @@ class ProductForm extends Form {
             stock: "",
             description: "",
             price: "",
+            selectedCategoryId: "select",
           },
         });
-        //come back later and figure how to change this with state
-        document.getElementById("stock").selectedIndex = 0;
-        document.getElementById("selectedCategoryId").selectedIndex = 0;
 
         toast.success("Product Successfully Added.");
       }
@@ -88,73 +122,77 @@ class ProductForm extends Form {
   };
 
   render() {
-    const { imageSrc } = this.state.data;
+    const { imageSrc, selectedCategoryId } = this.state.data;
     const { categories } = this.state;
-    const options = [
-      { id: 1, name: 1 },
-      { id: 2, name: 2 },
-      { id: 3, name: 3 },
-      { id: 4, name: 4 },
-      { id: 5, name: 5 },
-      { id: 6, name: 6 },
-      { id: 7, name: 7 },
-      { id: 8, name: 8 },
-      { id: 9, name: 9 },
-      { id: 10, name: 10 },
-      { id: 11, name: 11 },
-      { id: 12, name: 12 },
-    ];
+    const { productId } = this.props;
     return (
       <>
-        <div className="row">
-          <div className="col-4"></div>
-          <div className="col-4">
-            <div className="jumbotron" style={{ marginTop: "60px" }}>
-              <div className="row">
-                <div className="col-4"></div>
-                <div className="col-6">
-                  <h5>Add Product</h5>
-                </div>
+        <div className="jumbotron" style={{ marginTop: "60px" }}>
+          {!productId && (
+            <div className="row">
+              <div className="col-4"></div>
+              <div className="col-6">
+                <h5>Add Product</h5>
               </div>
-
-              <form
-                className="mt-4"
-                onSubmit={this.handleSubmit}
-                encType="multipart/form-data"
-              >
-                {this.renderFileInput(
-                  "imageSrc",
-                  "Upload Image",
-                  "file",
-                  imageSrc,
-                  "image upload"
-                )}
-
-                {this.renderInput("name", "Name")}
-                {this.renderDropDownList(
-                  "stock",
-                  "No. In Stock",
-                  "text",
-                  options
-                )}
-                {this.renderTextArea(
-                  "description",
-                  "Product Description",
-                  "text",
-                  2
-                )}
-
-                {this.renderInput("price", "Price")}
-                {this.renderDropDownList(
-                  "selectedCategoryId",
-                  "Category",
-                  "text",
-                  categories
-                )}
-                <button className="btn btn-primary">Submit</button>
-              </form>
             </div>
-          </div>
+          )}
+
+          <form
+            className="mt-4"
+            onSubmit={this.handleSubmit}
+            encType="multipart/form-data"
+          >
+            <div className="row">
+              <div className="col">
+                <div className="row">
+                  <div className="col">
+                    {this.renderFileInput(
+                      "imageSrc",
+                      "Upload Image",
+                      "file",
+                      imageSrc,
+                      "image upload"
+                    )}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    {this.renderInput("name", "Name")}
+                  </div>
+                  <div className="col-6">
+                    {this.renderInput("stock", "No. In Stock", "text")}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    {this.renderTextArea(
+                      "description",
+                      "Product Description",
+                      "text",
+                      2
+                    )}
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-6">
+                    {this.renderInput("price", "Price")}
+                  </div>
+                  <div className="col-6">
+                    {this.renderDropDownList(
+                      "selectedCategoryId",
+                      "Category",
+                      "text",
+                      categories,
+                      selectedCategoryId
+                    )}
+                  </div>
+                </div>
+
+                <button className="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </form>
         </div>
       </>
     );
