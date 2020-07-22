@@ -15,7 +15,6 @@ router.post(
     //const { name, inStock } = req.body;
     if (!req.file) return res.status(400).send(`You must select a file.`);
     const { name, inStock, CategoryId, price, description } = req.body;
-    console.log("----------REQ.BODY------------", req.body);
     const product = await db.Product.create({
       name: name,
       price: price,
@@ -78,15 +77,15 @@ router.post(
 
     const product = {
       name: name,
-      price: price,
+      price: parseFloat(price),
       description: description,
-      inStock: inStock,
+      inStock: parseInt(inStock),
       data: fs.readFileSync(
         __basedir + "/resources/static/assets/uploads/" + req.file.filename
       ),
       dataName: req.file.filename,
       imgSrc: null,
-      CategoryId: CategoryId,
+      CategoryId: parseInt(CategoryId),
     };
 
     const result = await db.Product.update(product, {
@@ -95,7 +94,7 @@ router.post(
       },
     });
 
-    res.json(result);
+    res.json(product);
   })
 );
 //call this when a user purchases to update quantity
@@ -107,11 +106,14 @@ router.put(
         id: req.params.id,
       },
     });
-
+    const stock = product.inStock;
     let userQuant = req.body.userQuant;
 
     const updatedStock = (product.inStock -= userQuant);
-
+    if (updatedStock < 0)
+      return res
+        .status(400)
+        .send(`There are only ${stock} of ${product.name} left in stock`);
     const newProduct = {
       name: product.name,
       price: product.price,

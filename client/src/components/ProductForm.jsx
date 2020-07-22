@@ -88,8 +88,12 @@ class ProductForm extends Form {
         selectedCategoryId,
         imageSrc,
       } = this.state.data;
-
-      const productId = this.props.productId;
+      const {
+        productId,
+        closeModal,
+        handleUpdateView,
+        indexOfUpdatedProduct,
+      } = this.props;
       const formData = new FormData();
       formData.append("file", file, file.name);
       formData.append("name", name);
@@ -97,10 +101,11 @@ class ProductForm extends Form {
       formData.append("description", description);
       formData.append("price", parseFloat(price));
       formData.append("CategoryId", parseInt(selectedCategoryId));
-      if (productId) var { data } = await updateProduct(formData, productId);
+      if (productId)
+        var { data: updatedProduct } = await updateProduct(formData, productId);
       else var { data } = await addProduct(formData);
 
-      if (data) {
+      if (data || updatedProduct) {
         this.setState({
           data: {
             imageSrc: "",
@@ -112,8 +117,15 @@ class ProductForm extends Form {
             selectedCategoryId: "select",
           },
         });
-
-        toast.success("Product Successfully Added.");
+        toast.success(
+          `Product Successfully ${productId ? "Updated" : "Added"}.`
+        );
+        if (productId) {
+          updatedProduct.id = productId;
+          closeModal(null, null);
+          handleUpdateView(updatedProduct, indexOfUpdatedProduct);
+          console.log("data from update", updatedProduct);
+        }
       }
     } catch (ex) {
       if (ex.response)
@@ -188,8 +200,11 @@ class ProductForm extends Form {
                     )}
                   </div>
                 </div>
-
-                <button className="btn btn-primary">Submit</button>
+                <div className="row">
+                  <div className="col d-flex justify-content-center">
+                    <button className="btn btn-primary">Submit</button>
+                  </div>
+                </div>
               </div>
             </div>
           </form>

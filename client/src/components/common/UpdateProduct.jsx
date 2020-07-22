@@ -10,19 +10,36 @@ import ProductForm from "./../ProductForm";
 
 class UpdateProduct extends Component {
   render() {
-    const { isUpdateOpen, toggleUpdateModal, productId, user } = this.props;
+    const {
+      isUpdateOpen,
+      toggleUpdateModal,
+      productId,
+      user,
+      handleUpdateView,
+      indexOfUpdatedProduct,
+    } = this.props;
 
     return (
       <MDBModal isOpen={isUpdateOpen} size="lg">
-        <MDBModalHeader>Update Product</MDBModalHeader>
+        <MDBModalHeader
+          className="d-flex justify-content-center"
+          style={{ backgroundColor: "whitesmoke" }}
+        >
+          Update Product
+        </MDBModalHeader>
         <MDBModalBody>
-          <ProductForm user={user} productId={productId} />
+          <ProductForm
+            user={user}
+            productId={productId}
+            indexOfUpdatedProduct={indexOfUpdatedProduct}
+            closeModal={toggleUpdateModal}
+            handleUpdateView={handleUpdateView}
+          />
         </MDBModalBody>
         <MDBModalFooter>
-          <MDBBtn color="secondary" onClick={toggleUpdateModal}>
+          <MDBBtn color="primary" onClick={() => toggleUpdateModal(null, null)}>
             Close
           </MDBBtn>
-          <MDBBtn color="primary">Save changes</MDBBtn>
         </MDBModalFooter>
       </MDBModal>
     );

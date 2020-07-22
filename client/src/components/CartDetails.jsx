@@ -43,11 +43,11 @@ class CartDetails extends Component {
 
   handlePurchase = async (userQuant, ProductId, name, UserId) => {
     try {
-      await updateProductQuant(userQuant, ProductId);
+      const updateResult = await updateProductQuant(userQuant, ProductId);
       const result = await purchase(name, UserId, ProductId, userQuant);
       return result;
     } catch (ex) {
-      toast.error("There was an error making your purchase");
+      if (ex.response.status === 400) toast.error(ex.response.data);
     }
   };
   handleToggleLoader = () => {

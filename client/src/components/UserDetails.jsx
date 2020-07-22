@@ -3,11 +3,12 @@ import { getUserById } from "../services/userService";
 import AccountInfo from "./AccountInfo";
 import ListItem from "./common/ListItem";
 import OrderInfo from "./OrderInfo";
+import { Link } from "react-router-dom";
 
 class UserDetails extends Component {
   state = {
     showAccountInfoRow: true,
-    selectedTab: { id: 1, name: "My Account"},
+    selectedTab: { id: 1, name: "My Account" },
     showEditBtn: true,
   };
 
@@ -38,13 +39,17 @@ class UserDetails extends Component {
 
   render() {
     const { selectedTab, showAccountInfoRow, showEditBtn } = this.state;
+    const { user } = this.props;
     return (
       <div className="row" style={{ marginTop: "125px" }}>
         <div className="col-3">
           <ListItem
             selectedTab={selectedTab}
             handleChange={this.handleTabChange}
-            items={[{ id: 1, name: "My Account"}, {id: 2, name: "Orders"}]}
+            items={[
+              { id: 1, name: "My Account" },
+              { id: 2, name: "Orders" },
+            ]}
           />
         </div>
         <div className="col-7">
@@ -61,24 +66,31 @@ class UserDetails extends Component {
                     handleUserUpdate={this.handleUserUpdate}
                     handleCancelClick={this.handleCancelClick}
                     showAccountInfoRow={showAccountInfoRow}
-                    user={this.props.user}
+                    user={user}
                   />
                 ) : (
-                  <OrderInfo user={this.props.user} />
+                  <OrderInfo user={user} />
                 )}
               </div>
             </div>
 
             <div className="row">
-              <div className="col-4"></div>
-              <div className="col">
+              <div className="col d-flex justify-content-center">
                 {selectedTab.name === "My Account" && showEditBtn ? (
-                  <button
-                    onClick={(e) => this.handleEditClick(e)}
-                    className="btn btn-info"
-                  >
-                    Edit
-                  </button>
+                  <>
+                    <button
+                      onClick={(e) => this.handleEditClick(e)}
+                      className="btn btn-info"
+                    >
+                      Edit
+                    </button>
+                    <Link
+                      className="btn btn-info"
+                      to={`/updatePassword/${user.id}`}
+                    >
+                      Update Password
+                    </Link>
+                  </>
                 ) : (
                   ""
                 )}

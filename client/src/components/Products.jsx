@@ -20,7 +20,8 @@ class Products extends Component {
     currentPage: 1,
     searchQuery: "",
     isUpdateOpen: false,
-    productId: "",
+    productId: null,
+    indexOfUpdatedProduct: null,
     isPromptOpen: false,
     productIdToDelete: "",
   };
@@ -50,12 +51,26 @@ class Products extends Component {
     });
   };
 
-  handleUpdate = (productId) => {};
+  handleUpdateView = (updatedProduct, index) => {
+    //update view after product update
+    //clone products array
+    const products = [...this.state.products];
+    console.log(index);
 
-  handleToggleUpdate = (productId) => {
+    products.splice(index, 1, updatedProduct);
+    console.log("products", products);
+    this.setState({
+      products: products,
+    });
+    //update product by index
+    //set state with updated array
+  };
+
+  handleToggleUpdate = (productId, index) => {
     this.setState({
       isUpdateOpen: !this.state.isUpdateOpen,
       productId: productId,
+      indexOfUpdatedProduct: index,
     });
   };
 
@@ -124,6 +139,7 @@ class Products extends Component {
       isUpdateOpen,
       productId,
       isPromptOpen,
+      indexOfUpdatedProduct,
     } = this.state;
 
     const { user } = this.props;
@@ -133,7 +149,9 @@ class Products extends Component {
         <UpdateProduct
           isUpdateOpen={isUpdateOpen}
           toggleUpdateModal={this.handleToggleUpdate}
+          handleUpdateView={this.handleUpdateView}
           productId={productId}
+          indexOfUpdatedProduct={indexOfUpdatedProduct}
           user={user}
         />
         <ModalPrompt

@@ -3,7 +3,7 @@ import _arrayBufferToBase64 from "../utils/toBase64String";
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ products, user, handleDelete, handleToggleUpdate }) => {
-  return products.map((product) => (
+  return products.map((product, index) => (
     <div className="col-4 d-flex justify-content-center" key={product.id}>
       <div
         className="card"
@@ -81,7 +81,7 @@ const ProductCard = ({ products, user, handleDelete, handleToggleUpdate }) => {
               {user && user.isAdmin && (
                 <button
                   type="button"
-                  onClick={() => handleToggleUpdate(product.id)}
+                  onClick={() => handleToggleUpdate(product.id, index)}
                   className="btn btn-info btn-sm"
                 >
                   Update

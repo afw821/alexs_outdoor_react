@@ -25,6 +25,7 @@ import _arrayBufferToBase64 from "./utils/toBase64String";
 import { getUserById } from "./services/userService";
 import { deleteCartByPkId } from "./services/cartService";
 import { updateCart } from "./services/cartService";
+import UpdatePassword from "./components/UpdatePassword";
 
 class App extends Component {
   state = {
@@ -248,6 +249,13 @@ class App extends Component {
               exact
               render={(props) => (
                 <UserDetails {...props} user={this.state.user} />
+              )}
+            />
+            <ProtectedRoute
+              path="/updatePassword/:id"
+              exact
+              render={(props) => (
+                <UpdatePassword {...props} user={this.state.user} />
               )}
             />
             <ProtectedRoute

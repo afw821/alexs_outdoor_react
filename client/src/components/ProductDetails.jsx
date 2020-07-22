@@ -36,7 +36,6 @@ class ProductDetails extends Component {
   }
 
   addQuantity = () => {
-    if (this.state.userQuantity === this.state.data.inStock) return;
     this.setState({ userQuantity: this.state.userQuantity + 1 });
   };
 

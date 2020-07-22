@@ -101,7 +101,13 @@ const NavBar = (props) => {
   };
   return (
     <header>
-      <MDBNavbar color="indigo" dark expand="md" fixed="top">
+      <MDBNavbar
+        //style={{ backgroundColor: "#8095cc", opacity: "1.5" }}
+        color="indigo"
+        dark
+        expand="md"
+        fixed="top"
+      >
         <MDBNavbarBrand href="/">
           <strong>Alex's Outdoor Store</strong>
         </MDBNavbarBrand>
