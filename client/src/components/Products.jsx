@@ -51,7 +51,16 @@ class Products extends Component {
     });
   };
 
-  handleUpdateView = (updatedProduct, index) => {
+  calculateIndex = (arg) => {
+    const { currentPage, pageSize } = this.state;
+    //const index = (((currentPage - 1) * pageSize) + arg);
+    const first = (currentPage - 1) * pageSize;
+    const index = first + arg;
+    return index;
+  };
+
+  handleUpdateView = (updatedProduct, arg) => {
+    const index = this.calculateIndex(arg);
     //update view after product update
     //clone products array
     const products = [...this.state.products];

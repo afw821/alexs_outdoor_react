@@ -123,7 +123,7 @@ class ProductForm extends Form {
         if (productId) {
           updatedProduct.id = productId;
           closeModal(null, null);
-          handleUpdateView(updatedProduct, indexOfUpdatedProduct);
+          handleUpdateView(updatedProduct, indexOfUpdatedProduct); //this will be re-calculated due to the pagination and filtering in products.jsx
           console.log("data from update", updatedProduct);
         }
       }
