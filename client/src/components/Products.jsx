@@ -53,26 +53,28 @@ class Products extends Component {
 
   calculateIndex = (arg) => {
     const { currentPage, pageSize } = this.state;
-    //const index = (((currentPage - 1) * pageSize) + arg);
     const first = (currentPage - 1) * pageSize;
     const index = first + arg;
     return index;
   };
 
-  handleUpdateView = (updatedProduct, arg) => {
-    const index = this.calculateIndex(arg);
-    //update view after product update
-    //clone products array
+  calculateIndexOfFiltered = (updatedProd) => {
     const products = [...this.state.products];
-    console.log(index);
+    const index = products.findIndex(
+      (product, i) => updatedProd.id === product.id
+    );
+    return index;
+  };
 
-    products.splice(index, 1, updatedProduct);
-    console.log("products", products);
-    this.setState({
-      products: products,
-    });
-    //update product by index
-    //set state with updated array
+  handleUpdateView = (updatedProduct, arg) => {
+    const products = [...this.state.products];
+
+    const i = !this.state.selectedTab.id
+      ? this.calculateIndex(arg)
+      : this.calculateIndexOfFiltered(updatedProduct);
+
+    products.splice(i, 1, updatedProduct);
+    this.setState({ products });
   };
 
   handleToggleUpdate = (productId, index) => {
@@ -84,7 +86,6 @@ class Products extends Component {
   };
 
   handleTogglePrompt = (id) => {
-    console.log("id", id);
     this.setState({
       isPromptOpen: !this.state.isPromptOpen,
       productIdToDelete: id,

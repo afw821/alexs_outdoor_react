@@ -38,7 +38,7 @@ const ProductCard = ({ products, user, handleDelete, handleToggleUpdate }) => {
             ) : (
               <div className="col d-flex justify-content-center stock-col">
                 <p className="card-title" style={{ color: "green" }}>
-                  Only {product.inStock} in Stock
+                  Only {product.inStock} in Stock index {index}
                 </p>
               </div>
             )}
