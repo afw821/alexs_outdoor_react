@@ -69,9 +69,10 @@ class Products extends Component {
   handleUpdateView = (updatedProduct, arg) => {
     const products = [...this.state.products];
 
-    const i = !this.state.selectedTab.id
-      ? this.calculateIndex(arg)
-      : this.calculateIndexOfFiltered(updatedProduct);
+    const i =
+      !this.state.selectedTab.id && !this.state.searchQuery
+        ? this.calculateIndex(arg)
+        : this.calculateIndexOfFiltered(updatedProduct);
 
     products.splice(i, 1, updatedProduct);
     this.setState({ products });
