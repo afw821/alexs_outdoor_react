@@ -58,8 +58,7 @@ module.exports = function (connection, Sequelize) {
     password: {
       type: Sequelize.STRING,
       validate: {
-        len: [5, 50],
-        is: /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g,
+        len: [5, 550],
       },
     },
     isAdmin: {

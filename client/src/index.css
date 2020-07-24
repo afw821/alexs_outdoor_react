@@ -21,7 +21,9 @@ body {
   height: 100%;
   position: relative;
 }
-
+.font-bolder {
+  font-weight: bolder;
+}
 /* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

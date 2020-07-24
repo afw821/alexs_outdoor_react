@@ -12,6 +12,17 @@ export async function login(email, password) {
   sessionStorage.setItem("token", jwt);
 }
 
+export function updatePassword(email, oldPassword, newPassword) {
+  const reqBody = {
+    email: email,
+    oldPassword: oldPassword,
+    newPassword: newPassword,
+  };
+  const result = http.put(apiUrl + "/auth/updatePassword", reqBody);
+
+  return result;
+}
+
 export function loginWithJwt(jwt) {
   sessionStorage.setItem("token", jwt);
 }

@@ -33,10 +33,12 @@ class Form extends Component {
   };
 
   handleChange = ({ currentTarget: input }) => {
+    console.log("handle change");
     const errors = { ...this.state.errors };
     const data = { ...this.state.data };
     switch (input.name) {
       case "password":
+        console.log("password");
         const firstPassword = data.firstPassword;
         const pwErrorMessage = this.doPasswordsMatch(
           input.value,
@@ -130,14 +132,30 @@ class Form extends Component {
   renderInput(name, label, type = "text") {
     const { data, errors } = this.state;
     return (
-      <Input
-        error={errors[name]}
-        name={name}
-        value={data[name]}
-        label={label}
-        handleChange={this.handleChange}
-        type={type}
-      />
+      <>
+        <Input
+          error={errors[name]}
+          name={name}
+          value={data[name]}
+          label={label}
+          handleChange={this.handleChange}
+          type={type}
+        />
+        {name !== "password" && errors[name] && (
+          <div className="alert alert-danger">{errors[name]}</div>
+        )}
+        {name === "password" && errors[name] && (
+          <div
+            className={
+              errors.password === "Passwords must match"
+                ? "alert alert-danger"
+                : "alert alert-success"
+            }
+          >
+            {errors[name]}
+          </div>
+        )}
+      </>
     );
   }
 
@@ -255,17 +273,6 @@ class Form extends Component {
             <div
               className={
                 errors.password === "Passwords must match"
-                  ? "alert alert-danger"
-                  : "alert alert-success"
-              }
-            >
-              {errors[name2]}
-            </div>
-          )}
-          {name2 === "email" && errors[name2] && (
-            <div
-              className={
-                errors.email === "Emails must match"
                   ? "alert alert-danger"
                   : "alert alert-success"
               }

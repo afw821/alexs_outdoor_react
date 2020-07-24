@@ -145,11 +145,11 @@ class RegisterForm extends Form {
                     "Your password",
                     "lock",
                     "password",
-                    "firstPassword",
+                    "firstPassword", //name
                     "Confirm your password",
                     "exclamation-triangle",
                     "password",
-                    "password"
+                    "password" //name 2
                   )}
                   {this.renderBtn("Register", "primary", "submit")}
                 </div>
