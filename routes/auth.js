@@ -100,7 +100,6 @@ router.put(
 router.post(
   "/generateToken/",
   ash(async (req, res) => {
-    console.log("--------------REQ BODY", req.body);
     const token = await generateAuthToken(req.body);
 
     res.header("x-auth-token", token).send(token);

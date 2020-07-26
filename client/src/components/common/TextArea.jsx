@@ -3,7 +3,9 @@ import React from "react";
 const TextArea = ({ value, onChange, name, label, type, error, rows }) => {
   return (
     <div className="form-group">
-      <label htmlFor={name}>{label}</label>
+      <label className="font-bolder" htmlFor={name}>
+        {label}
+      </label>
       <textarea
         value={value}
         onChange={onChange}

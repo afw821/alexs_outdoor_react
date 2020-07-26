@@ -1,9 +1,10 @@
 import React from "react";
 import Form from "./common/Form";
-import { MDBCard, MDBCardBody } from "mdbreact";
+import { MDBCard, MDBCardBody, MDBModalFooter } from "mdbreact";
 import { getStates } from "../utils/getStates";
 import Joi from "joi-browser";
 import { register } from "../services/userService";
+import { Link } from "react-router-dom";
 
 class RegisterForm extends Form {
   state = {
@@ -151,9 +152,22 @@ class RegisterForm extends Form {
                     "password",
                     "password" //name 2
                   )}
-                  {this.renderBtn("Register", "primary", "submit")}
+                  <div className="row pb-3">
+                    <div className="col">
+                      {this.renderBtn("Register", "primary", "submit")}
+                    </div>
+                  </div>
                 </div>
               </form>
+              <MDBModalFooter className="d-flex justify-content-center">
+                <div className="row">
+                  <div className="col">
+                    <p>
+                      Already a member?<Link to="/login"> Login</Link>
+                    </p>
+                  </div>
+                </div>
+              </MDBModalFooter>
             </MDBCardBody>
           </MDBCard>
         </div>

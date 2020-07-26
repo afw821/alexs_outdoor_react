@@ -12,7 +12,6 @@ class UpdatePassword extends Form {
       password: "",
     },
     errors: {},
-    show: false,
   };
 
   schema = {
@@ -32,6 +31,13 @@ class UpdatePassword extends Form {
       );
       if (result) {
         toast.success("Password Successfully Updated");
+        this.setState({
+          data: {
+            oldPassword: "",
+            firstPassword: "",
+            password: "",
+          },
+        });
       }
     } catch (ex) {
       if (ex.response.stauts === 400 || ex.response.status === 404)

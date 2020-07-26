@@ -102,11 +102,12 @@ const NavBar = (props) => {
   return (
     <header>
       <MDBNavbar
-        //style={{ backgroundColor: "#8095cc", opacity: "1.5" }}
-        color="indigo"
+        style={{ backgroundColor: "#343a40", opacity: "1.5" }}
+        //color="indigo"
         dark
         expand="md"
         fixed="top"
+        scrolling
       >
         <MDBNavbarBrand href="/">
           <strong>Alex's Outdoor Store</strong>

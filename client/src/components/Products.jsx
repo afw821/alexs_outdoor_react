@@ -173,7 +173,7 @@ class Products extends Component {
           btnText={"Delete Product"}
           handleClick={this.handleDelete}
         />
-        <div className="row" style={{ marginTop: "65px" }}>
+        <div className="row" style={{ marginTop: "85px" }}>
           <div className="col-2">
             <div className="row">
               <div className="col">

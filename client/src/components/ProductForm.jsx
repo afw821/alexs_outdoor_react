@@ -124,7 +124,6 @@ class ProductForm extends Form {
           updatedProduct.id = productId;
           closeModal(null, null);
           handleUpdateView(updatedProduct, indexOfUpdatedProduct); //this will be re-calculated due to the pagination and filtering in products.jsx
-          console.log("data from update", updatedProduct);
         }
       }
     } catch (ex) {
@@ -134,19 +133,30 @@ class ProductForm extends Form {
   };
 
   render() {
+    const lineBreakStyle = {
+      borderBottom: "1px solid lightgray",
+    };
     const { imageSrc, selectedCategoryId } = this.state.data;
     const { categories } = this.state;
     const { productId } = this.props;
     return (
       <>
-        <div className="jumbotron" style={{ marginTop: "60px" }}>
+        <div
+          className="jumbotron"
+          style={{ marginTop: "80px", backgroundColor: "whitesmoke" }}
+        >
           {!productId && (
-            <div className="row">
-              <div className="col-4"></div>
-              <div className="col-6">
-                <h5>Add Product</h5>
+            <>
+              <div className="row">
+                <div className="col-4"></div>
+                <div className="col-6">
+                  <h5 className="font-bolder">Add Product</h5>
+                </div>
               </div>
-            </div>
+              <div className="row d-flex justify-content-center">
+                <div className="col-10" style={lineBreakStyle}></div>
+              </div>
+            </>
           )}
 
           <form

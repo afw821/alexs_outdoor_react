@@ -34,23 +34,36 @@ class CategoryManager extends Form {
     }
   };
   render() {
+    const lineBreakStyle = {
+      borderBottom: "1px solid lightgray",
+    };
     return (
       <>
         <div className="row">
           <div className="col-2"></div>
           <div className="col-6" style={{ marginTop: "100px" }}>
-            <div class="jumbotron jumbotron-fluid" style={{ height: "350px" }}>
+            <div
+              class="jumbotron jumbotron-fluid"
+              style={{ height: "350px", backgroundColor: "whitesmoke" }}
+            >
               <div class="container">
                 <div className="row">
                   <div className="col d-flex justify-content-center">
-                    <h5>Add Category</h5>
+                    <h5 className="font-bolder">Add Category</h5>
                   </div>
+                </div>
+                <div className="row d-flex justify-content-center">
+                  <div className="col-10" style={lineBreakStyle}></div>
                 </div>
                 <div className="row">
                   <div className="col">
                     <form className="mt-4" onSubmit={this.handleSubmit}>
                       {this.renderInput("category", "Category")}
-                      <button className="btn btn-primary">Submit</button>
+                      <div className="row ">
+                        <div className="col d-flex justify-content-center">
+                          <button className="btn btn-primary">Submit</button>
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>

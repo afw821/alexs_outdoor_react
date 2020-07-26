@@ -8,10 +8,13 @@ const Footer = () => {
     bottom: "0",
     width: "115%",
     marginLeft: "-20px",
+    backgroundColor: "#343a40",
+    opacity: "1.5",
   };
   return (
     <MDBFooter
-      color="indigo"
+      //color="indigo"
+      dark
       className="font-small pt-4 mt-4"
       style={footerStyle}
     >

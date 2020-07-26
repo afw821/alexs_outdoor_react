@@ -47,6 +47,9 @@ class ContactForm extends Form {
   };
 
   render() {
+    const lineBreakStyle = {
+      borderBottom: "1px solid lightgray",
+    };
     return (
       <>
         <PopUpModal
@@ -55,18 +58,37 @@ class ContactForm extends Form {
           body="Your message has successfully been sent"
           onClose={this.handleModalClick}
         />
-        <div className="row" style={{ marginTop: "100px" }}>
+        <div className="row">
           <div className="col-4"></div>
-          <div className="col-4">
-            <form
-              className="pb-5 pl-5 pr-5 pt-4 login-form"
-              onSubmit={this.handleSubmit}
+          <div className="col-4" style={{ marginTop: "100px" }}>
+            <div
+              className="jumbotron jumbotron-fluid"
+              style={{ backgroundColor: "whitesmoke" }}
             >
-              {this.renderInput("name", "Name")}
-              {this.renderInput("email", "E-mail", "email")}
-              {this.renderTextArea("message", "Message", "text", 5)}
-              {this.renderBtn("Submit", "blue", "submit")}
-            </form>
+              <div className="container">
+                <div className="row">
+                  <div className="col d-flex justify-content-center">
+                    <h5 className="font-bolder">Contact Us</h5>
+                  </div>
+                </div>
+                <div className="row d-flex justify-content-center">
+                  <div className="col-10" style={lineBreakStyle}></div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <form
+                      className="pb-5 pl-5 pr-5 pt-4 login-form"
+                      onSubmit={this.handleSubmit}
+                    >
+                      {this.renderInput("name", "Name")}
+                      {this.renderInput("email", "E-mail", "email")}
+                      {this.renderTextArea("message", "Message", "text", 5)}
+                      {this.renderBtn("Submit", "blue", "submit")}
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </>
