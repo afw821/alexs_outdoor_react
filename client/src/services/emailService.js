@@ -7,5 +7,5 @@ export function sendEmail(name, email, message) {
     email,
     message,
   };
-  return http.post(apiUrl + "/messages", data);
+  return http.post(deployedApiUrl + "/messages", data);
 }
