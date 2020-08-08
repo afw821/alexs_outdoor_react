@@ -1,9 +1,22 @@
 {
+  "development": {
+    "username": "root",
+    "password": "feb71987",
+    "database": "alexoutdoor_db",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql"
+  },
   "production": {
-    "host": "SG-AlexsOutdoorStore-2892-master.servers.mongodirector.com",
-    "user": "afw821",
-    "password": "Watkiaf2787!",
-    "database": "AlexsOutdoorStore",
-    "port": 3306
+    "use_env_variable": "JAWSDB_URL",
+    "dialect": "mysql"
   }
 }
