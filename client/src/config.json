@@ -1,4 +1,4 @@
 {
   "apiUrl": "http://localhost:3922/api",
-  "deployedApiUrl": "http://alexsoutdoorstore.com/api"
+  "deployedApiUrl": "https://alexsoutdoorstore.herokuapp.com/api"
 }
