@@ -43,10 +43,10 @@ class CategoryManager extends Form {
           <div className="col-2"></div>
           <div className="col-6" style={{ marginTop: "100px" }}>
             <div
-              class="jumbotron jumbotron-fluid"
+              className="jumbotron jumbotron-fluid"
               style={{ height: "350px", backgroundColor: "whitesmoke" }}
             >
-              <div class="container">
+              <div className="container">
                 <div className="row">
                   <div className="col d-flex justify-content-center">
                     <h5 className="font-bolder">Add Category</h5>

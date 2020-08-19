@@ -4,7 +4,7 @@ import AdminPortal from "./components/AdminPortal";
 import RegisterForm from "./components/RegisterForm";
 import NotFound from "./components/NotFound";
 import LoginForm from "./components/LoginForm";
-import NavBar from "./components/NavBar";
+import NavBar2 from "./components/NavBar2";
 import auth from "./services/authService";
 import Home from "./components/Home";
 import Logout from "./components/Logout";
@@ -61,6 +61,11 @@ class App extends Component {
     }
     this.setState({ user });
   }
+
+  handleSetActiveTab = (tab) => {
+    console.log("tabbb", tab);
+    this.setState({ activeTab: tab });
+  };
 
   calculateTotalPrice = (prices) => {
     const _prices = [];
@@ -228,7 +233,7 @@ class App extends Component {
     }
   };
   render() {
-    const { user, count, totalPrice, productsInCart } = this.state;
+    const { user, count, totalPrice, productsInCart, activeTab } = this.state;
 
     const h100 = {
       minHeight: "100vh" /* will cover the 100% of viewport */,
@@ -241,7 +246,12 @@ class App extends Component {
     return (
       <>
         <ToastContainer />
-        <NavBar count={count} user={user} />
+        <NavBar2
+          handleSetActiveTab={this.handleSetActiveTab}
+          count={count}
+          user={user}
+          activeTab={activeTab}
+        />
         <div style={h100} className="container-fluid">
           <Switch>
             <ProtectedRoute

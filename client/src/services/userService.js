@@ -25,13 +25,13 @@ export async function register(
     password,
     isAdmin,
   };
-  const { data: user } = await http.post(deployedApiUrl + "/users", obj);
+  const { data: user } = await http.post(apiUrl + "/users", obj);
 
   return user;
 }
 
 export async function getUserById(id) {
-  const user = await http.get(deployedApiUrl + `/users/${id}`);
+  const user = await http.get(apiUrl + `/users/${id}`);
 
   return user;
 }
@@ -59,7 +59,7 @@ export async function updateUser(
     email,
     isAdmin,
   };
-  const result = await http.put(deployedApiUrl + `/users/${id}`, reqBody);
+  const result = await http.put(apiUrl + `/users/${id}`, reqBody);
 
   return result;
 }
