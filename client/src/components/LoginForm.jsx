@@ -74,7 +74,7 @@ class LoginForm extends Form {
               <MDBModalFooter className="d-flex justify-content-center">
                 <div className="row">
                   <div className="col">
-                    <p>
+                    <p onClick={() => this.props.handleSetActiveTab("Sign Up")}>
                       Not a member?<Link to="/register"> Sign Up</Link>
                     </p>
                   </div>

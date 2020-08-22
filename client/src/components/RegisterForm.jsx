@@ -40,9 +40,24 @@ class RegisterForm extends Form {
     isAdmin: Joi.label("Administrator"),
   };
 
+  componentDidMount() {
+    console.log("cdm");
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log("cdu from register.jsx", prevProps);
+    if (prevProps.location.pathname !== "/register") {
+      console.log("it is not the path");
+    }
+    // if (this.props.activeTab !== prevProps.activeTab) {
+    //   console.log("cdu !== from RegisterForm.jsx");
+    // }
+  }
+
   doSubmit = async () => {
     try {
       const { data } = this.state;
+      const { handleSetActiveTab } = this.props;
       await register(
         data.firstName,
         data.lastName,
@@ -55,6 +70,9 @@ class RegisterForm extends Form {
         data.password,
         data.isAdmin
       );
+      //set active tab
+      handleSetActiveTab("Login");
+
       this.props.history.push("/login");
       // window.location = "/home";
     } catch (ex) {
@@ -162,7 +180,7 @@ class RegisterForm extends Form {
               <MDBModalFooter className="d-flex justify-content-center">
                 <div className="row">
                   <div className="col">
-                    <p>
+                    <p onClick={() => this.props.handleSetActiveTab("Login")}>
                       Already a member?<Link to="/login"> Login</Link>
                     </p>
                   </div>

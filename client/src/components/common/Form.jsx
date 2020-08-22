@@ -212,7 +212,9 @@ class Form extends Component {
       >
         <option>{label}</option>
         {options.map((state) => (
-          <option value={state.key}>{state.value}</option>
+          <option key={state.key} value={state.key}>
+            {state.value}
+          </option>
         ))}
       </select>
     );

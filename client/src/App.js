@@ -26,6 +26,7 @@ import { getUserById } from "./services/userService";
 import { deleteCartByPkId } from "./services/cartService";
 import { updateCart } from "./services/cartService";
 import UpdatePassword from "./components/UpdatePassword";
+import { activeTabRefresh } from "./utils/activeTabRefresh";
 
 class App extends Component {
   state = {
@@ -62,8 +63,16 @@ class App extends Component {
     this.setState({ user });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const activeTab = this.state.activeTab;
+    let location = window.location.pathname;
+    const lastIndex = location.lastIndexOf("/");
+    const handler = this.handleSetActiveTab;
+
+    activeTabRefresh(activeTab, location, lastIndex, handler);
+  }
+
   handleSetActiveTab = (tab) => {
-    console.log("tabbb", tab);
     this.setState({ activeTab: tab });
   };
 
@@ -257,16 +266,12 @@ class App extends Component {
             <ProtectedRoute
               path="/account/:id"
               exact
-              render={(props) => (
-                <UserDetails {...props} user={this.state.user} />
-              )}
+              render={(props) => <UserDetails {...props} user={user} />}
             />
             <ProtectedRoute
               path="/updatePassword/:id"
               exact
-              render={(props) => (
-                <UpdatePassword {...props} user={this.state.user} />
-              )}
+              render={(props) => <UpdatePassword {...props} user={user} />}
             />
             <ProtectedRoute
               path="/cart/:id"
@@ -278,7 +283,7 @@ class App extends Component {
                   calculateQuantity={this.calculateQuantity}
                   totalPrice={totalPrice}
                   productsInCart={productsInCart}
-                  user={this.state.user}
+                  user={user}
                 />
               )}
             />
@@ -288,24 +293,40 @@ class App extends Component {
                 <ProductDetails
                   {...props}
                   handleAddToCart={this.handleAddToCart}
-                  user={this.state.user}
+                  user={user}
                 />
               )}
             />
             <AdminProtectedRoute
               path="/adminPortal"
               exact
-              render={(props) => (
-                <AdminPortal {...props} user={this.state.user} />
-              )}
+              render={(props) => <AdminPortal {...props} user={user} />}
             />
             <Route
               path="/products"
               exact
-              render={(props) => <Products {...props} user={this.state.user} />}
+              render={(props) => <Products {...props} user={user} />}
             />
-            <Route path="/register" component={RegisterForm} />
-            <Route path="/login" component={LoginForm} />
+            <Route
+              path="/register"
+              render={(props) => (
+                <RegisterForm
+                  {...props}
+                  activeTab={activeTab}
+                  handleSetActiveTab={this.handleSetActiveTab}
+                />
+              )}
+            />
+            <Route
+              path="/login"
+              render={(props) => (
+                <LoginForm
+                  {...props}
+                  activeTab={activeTab}
+                  handleSetActiveTab={this.handleSetActiveTab}
+                />
+              )}
+            />
             <Route path="/contact" component={ContactForm} />
             <Route path="/logout" component={Logout} />
             <Route path="/home" component={Home} />

@@ -90,10 +90,7 @@ class NavBar2 extends Component {
                   <strong>Products</strong>
                 </MDBNavLink>
               </MDBNavItem>
-              <MDBNavItem
-                onClick={(e) => handleSetActiveTab("Contact")}
-                active={activeTab === "Contact"}
-              >
+              <MDBNavItem onClick={(e) => handleSetActiveTab("Contact")}>
                 <MDBNavLink
                   style={
                     activeTab === "Contact" ? { color: "#f6b519" } : { "": "" }
@@ -107,10 +104,7 @@ class NavBar2 extends Component {
             </MDBNavbarNav>
             <MDBNavbarNav right>
               {this.props.user && this.props.user.isAdmin && (
-                <MDBNavItem
-                  onClick={(e) => handleSetActiveTab("Admin Portal")}
-                  active={activeTab === "Admin Portal"}
-                >
+                <MDBNavItem onClick={(e) => handleSetActiveTab("Admin Portal")}>
                   <MDBNavLink
                     style={
                       activeTab === "Admin Portal"

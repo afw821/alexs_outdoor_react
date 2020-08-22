@@ -50,8 +50,8 @@ class UpdatePassword extends Form {
   render() {
     return (
       <div className="row">
-        <div className="col-2"></div>
-        <div className="col-6" style={{ marginTop: "100px" }}>
+        <div className="col-4"></div>
+        <div className="col-4" style={{ marginTop: "100px" }}>
           <div className="jumbotron jumbotron-fluid">
             <div className="container">
               <div className="row">
@@ -77,8 +77,12 @@ class UpdatePassword extends Form {
                       "Confirm New Password",
                       "password"
                     )}
-                    <button className="btn btn-primary">Submit</button>
                   </form>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col d-flex justify-content-center">
+                  <button className="btn btn-primary">Submit</button>
                 </div>
               </div>
             </div>
