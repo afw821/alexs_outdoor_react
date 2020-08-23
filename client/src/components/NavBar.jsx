@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { Component } from "react";
 import {
   MDBNavbar,
   MDBNavbarBrand,
@@ -10,231 +9,177 @@ import {
   MDBNavLink,
   MDBIcon,
 } from "mdbreact";
-const NavBar = (props) => {
-  const user = props.user;
-  const [collapse, setCollapse] = useState(false);
-  const [isWideEnough, setWideEnough] = useState(false);
-  const [isHomeActive, setHomeActive] = useState(true);
-  const [isLoginActive, setLoginActive] = useState(false);
-  const [isSignUpActive, setSignUpActive] = useState(false);
-  const [isProductActive, setProductActive] = useState(false);
-  const [isLogoutActive, setLogoutActive] = useState(false);
-  const [isContactActive, setContactActive] = useState(false);
-  const [isAccountActive, setAccountActive] = useState(false);
 
-  const handleToggleActive = (name) => {
-    switch (name) {
-      case "Home":
-        if (isHomeActive) return;
-        setHomeActive(true);
-        setLoginActive(false);
-        setSignUpActive(false);
-        setProductActive(false);
-        setLogoutActive(false);
-        setContactActive(false);
-        setAccountActive(false);
-        break;
-      case "Login":
-        if (isLoginActive) return;
-        setLoginActive(true);
-        setHomeActive(false);
-        setSignUpActive(false);
-        setProductActive(false);
-        setLogoutActive(false);
-        setContactActive(false);
-        setAccountActive(false);
-        break;
-      case "Sign Up":
-        if (isSignUpActive) return;
-        setSignUpActive(true);
-        setLoginActive(false);
-        setHomeActive(false);
-        setProductActive(false);
-        setLogoutActive(false);
-        setContactActive(false);
-        setAccountActive(false);
-        break;
-      case "Products":
-        if (isProductActive) return;
-        setProductActive(true);
-        setSignUpActive(false);
-        setLoginActive(false);
-        setHomeActive(false);
-        setLogoutActive(false);
-        setContactActive(false);
-        setAccountActive(false);
-        break;
-      case "Logout":
-        if (isLogoutActive) return;
-        setLogoutActive(true);
-        setSignUpActive(false);
-        setLoginActive(false);
-        setHomeActive(false);
-        setProductActive(false);
-        setContactActive(false);
-        setAccountActive(false);
-        break;
-      case "Contact":
-        if (isContactActive) return;
-        setContactActive(true);
-        setLogoutActive(false);
-        setSignUpActive(false);
-        setLoginActive(false);
-        setHomeActive(false);
-        setProductActive(false);
-        setAccountActive(false);
-        break;
-      case "Account":
-        if (isContactActive) return;
-        setAccountActive(true);
-        setContactActive(true);
-        setLogoutActive(false);
-        setSignUpActive(false);
-        setLoginActive(false);
-        setHomeActive(false);
-        setProductActive(false);
-        break;
-    }
+class NavBar2 extends Component {
+  state = {
+    collapse: false,
+    isWideEnough: false,
   };
-  const handleClick = (e) => {
-    setCollapse(!collapse);
+
+  handleClick = (e) => {
+    this.setState({ collapse: !this.state.collapse });
   };
-  return (
-    <header>
-      <MDBNavbar
-        style={{ backgroundColor: "#343a40", opacity: "1.5" }}
-        //color="indigo"
-        dark
-        expand="md"
-        fixed="top"
-        scrolling
-      >
-        <MDBNavbarBrand href="/">
-          <strong>Alex's Outdoor Store</strong>
-        </MDBNavbarBrand>
-        {!isWideEnough && <MDBNavbarToggler onClick={handleClick} />}
-        <MDBCollapse isOpen={collapse} navbar>
-          <MDBNavbarNav left>
-            <MDBNavItem
-              onClick={(e) => handleToggleActive(e.target.name)}
-              active={isHomeActive}
-            >
-              <MDBNavLink name="Home" to="/home">
-                Home
-              </MDBNavLink>
-            </MDBNavItem>
+  render() {
+    const { user, activeTab, handleSetActiveTab } = this.props;
+    const { collapse, isWideEnough } = this.state;
 
-            {!props.user && (
-              <MDBNavItem
-                onClick={(e) => handleToggleActive(e.target.name)}
-                active={isLoginActive}
-              >
-                <MDBNavLink name="Login" to="/login">
-                  Login
-                </MDBNavLink>
-              </MDBNavItem>
-            )}
-            {!props.user && (
-              <MDBNavItem
-                onClick={(e) => handleToggleActive(e.target.name)}
-                active={isSignUpActive}
-              >
-                <MDBNavLink name="Sign Up" to="/register">
-                  Sign Up
-                </MDBNavLink>
-              </MDBNavItem>
-            )}
-
-            <MDBNavItem
-              onClick={(e) => handleToggleActive(e.target.name)}
-              active={isProductActive}
-            >
-              <MDBNavLink name="Products" to="/products">
-                Products
-              </MDBNavLink>
-            </MDBNavItem>
-            <MDBNavItem
-              onClick={(e) => handleToggleActive(e.target.name)}
-              active={isContactActive}
-            >
-              <MDBNavLink name="Contact" to="/contact">
-                Contact
-              </MDBNavLink>
-            </MDBNavItem>
-          </MDBNavbarNav>
-          <MDBNavbarNav right>
-            {props.user && props.user.isAdmin && (
-              <MDBNavItem
-                onClick={(e) => handleToggleActive(e.target.name)}
-                // active={isAccountActive}
-              >
-                <MDBNavLink name="AdminPortal" to="/adminPortal">
-                  Admin Portal
-                </MDBNavLink>
-              </MDBNavItem>
-            )}
-            {props.user && (
-              <MDBNavItem
-                className="d-flex align-items-center"
-                style={{ marginRight: "10px" }}
-                onClick={(e) => console.log("Cart Clicked")}
-              >
-                <MDBNavLink name="Account" to={`/cart/${user.id}`}>
-                  <MDBIcon icon="shopping-cart" />
-                </MDBNavLink>
-              </MDBNavItem>
-            )}
-            {props.user && (
-              <MDBNavItem
-                className="d-flex align-items-center"
-                style={{ marginRight: "10px" }}
-              >
-                <MDBNavLink
-                  id="cart-number"
-                  name="Account"
-                  to={`/cart/${user.id}`}
-                >
-                  {user.Carts.length}
-                </MDBNavLink>
-              </MDBNavItem>
-            )}
-            {props.user && (
-              <MDBNavItem
-                onClick={(e) => handleToggleActive(e.target.name)}
-                active={isAccountActive}
-              >
-                <MDBNavLink name="Account" to={`/account/${user.id}`}>
-                  My Account
-                </MDBNavLink>
-              </MDBNavItem>
-            )}
-            {props.user && (
-              <MDBNavItem
-                onClick={(e) => handleToggleActive(e.target.name)}
-                active={isLogoutActive}
-              >
-                <MDBNavLink name="Logout" to="/logout">
-                  Logout
-                </MDBNavLink>
-              </MDBNavItem>
-            )}
-          </MDBNavbarNav>
-        </MDBCollapse>
-      </MDBNavbar>
-
-      {/* <MDBView src={OutdoorPic}>
-        <MDBMask
-          overlay="black-light"
-          className="flex-center flex-column text-white text-center"
+    return (
+      <header>
+        <MDBNavbar
+          style={{ backgroundColor: "#343a40", opacity: "1.5" }}
+          dark
+          expand="md"
+          fixed="top"
+          scrolling
         >
-          <h2>Welcome to Alex's Outdoor Store</h2>
-          <h5>Browse through hudreds of products we have in stock</h5>
-          <br />
-          <p>Purchases online through our secure Stripe payment option </p>
-        </MDBMask>
-      </MDBView> */}
-    </header>
-  );
-};
+          <MDBNavbarBrand href="/">
+            <strong>Al's Outdoor Store</strong>
+          </MDBNavbarBrand>
+          {!isWideEnough && <MDBNavbarToggler onClick={this.handleClick} />}
+          <MDBCollapse isOpen={collapse} navbar>
+            <MDBNavbarNav left>
+              <MDBNavItem onClick={(e) => handleSetActiveTab("Home")}>
+                <MDBNavLink
+                  style={
+                    activeTab === "Home" ? { color: "#f6b519" } : { "": "" }
+                  }
+                  name="Home"
+                  to="/home"
+                >
+                  <strong>Home</strong>
+                </MDBNavLink>
+              </MDBNavItem>
 
-export default NavBar;
+              {!this.props.user && (
+                <MDBNavItem onClick={(e) => handleSetActiveTab("Login")}>
+                  <MDBNavLink
+                    style={
+                      activeTab === "Login" ? { color: "#f6b519" } : { "": "" }
+                    }
+                    name="Login"
+                    to="/login"
+                  >
+                    <strong>Login</strong>
+                  </MDBNavLink>
+                </MDBNavItem>
+              )}
+              {!this.props.user && (
+                <MDBNavItem onClick={(e) => handleSetActiveTab("Sign Up")}>
+                  <MDBNavLink
+                    style={
+                      activeTab === "Sign Up"
+                        ? { color: "#f6b519" }
+                        : { "": "" }
+                    }
+                    name="Sign Up"
+                    to="/register"
+                  >
+                    <strong>Sign Up</strong>
+                  </MDBNavLink>
+                </MDBNavItem>
+              )}
+
+              <MDBNavItem onClick={(e) => handleSetActiveTab("Products")}>
+                <MDBNavLink
+                  style={
+                    activeTab === "Products" ? { color: "#f6b519" } : { "": "" }
+                  }
+                  name="Products"
+                  to="/products"
+                >
+                  <strong>Products</strong>
+                </MDBNavLink>
+              </MDBNavItem>
+              <MDBNavItem onClick={(e) => handleSetActiveTab("Contact")}>
+                <MDBNavLink
+                  style={
+                    activeTab === "Contact" ? { color: "#f6b519" } : { "": "" }
+                  }
+                  name="Contact"
+                  to="/contact"
+                >
+                  <strong>Contact</strong>
+                </MDBNavLink>
+              </MDBNavItem>
+            </MDBNavbarNav>
+            <MDBNavbarNav right>
+              {this.props.user && this.props.user.isAdmin && (
+                <MDBNavItem onClick={(e) => handleSetActiveTab("Admin Portal")}>
+                  <MDBNavLink
+                    style={
+                      activeTab === "Admin Portal"
+                        ? { color: "#f6b519" }
+                        : { "": "" }
+                    }
+                    name="Admin Portal"
+                    to="/adminPortal"
+                  >
+                    <strong>Admin Portal</strong>
+                  </MDBNavLink>
+                </MDBNavItem>
+              )}
+              {this.props.user && (
+                <MDBNavItem
+                  className="d-flex align-items-center"
+                  style={{ marginRight: "10px" }}
+                  onClick={(e) => handleSetActiveTab("Cart")}
+                >
+                  <MDBNavLink name="Cart" to={`/cart/${user.id}`}>
+                    <MDBIcon
+                      style={
+                        activeTab === "Cart" ? { color: "#f6b519" } : { "": "" }
+                      }
+                      icon="shopping-cart"
+                    />
+                  </MDBNavLink>
+                </MDBNavItem>
+              )}
+              {this.props.user && (
+                <MDBNavItem
+                  className="d-flex align-items-center"
+                  style={{ marginRight: "10px" }}
+                  onClick={(e) => handleSetActiveTab("Cart")}
+                >
+                  <MDBNavLink
+                    id="cart-number"
+                    name="Cart_Number"
+                    to={`/cart/${user.id}`}
+                    style={
+                      activeTab === "Cart" ? { color: "#f6b519" } : { "": "" }
+                    }
+                  >
+                    <strong>{user.Carts.length}</strong>
+                  </MDBNavLink>
+                </MDBNavItem>
+              )}
+              {this.props.user && (
+                <MDBNavItem onClick={(e) => handleSetActiveTab("My Account")}>
+                  <MDBNavLink
+                    style={
+                      activeTab === "My Account"
+                        ? { color: "#f6b519" }
+                        : { "": "" }
+                    }
+                    name="My Account"
+                    to={`/account/${user.id}`}
+                  >
+                    <strong>My Account</strong>
+                  </MDBNavLink>
+                </MDBNavItem>
+              )}
+              {this.props.user && (
+                <MDBNavItem onClick={(e) => handleSetActiveTab("Logout")}>
+                  <MDBNavLink name="Logout" to="/logout">
+                    <strong>Logout</strong>
+                  </MDBNavLink>
+                </MDBNavItem>
+              )}
+            </MDBNavbarNav>
+          </MDBCollapse>
+        </MDBNavbar>
+      </header>
+    );
+  }
+}
+
+export default NavBar2;

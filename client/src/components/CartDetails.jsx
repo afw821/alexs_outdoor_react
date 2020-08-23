@@ -43,6 +43,7 @@ class CartDetails extends Component {
 
   handlePurchase = async (userQuant, ProductId, name, UserId) => {
     try {
+      console.log("making purchase cart details handlePurchase.");
       const updateResult = await updateProductQuant(userQuant, ProductId);
       const result = await purchase(name, UserId, ProductId, userQuant);
       return result;

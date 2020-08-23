@@ -2,7 +2,6 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 function sendEmail(email, message, name) {
-  console.log("made it to send email function", email, message, name);
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -11,7 +10,7 @@ function sendEmail(email, message, name) {
     },
   });
 
-  const mailOptions = {
+  var mailOptions = {
     from: email,
     to: "afw821@gmail.com",
     subject: `From:${name}`,
@@ -23,8 +22,9 @@ function sendEmail(email, message, name) {
       console.log("-------------transporter error-----------------", error);
       return false;
     } else {
-      console.log("-----------------Email sent:--------------------- " + info.response);
-      
+      console.log(
+        "-----------------Email sent:--------------------- " + info.response
+      );
     }
   });
 

@@ -26,5 +26,8 @@ export function activeTabRefresh(activeTab, location, lastIndex, handler) {
     case "/account":
       if (activeTab !== "My Account") return handler("My Account");
       break;
+    case "/updatePassword":
+      if (activeTab !== "My Account") return handler("My Account");
+      break;
   }
 }

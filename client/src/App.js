@@ -4,7 +4,7 @@ import AdminPortal from "./components/AdminPortal";
 import RegisterForm from "./components/RegisterForm";
 import NotFound from "./components/NotFound";
 import LoginForm from "./components/LoginForm";
-import NavBar2 from "./components/NavBar2";
+import NavBar2 from "./components/NavBar";
 import auth from "./services/authService";
 import Home from "./components/Home";
 import Logout from "./components/Logout";
@@ -46,7 +46,7 @@ class App extends Component {
     },
     totalPrice: 0,
     productsInCart: [],
-    activeTab: "Products",
+    activeTab: "Home",
   };
 
   async componentDidMount() {

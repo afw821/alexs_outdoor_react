@@ -6,6 +6,8 @@ import { getCartTableOptions } from "./../../utils/cartOptions";
 import { regenerateToken, loginWithJwt } from "../../services/authService";
 import { updateProductQuant } from "../../services/productService";
 import { purchase } from "../../services/purchaseService";
+import { sendEmailPurchase } from "../../services/emailService";
+
 import {
   MDBBtn,
   MDBModal,
@@ -14,12 +16,25 @@ import {
   MDBModalFooter,
 } from "mdbreact";
 import { toast } from "react-toastify";
-import { result } from "lodash";
+
 class CheckoutModal extends Component {
-  makePurchase = (productsInCart) => {
+  makePurchase = async (productsInCart) => {
+    const { firstName, lastName, email } = this.props.user;
     this.props.handleToggleLoader();
+    const message = `Here is you purchase information ${firstName}`;
+    console.log(this.props.user);
+    console.log("products in the cart", productsInCart);
+    const result = await sendEmailPurchase(
+      `${lastName}, ${firstName}`,
+      email,
+      message,
+      email
+      //productsInCart
+    );
+    console.log("result from send email", result);
     productsInCart.forEach(async (product, index) => {
       try {
+        console.log("purchaseeee", product);
         const userQuant = product.quantity;
         const ProductId = product.product.id;
         const purchaseName = `UserId# ${this.props.user.id} ${this.props.user.lastName}, ${this.props.user.firstName} - ID# ${ProductId} / ${product.product.name}`;
