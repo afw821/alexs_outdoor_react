@@ -39,34 +39,33 @@ class CategoryManager extends Form {
     };
     return (
       <>
-        <div className="row">
-          <div className="col-2"></div>
-          <div className="col-6" style={{ marginTop: "100px" }}>
-            <div
-              className="jumbotron jumbotron-fluid"
-              style={{ height: "350px", backgroundColor: "whitesmoke" }}
-            >
-              <div className="container">
-                <div className="row">
-                  <div className="col d-flex justify-content-center">
-                    <h5 className="font-bolder">Add Category</h5>
+        <div
+          className="jumbotron form-width-multiple-items"
+          style={{
+            height: "350px",
+            backgroundColor: "whitesmoke",
+            marginTop: "100px",
+          }}
+        >
+          <div className="container">
+            <div className="row">
+              <div className="col d-flex justify-content-center">
+                <h5 className="font-bolder">Add Category</h5>
+              </div>
+            </div>
+            <div className="row d-flex justify-content-center">
+              <div className="col-10" style={lineBreakStyle}></div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <form className="mt-4" onSubmit={this.handleSubmit}>
+                  {this.renderInput("category", "Category")}
+                  <div className="row ">
+                    <div className="col d-flex justify-content-center">
+                      <button className="btn btn-primary">Submit</button>
+                    </div>
                   </div>
-                </div>
-                <div className="row d-flex justify-content-center">
-                  <div className="col-10" style={lineBreakStyle}></div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <form className="mt-4" onSubmit={this.handleSubmit}>
-                      {this.renderInput("category", "Category")}
-                      <div className="row ">
-                        <div className="col d-flex justify-content-center">
-                          <button className="btn btn-primary">Submit</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>

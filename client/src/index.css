@@ -24,7 +24,66 @@ body {
 .font-bolder {
   font-weight: bolder;
 }
+.brd_transparent {
+  border-bottom: 2px solid transparent;
+}
 /* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 } */
+
+/* small screen mobile devices */
+@media only screen and (max-width: 559px) {
+  .form-width {
+    width: 75%;
+  }
+
+  .form-width-multiple-items {
+    width: 95%;
+  }
+
+  .tab-width {
+    width: 125%;
+  }
+}
+
+/* medium screen ipads / small Laptops */
+@media only screen and (min-width: 560px) {
+  .form-width {
+    width: 55%;
+  }
+
+  .form-width-multiple-items {
+    width: 75%;
+  }
+
+  .tab-width {
+    width: 175%;
+  }
+}
+
+/* This is default...Desktop */
+@media only screen and (min-width: 1140px) {
+  .form-width {
+    width: 35%;
+  }
+
+  .form-width-multiple-items {
+    width: 55%;
+  }
+
+  .tab-width {
+    width: 140%;
+  }
+}
+
+/* X-Large */
+@media only screen and (min-width: 1450px) {
+  .tab-width {
+    width: 110%;
+  }
+
+  .form-width-multiple-items {
+    width: 45%;
+  }
+}

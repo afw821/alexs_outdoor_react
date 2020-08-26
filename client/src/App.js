@@ -4,7 +4,7 @@ import AdminPortal from "./components/AdminPortal";
 import RegisterForm from "./components/RegisterForm";
 import NotFound from "./components/NotFound";
 import LoginForm from "./components/LoginForm";
-import NavBar2 from "./components/NavBar";
+import NavBar from "./components/NavBar";
 import auth from "./services/authService";
 import Home from "./components/Home";
 import Logout from "./components/Logout";
@@ -13,20 +13,20 @@ import UserDetails from "./components/UserDetails";
 import Products from "./components/Products";
 import ProductDetails from "./components/ProductDetails";
 import ProtectedRoute from "./components/common/ProtectedRoute";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import UpdatePassword from "./components/UpdatePassword";
 import CartDetails from "./components/CartDetails";
-import { addItemToCart } from "./services/cartService";
-import { regenerateToken, loginWithJwt } from "./services/authService";
 import ContactForm from "./components/ContactForm";
 import AdminProtectedRoute from "./components/common/AdminProctedRoute";
-import { getProductByPKId } from "./services/productService";
 import _arrayBufferToBase64 from "./utils/toBase64String";
+import { ToastContainer, toast } from "react-toastify";
+import { addItemToCart } from "./services/cartService";
+import { regenerateToken, loginWithJwt } from "./services/authService";
+import { getProductByPKId } from "./services/productService";
 import { getUserById } from "./services/userService";
 import { deleteCartByPkId } from "./services/cartService";
 import { updateCart } from "./services/cartService";
-import UpdatePassword from "./components/UpdatePassword";
 import { activeTabRefresh } from "./utils/activeTabRefresh";
+import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
   state = {
@@ -47,6 +47,7 @@ class App extends Component {
     totalPrice: 0,
     productsInCart: [],
     activeTab: "Home",
+    clientWidth: document.documentElement.clientWidth,
   };
 
   async componentDidMount() {
@@ -241,9 +242,19 @@ class App extends Component {
       toast.error("Error Updating cart");
     }
   };
+  displayWindowSize = () => {
+    let clientWidth = document.documentElement.clientWidth;
+    this.setState({ clientWidth });
+  };
   render() {
-    const { user, count, totalPrice, productsInCart, activeTab } = this.state;
-
+    const {
+      user,
+      count,
+      totalPrice,
+      productsInCart,
+      activeTab,
+      clientWidth,
+    } = this.state;
     const h100 = {
       minHeight: "100vh" /* will cover the 100% of viewport */,
       overflow: "hidden",
@@ -252,10 +263,13 @@ class App extends Component {
       paddingBottom: "209px", //this needs to be the height of the footer
       backgroundColor: "#fdf9f3" /* height of your footer */,
     };
+
+    window.addEventListener("resize", this.displayWindowSize);
+
     return (
       <>
         <ToastContainer />
-        <NavBar2
+        <NavBar
           handleSetActiveTab={this.handleSetActiveTab}
           count={count}
           user={user}
@@ -266,12 +280,20 @@ class App extends Component {
             <ProtectedRoute
               path="/account/:id"
               exact
-              render={(props) => <UserDetails {...props} user={user} />}
+              render={(props) => (
+                <UserDetails {...props} user={user} clientWidth={clientWidth} />
+              )}
             />
             <ProtectedRoute
               path="/updatePassword/:id"
               exact
-              render={(props) => <UpdatePassword {...props} user={user} />}
+              render={(props) => (
+                <UpdatePassword
+                  {...props}
+                  user={user}
+                  clientWidth={clientWidth}
+                />
+              )}
             />
             <ProtectedRoute
               path="/cart/:id"
@@ -284,6 +306,7 @@ class App extends Component {
                   totalPrice={totalPrice}
                   productsInCart={productsInCart}
                   user={user}
+                  clientWidth={clientWidth}
                 />
               )}
             />
@@ -294,18 +317,23 @@ class App extends Component {
                   {...props}
                   handleAddToCart={this.handleAddToCart}
                   user={user}
+                  clientWidth={clientWidth}
                 />
               )}
             />
             <AdminProtectedRoute
               path="/adminPortal"
               exact
-              render={(props) => <AdminPortal {...props} user={user} />}
+              render={(props) => (
+                <AdminPortal {...props} user={user} clientWidth={clientWidth} />
+              )}
             />
             <Route
               path="/products"
               exact
-              render={(props) => <Products {...props} user={user} />}
+              render={(props) => (
+                <Products {...props} user={user} clientWidth={clientWidth} />
+              )}
             />
             <Route
               path="/register"
@@ -314,6 +342,7 @@ class App extends Component {
                   {...props}
                   activeTab={activeTab}
                   handleSetActiveTab={this.handleSetActiveTab}
+                  clientWidth={clientWidth}
                 />
               )}
             />
@@ -324,6 +353,7 @@ class App extends Component {
                   {...props}
                   activeTab={activeTab}
                   handleSetActiveTab={this.handleSetActiveTab}
+                  clientWidth={clientWidth}
                 />
               )}
             />
@@ -334,7 +364,7 @@ class App extends Component {
             <Redirect from="/" exact to="/home" />
             <Redirect to="/not-found" />
           </Switch>
-          <Footer />
+          <Footer clientWidth={clientWidth} />
         </div>
       </>
     );

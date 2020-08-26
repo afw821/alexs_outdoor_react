@@ -59,10 +59,12 @@ class ContactForm extends Form {
           onClose={this.handleModalClick}
         />
         <div className="row">
-          <div className="col-4"></div>
-          <div className="col-4" style={{ marginTop: "100px" }}>
+          <div
+            className="col d-flex justify-content-center"
+            style={{ marginTop: "100px" }}
+          >
             <div
-              className="jumbotron jumbotron-fluid"
+              className="jumbotron jumbotron-fluid form-width"
               style={{ backgroundColor: "whitesmoke" }}
             >
               <div className="container">

@@ -2,7 +2,7 @@ import React from "react";
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
 import { Link } from "react-router-dom";
 
-const Footer = () => {
+const Footer = ({ clientWidth }) => {
   const footerStyle = {
     position: "absolute",
     bottom: "0",
@@ -11,6 +11,7 @@ const Footer = () => {
     backgroundColor: "#343a40",
     opacity: "1.5",
   };
+  if (clientWidth < 768) return null;
   return (
     <MDBFooter
       //color="indigo"

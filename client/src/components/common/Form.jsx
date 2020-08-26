@@ -208,7 +208,7 @@ class Form extends Component {
         name={name}
         onChange={this.handleChange}
         className="browser-default custom-select"
-        style={{ border: "0", borderBottom: "1px solid lightgray" }}
+        style={{ borderBottom: "1px solid lightgray" }}
       >
         <option>{label}</option>
         {options.map((state) => (

@@ -28,13 +28,17 @@ class UpdateProduct extends Component {
           Update Product
         </MDBModalHeader>
         <MDBModalBody>
-          <ProductForm
-            user={user}
-            productId={productId}
-            indexOfUpdatedProduct={indexOfUpdatedProduct}
-            closeModal={toggleUpdateModal}
-            handleUpdateView={handleUpdateView}
-          />
+          <div className="row">
+            <div className="col d-flex justify-content-center">
+              <ProductForm
+                user={user}
+                productId={productId}
+                indexOfUpdatedProduct={indexOfUpdatedProduct}
+                closeModal={toggleUpdateModal}
+                handleUpdateView={handleUpdateView}
+              />
+            </div>
+          </div>
         </MDBModalBody>
         <MDBModalFooter>
           <MDBBtn color="primary" onClick={() => toggleUpdateModal(null, null)}>

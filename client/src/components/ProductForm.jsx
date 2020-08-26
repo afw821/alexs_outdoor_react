@@ -19,7 +19,7 @@ class ProductForm extends Form {
       stock: "",
       description: "",
       price: "",
-      selectedCategoryId: "select", //this will also be the tab from ddl that's selected
+      selectedCategoryId: "Sporting", //this will also be the tab from ddl that's selected
     },
     categories: [],
     errors: {},
@@ -142,14 +142,13 @@ class ProductForm extends Form {
     return (
       <>
         <div
-          className="jumbotron"
+          className="jumbotron form-width-multiple-items"
           style={{ marginTop: "80px", backgroundColor: "whitesmoke" }}
         >
           {!productId && (
             <>
               <div className="row">
-                <div className="col-4"></div>
-                <div className="col-6">
+                <div className="col d-flex justify-content-center">
                   <h5 className="font-bolder">Add Product</h5>
                 </div>
               </div>

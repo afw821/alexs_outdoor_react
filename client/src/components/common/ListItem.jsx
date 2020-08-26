@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const ListItem = ({ selectedTab, items, handleChange }) => {
   return (
-    <ul className="list-group" style={{ cursor: "pointer" }}>
+    <ul className="list-group tab-width" style={{ cursor: "pointer" }}>
       {items.map((item, index) => (
         <li
           name={item.name}
