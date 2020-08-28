@@ -8,7 +8,6 @@ import CheckoutModal from "./common/CheckoutModal";
 import { purchase } from "../services/purchaseService";
 import { getCartTableOptions } from "../utils/cartOptions";
 import { toast } from "react-toastify";
-import { result } from "lodash";
 
 class CartDetails extends Component {
   state = {

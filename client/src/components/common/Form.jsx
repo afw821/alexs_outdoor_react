@@ -286,10 +286,15 @@ class Form extends Component {
       </div>
     );
   }
-  renderBtn(label, color, type) {
+  renderBtn(label, color, type, clientWidth, width) {
+    console.log("client width", clientWidth);
     return (
       <div className="text-center">
-        <MDBBtn type={type} color={color}>
+        <MDBBtn
+          className={clientWidth < 791 ? "btn-sm" : ""}
+          type={type}
+          color={color}
+        >
           {label}
         </MDBBtn>
       </div>

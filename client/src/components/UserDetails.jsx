@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { getUserById } from "../services/userService";
 import AccountInfo from "./AccountInfo";
 import ListItem from "./common/ListItem";
 import OrderInfo from "./OrderInfo";
 import { Link } from "react-router-dom";
+import DropDownBtn from "./common/DropDownBtn";
 
 class UserDetails extends Component {
   state = {
@@ -39,66 +39,106 @@ class UserDetails extends Component {
 
   render() {
     const { selectedTab, showAccountInfoRow, showEditBtn } = this.state;
-    const { user } = this.props;
+    const { user, clientWidth } = this.props;
+    const options = [
+      { id: 1, name: "My Account" },
+      { id: 2, name: "Orders" },
+    ];
     return (
-      <div className="row" style={{ marginTop: "125px" }}>
-        <div className="col-3">
-          <ListItem
-            selectedTab={selectedTab}
-            handleChange={this.handleTabChange}
-            items={[
-              { id: 1, name: "My Account" },
-              { id: 2, name: "Orders" },
-            ]}
-          />
-        </div>
-        <div className="col-7">
-          <div className="jumbotron">
-            <div className="row">
-              <div className="col d-flex justify-content-center">
-                <h5>My Account</h5>
+      <>
+        {clientWidth < 791 && (
+          <div className="row" style={{ marginTop: "100px" }}>
+            <div className="col d-flex justify-content-center">
+              <DropDownBtn
+                title={"Select Items to Manage"}
+                items={options}
+                selectedTab={selectedTab}
+                handleChange={this.handleTabChange}
+              />
+            </div>
+          </div>
+        )}
+        <div className="row" style={{ marginTop: "125px" }}>
+          {clientWidth > 791 && (
+            <div className="col-2">
+              <div className="row">
+                <div className="col">
+                  <ListItem
+                    selectedTab={selectedTab}
+                    handleChange={this.handleTabChange}
+                    items={options}
+                  />
+                </div>
               </div>
             </div>
+          )}
+          <div
+            className={clientWidth > 791 ? "col-10" : "col-12"}
+            style={
+              clientWidth > 791
+                ? { paddingLeft: "125px" }
+                : { margin: "0px 15% 0px 10%" }
+            }
+          >
             <div className="row">
               <div className="col">
-                {selectedTab.name === "My Account" ? (
-                  <AccountInfo
-                    handleUserUpdate={this.handleUserUpdate}
-                    handleCancelClick={this.handleCancelClick}
-                    showAccountInfoRow={showAccountInfoRow}
-                    user={user}
-                  />
-                ) : (
-                  <OrderInfo user={user} />
-                )}
-              </div>
-            </div>
+                <div className="jumbotron form-width-my-account">
+                  <div className="row">
+                    <div className="col d-flex justify-content-center">
+                      <h5>My Account</h5>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      {selectedTab.name === "My Account" ? (
+                        <AccountInfo
+                          handleUserUpdate={this.handleUserUpdate}
+                          handleCancelClick={this.handleCancelClick}
+                          showAccountInfoRow={showAccountInfoRow}
+                          clientWidth={clientWidth}
+                          user={user}
+                        />
+                      ) : (
+                        <OrderInfo user={user} clientWidth={clientWidth} />
+                      )}
+                    </div>
+                  </div>
 
-            <div className="row">
-              <div className="col d-flex justify-content-center">
-                {selectedTab.name === "My Account" && showEditBtn ? (
-                  <>
-                    <button
-                      onClick={(e) => this.handleEditClick(e)}
-                      className="btn btn-info"
-                    >
-                      Edit
-                    </button>
-                    <Link
-                      className="btn btn-info"
-                      to={`/updatePassword/${user.id}`}
-                    >
-                      Update Password
-                    </Link>
-                  </>
-                ) : (
-                  ""
-                )}
+                  <div className="row">
+                    <div className="col d-flex justify-content-center">
+                      {selectedTab.name === "My Account" && showEditBtn ? (
+                        <>
+                          <button
+                            onClick={(e) => this.handleEditClick(e)}
+                            className={`btn btn-info ${
+                              clientWidth < 791 ? "btn-sm" : ""
+                            }`}
+                          >
+                            Edit
+                          </button>
+                          <Link to={`/updatePassword/${user.id}`}>
+                            <button
+                              className={`btn btn-info ${
+                                clientWidth < 791 ? "btn-sm" : ""
+                              }`}
+                            >
+                              {clientWidth < 791
+                                ? "Update PW"
+                                : "Update Password"}
+                            </button>
+                          </Link>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

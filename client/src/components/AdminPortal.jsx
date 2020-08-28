@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ProductForm from "../components/ProductForm";
 import ListItem from "./common/ListItem";
 import CategoryManager from "./CategoryManager";
-import DropDownList from "./common/DropDownList";
+import DropDownBtn from "./common/DropDownBtn";
 
 class AdminPortal extends Component {
   state = {
@@ -23,15 +23,13 @@ class AdminPortal extends Component {
     return (
       <>
         {clientWidth < 791 && (
-          <div className="row" style={{ marginTop: "100px" }} id="row-id">
-            <div className="col">
-              <DropDownList
-                name={"ddlTab_cm"}
-                label={"Select"}
-                options={options}
+          <div className="row" style={{ marginTop: "100px" }}>
+            <div className="col d-flex justify-content-center">
+              <DropDownBtn
+                title={"Select Items to Manage"}
+                items={options}
+                selectedTab={selectedTab}
                 handleChange={this.handleTabChange}
-                error={null}
-                selectedItem={selectedTab.name}
               />
             </div>
           </div>
@@ -44,13 +42,7 @@ class AdminPortal extends Component {
                   <ListItem
                     selectedTab={selectedTab}
                     handleChange={this.handleTabChange}
-                    items={[
-                      { id: 1, name: "Manage Products" },
-                      { id: 2, name: "Manage Categories" },
-                      { id: 3, name: "Manage Purchases" },
-                      { id: 4, name: "Manage Carts" },
-                      { id: 5, name: "Manage Users" },
-                    ]}
+                    items={options}
                   />
                 </div>
               </div>

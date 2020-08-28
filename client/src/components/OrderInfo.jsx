@@ -60,7 +60,7 @@ class OrderInfo extends Component {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, clientWdth } = this.props;
     if (user.Purchases.length === 0)
       return <div>{`You have no purchases ${user.firstName}!`}</div>;
     else {

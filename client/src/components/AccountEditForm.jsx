@@ -74,9 +74,8 @@ class AccountEditForm extends Form {
       this.setState({ data: this.mapToViewModel(user) }); //returns array maybe before re-render
       //it passes in empty string??
     } catch (ex) {
-      // if (ex.response && ex.response.status === 404)
-      console.log(ex);
-      //this.props.history.replace("/not-found");
+      if (ex.response.status === 400 && ex.response.status === 404)
+        toast.error(ex.response.data);
     }
   }
 
@@ -95,7 +94,6 @@ class AccountEditForm extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      console.log("data from do submit", data);
       const result = await updateUser(
         data.id,
         data.firstName,
@@ -139,6 +137,7 @@ class AccountEditForm extends Form {
 
   render() {
     const { states } = this.state.options;
+    const { clientWidth } = this.props;
     return (
       <form className="mt-4" onSubmit={this.handleSubmit}>
         {this.renderInlineFormGroup("firstName", "First Name", "text")}
@@ -158,12 +157,12 @@ class AccountEditForm extends Form {
         <div className="row">
           <div className="col-3"></div>
           <div className="col-3">
-            {this.renderBtn("Submit", "primary", "submit")}
+            {this.renderBtn("Submit", "primary", "submit", clientWidth)}
           </div>
           <div className="col-3">
             <button
               onClick={this.props.handleCancelClick}
-              className="btn btn-primary"
+              className={`btn btn-primary ${clientWidth < 791 ? "btn-sm" : ""}`}
               type="button"
             >
               Cancel

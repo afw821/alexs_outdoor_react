@@ -11,6 +11,7 @@ class AccountInfo extends Component {
       showAccountInfoRow,
       handleCancelClick,
       handleUserUpdate,
+      clientWidth,
     } = this.props;
     if (showAccountInfoRow) {
       return (
@@ -32,6 +33,7 @@ class AccountInfo extends Component {
             handleUserUpdate={handleUserUpdate}
             handleCancelClick={handleCancelClick}
             user={user}
+            clientWidth={clientWidth}
           />
         </div>
       );

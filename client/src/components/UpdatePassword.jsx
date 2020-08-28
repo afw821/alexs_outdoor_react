@@ -50,9 +50,11 @@ class UpdatePassword extends Form {
   render() {
     return (
       <div className="row">
-        <div className="col-4"></div>
-        <div className="col-4" style={{ marginTop: "100px" }}>
-          <div className="jumbotron jumbotron-fluid">
+        <div
+          className="col d-flex justify-content-center"
+          style={{ marginTop: "100px" }}
+        >
+          <div className="jumbotron jumbotron-fluid form-width">
             <div className="container">
               <div className="row">
                 <div className="col d-flex justify-content-center">
