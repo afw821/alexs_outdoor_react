@@ -155,14 +155,14 @@ class AccountEditForm extends Form {
         )}
         {this.renderInlineFormGroup("zipCode", "Zip Code", "text")}
         <div className="row">
-          <div className="col-3"></div>
-          <div className="col-3">
+          <div className="col d-flex justify-content-center">
             {this.renderBtn("Submit", "primary", "submit", clientWidth)}
-          </div>
-          <div className="col-3">
+
             <button
               onClick={this.props.handleCancelClick}
-              className={`btn btn-primary ${clientWidth < 791 ? "btn-sm" : ""}`}
+              className={`btn btn-primary ml-5 ${
+                clientWidth < 791 ? "btn-sm" : ""
+              }`}
               type="button"
             >
               Cancel

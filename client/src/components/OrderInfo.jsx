@@ -60,7 +60,8 @@ class OrderInfo extends Component {
   };
 
   render() {
-    const { user, clientWdth } = this.props;
+    const { user, clientWidth } = this.props;
+
     if (user.Purchases.length === 0)
       return <div>{`You have no purchases ${user.firstName}!`}</div>;
     else {
@@ -69,8 +70,16 @@ class OrderInfo extends Component {
           <thead className="thead-dark">
             <tr>
               <th scope="col">Product</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Purchase Date</th>
+              {clientWidth < 400 ? (
+                <th style={{ display: "none" }}></th>
+              ) : (
+                <th scope="col">Quantity</th>
+              )}
+              {clientWidth < 467 ? (
+                <th style={{ display: "none" }}></th>
+              ) : (
+                <th scope="col">Purchase Date</th>
+              )}
               <th scope="col"></th>
             </tr>
           </thead>
@@ -78,8 +87,16 @@ class OrderInfo extends Component {
             {this.state.products.map((product, i) => (
               <tr key={i}>
                 <th>{product.product.name}</th>
-                <td>{product.quantity}</td>
-                <td>{this.formatDate(product.purchaseDate)}</td>
+                {clientWidth < 400 ? (
+                  <td style={{ display: "none" }}></td>
+                ) : (
+                  <td>{product.quantity}</td>
+                )}
+                {clientWidth < 467 ? (
+                  <td style={{ display: "none" }}></td>
+                ) : (
+                  <td>{this.formatDate(product.purchaseDate)}</td>
+                )}
                 <td>
                   <img
                     style={{ maxHeight: "100px", maxWidth: "100px" }}

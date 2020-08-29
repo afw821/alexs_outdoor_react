@@ -32,6 +32,10 @@ body {
     monospace;
 } */
 
+.form-padding {
+  padding-left: 125px !important;
+}
+
 /* small screen mobile devices */
 @media only screen and (max-width: 559px) {
   .form-width {
@@ -62,7 +66,7 @@ body {
   }
 
   .form-width-my-account {
-    width: 75%;
+    width: 79%;
   }
 
   .tab-width {

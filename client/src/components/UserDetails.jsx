@@ -37,6 +37,13 @@ class UserDetails extends Component {
     });
   };
 
+  getStyle = (clientWidth) => {
+    if (clientWidth < 791 && clientWidth > 560)
+      return { margin: "0px 10% 0px 10%" };
+    else if (clientWidth > 791) return { "": "" };
+    else return { margin: "0px 15% 0px 5%" };
+  };
+
   render() {
     const { selectedTab, showAccountInfoRow, showEditBtn } = this.state;
     const { user, clientWidth } = this.props;
@@ -73,12 +80,8 @@ class UserDetails extends Component {
             </div>
           )}
           <div
-            className={clientWidth > 791 ? "col-10" : "col-12"}
-            style={
-              clientWidth > 791
-                ? { paddingLeft: "125px" }
-                : { margin: "0px 15% 0px 10%" }
-            }
+            className={clientWidth > 791 ? "col-10 form-padding" : "col-12"}
+            style={this.getStyle(clientWidth)}
           >
             <div className="row">
               <div className="col">
