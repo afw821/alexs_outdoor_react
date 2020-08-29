@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Loader from "react-loader-spinner";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import { getCartTableOptions } from "./../../utils/cartOptions";
@@ -7,7 +6,6 @@ import { regenerateToken, loginWithJwt } from "../../services/authService";
 import { updateProductQuant } from "../../services/productService";
 import { purchase } from "../../services/purchaseService";
 import { sendEmailPurchase } from "../../services/emailService";
-
 import {
   MDBBtn,
   MDBModal,
@@ -16,6 +14,7 @@ import {
   MDBModalFooter,
 } from "mdbreact";
 import { toast } from "react-toastify";
+import Loader from "./Loader";
 
 class CheckoutModal extends Component {
   makePurchase = async (productsInCart) => {
@@ -90,20 +89,6 @@ class CheckoutModal extends Component {
     } = this.props;
     return (
       <>
-        <Loader
-          style={{
-            top: "200px",
-            left: "50%",
-            zIndex: "10000000000",
-            position: "absolute",
-          }}
-          type="ThreeDots"
-          color="#00BFFF"
-          height={100}
-          width={100}
-          timeout={4000}
-          visible={showLoader}
-        />
         <MDBModal
           isOpen={isOpen}
           //toggle={toggle}
@@ -129,7 +114,13 @@ class CheckoutModal extends Component {
               />
             </table>
           </MDBModalBody>
-          <MDBModalBody></MDBModalBody>
+          <MDBModalBody>
+            <div className="row">
+              <div className="col d-flex justify-content-center">
+                <Loader showLoader={showLoader} />
+              </div>
+            </div>
+          </MDBModalBody>
 
           <MDBModalFooter>
             <MDBBtn color="secondary" onClick={closeModal}>

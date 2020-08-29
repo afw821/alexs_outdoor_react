@@ -66,6 +66,7 @@ class CartDetails extends Component {
       user,
       handleRemoveFromCart,
       calculateQuantity,
+      clientWidth,
     } = this.props;
     if (productsInCart.length === 0)
       return (
@@ -93,11 +94,19 @@ class CartDetails extends Component {
           showLoader={this.state.showLoader}
           handleToggleLoader={this.handleToggleLoader}
         />
+
         <div
           className="row d-flex justify-content-center"
           style={{ marginTop: "100px" }}
         >
-          <div className="col-8">
+          <div
+            className="col-8"
+            style={
+              clientWidth < 740
+                ? { marginRight: `${clientWidth / 25}%` }
+                : { "": "" }
+            }
+          >
             <table className="table">
               <TableHead options={getCartTableOptions()} />
               <TableBody
@@ -115,7 +124,11 @@ class CartDetails extends Component {
         </div>
         <div className="row d-flex justify-content-center">
           <div className="col-8">
-            <TotalRow totalPrice={totalPrice} toggleModal={this.toggleModal} />
+            <TotalRow
+              totalPrice={totalPrice}
+              toggleModal={this.toggleModal}
+              clientWidth={clientWidth}
+            />
           </div>
         </div>
       </>

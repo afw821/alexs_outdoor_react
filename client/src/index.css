@@ -74,6 +74,12 @@ body {
   }
 }
 
+/* Custom for cart details */
+@media only screen and (min-width: 739px) {
+  .cart-details-form {
+  }
+}
+
 /* This is default...Desktop */
 @media only screen and (min-width: 1140px) {
   .form-width {
@@ -93,7 +99,7 @@ body {
   }
 }
 
-/* X-Large */
+/* X-Large Custom */
 @media only screen and (min-width: 1450px) {
   .tab-width {
     width: 110%;
