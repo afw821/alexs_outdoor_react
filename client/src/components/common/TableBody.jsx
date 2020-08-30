@@ -1,4 +1,5 @@
 import React from "react";
+import QuantitySelector from "./QuantitySelector";
 
 const TableBody = (props) => {
   const {
@@ -10,6 +11,7 @@ const TableBody = (props) => {
     calculateQuantity,
     calculatePrice,
     removeBtn,
+    clientWidth,
   } = props;
   return (
     <tbody>
@@ -20,48 +22,38 @@ const TableBody = (props) => {
             onMouseEnter={(e) => handleHover(e, index)}
             onMouseLeave={(e) => handleLeave(e, index)}
           >
-            <th>
-              <div className="row">
-                <div className="col">
-                  <strong>{product.product.name}</strong>
+            {clientWidth > 560 ? (
+              <th>
+                <div className="row">
+                  <div className="col">
+                    <strong>{product.product.name}</strong>
+                  </div>
                 </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col">
-                  {removeBtn.row === index && (
-                    <button
-                      onClick={(e) => handleRemoveFromCart(e, product)}
-                      className="btn btn-sm btn-danger"
-                    >
-                      Remove
-                    </button>
-                  )}
+                <div className="row mt-3">
+                  <div className="col">
+                    {removeBtn.row === index && (
+                      <button
+                        onClick={(e) => handleRemoveFromCart(e, product)}
+                        className="btn btn-sm btn-danger"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </th>
+              </th>
+            ) : (
+              <th style={{ display: "none" }}></th>
+            )}
             <td>
               {" "}
-              <div className="def-number-input number-input mt-2">
-                <button
-                  onClick={() =>
-                    calculateQuantity(product.quantity, index, false)
-                  }
-                  className="minus"
-                ></button>
-                <input
-                  className="quantity"
-                  name="quantity"
-                  onChange={() => handleChangeQuantity(product.quantity, index)} //Deprecated
-                  value={product.quantity}
-                  type="number"
-                />
-                <button
-                  onClick={() =>
-                    calculateQuantity(product.quantity, index, true)
-                  }
-                  className="plus"
-                ></button>
-              </div>
+              <QuantitySelector
+                calculateQuantity={calculateQuantity}
+                handleChangeQuantity={handleChangeQuantity}
+                product={product}
+                index={index}
+                clientWidth={clientWidth}
+              />
             </td>
             <td>
               <strong>

@@ -58,6 +58,16 @@ class CartDetails extends Component {
     // }, 4000);
   };
 
+  renderTableHeaderOptions = (clientWidth) => {
+    const options = getCartTableOptions();
+    if (clientWidth < 560) {
+      //need to splice the first
+      return options.slice(1);
+    } else {
+      return options;
+    }
+  };
+
   render() {
     const { showModal } = this.state;
     const {
@@ -93,22 +103,19 @@ class CartDetails extends Component {
           removeBtn={this.state.removeBtn}
           showLoader={this.state.showLoader}
           handleToggleLoader={this.handleToggleLoader}
+          clientWidth={clientWidth}
         />
 
         <div
           className="row d-flex justify-content-center"
           style={{ marginTop: "100px" }}
         >
-          <div
-            className="col-8"
-            style={
-              clientWidth < 740
-                ? { marginRight: `${clientWidth / 25}%` }
-                : { "": "" }
-            }
-          >
+          <div className="col-8">
             <table className="table">
-              <TableHead options={getCartTableOptions()} />
+              <TableHead
+                clientWidth={clientWidth}
+                options={this.renderTableHeaderOptions(clientWidth)}
+              />
               <TableBody
                 items={productsInCart}
                 handleHover={this.handleHover}
@@ -118,6 +125,7 @@ class CartDetails extends Component {
                 calculateQuantity={calculateQuantity}
                 calculatePrice={this.calculatePrice}
                 removeBtn={this.state.removeBtn}
+                clientWidth={clientWidth}
               />
             </table>
           </div>

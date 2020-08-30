@@ -86,6 +86,7 @@ class CheckoutModal extends Component {
       removeBtn,
       showLoader,
       handleToggleLoader,
+      clientWidth,
     } = this.props;
     return (
       <>
@@ -101,7 +102,10 @@ class CheckoutModal extends Component {
           </MDBModalHeader>
           <MDBModalBody>
             <table className="table">
-              <TableHead options={getCartTableOptions()} />
+              <TableHead
+                clientWidth={clientWidth}
+                options={getCartTableOptions()}
+              />
               <TableBody
                 items={productsInCart}
                 handleHover={handleHover}
@@ -111,6 +115,7 @@ class CheckoutModal extends Component {
                 calculateQuantity={calculateQuantity}
                 calculatePrice={calculatePrice}
                 removeBtn={removeBtn}
+                clientWidth={clientWidth}
               />
             </table>
           </MDBModalBody>
