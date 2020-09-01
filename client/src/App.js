@@ -255,15 +255,6 @@ class App extends Component {
       activeTab,
       clientWidth,
     } = this.state;
-    const h100 = {
-      minHeight: "100vh" /* will cover the 100% of viewport */,
-      overflow: "hidden",
-      display: "block",
-      position: "relative",
-      paddingBottom: "209px", //this needs to be the height of the footer
-      backgroundColor: "#fdf9f3" /* height of your footer */,
-    };
-
     window.addEventListener("resize", this.displayWindowSize);
 
     return (
@@ -275,7 +266,7 @@ class App extends Component {
           user={user}
           activeTab={activeTab}
         />
-        <div style={h100} className="container-fluid">
+        <div className="container-fluid h100">
           <Switch>
             <ProtectedRoute
               path="/account/:id"
@@ -302,6 +293,7 @@ class App extends Component {
                 <CartDetails
                   {...props}
                   handleRemoveFromCart={this.handleRemoveFromCart}
+                  handleSetActiveTab={this.handleSetActiveTab}
                   calculateQuantity={this.calculateQuantity}
                   totalPrice={totalPrice}
                   productsInCart={productsInCart}
@@ -332,7 +324,12 @@ class App extends Component {
               path="/products"
               exact
               render={(props) => (
-                <Products {...props} user={user} clientWidth={clientWidth} />
+                <Products
+                  {...props}
+                  user={user}
+                  handleSetActiveTab={this.handleSetActiveTab}
+                  clientWidth={clientWidth}
+                />
               )}
             />
             <Route

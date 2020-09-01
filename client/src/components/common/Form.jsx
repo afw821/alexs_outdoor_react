@@ -38,7 +38,6 @@ class Form extends Component {
     const data = { ...this.state.data };
     switch (input.name) {
       case "password":
-        console.log("password");
         const firstPassword = data.firstPassword;
         const pwErrorMessage = this.doPasswordsMatch(
           input.value,

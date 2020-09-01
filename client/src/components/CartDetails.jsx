@@ -34,7 +34,7 @@ class CartDetails extends Component {
     e.currentTarget.style.backgroundColor = "#fdf9f3";
     this.setState({ removeBtn: { row: null, show: false } });
   };
-  handleChangeQuantity() {}
+  handleChangeQuantity = () => {};
 
   toggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
@@ -52,10 +52,6 @@ class CartDetails extends Component {
   };
   handleToggleLoader = () => {
     this.setState({ showLoader: !this.state.showLoader });
-
-    // setTimeout(() => {
-    //   this.setState({ showLoader: !this.state.showLoader });
-    // }, 4000);
   };
 
   renderTableHeaderOptions = (clientWidth) => {
@@ -77,6 +73,7 @@ class CartDetails extends Component {
       handleRemoveFromCart,
       calculateQuantity,
       clientWidth,
+      handleSetActiveTab,
     } = this.props;
     if (productsInCart.length === 0)
       return (
@@ -107,7 +104,9 @@ class CartDetails extends Component {
         />
 
         <div
-          className="row d-flex justify-content-center"
+          className={`row ${
+            clientWidth > 360 ? "d-flex justify-content-center" : "cart-padding"
+          }`}
           style={{ marginTop: "100px" }}
         >
           <div className="col-8">
@@ -136,6 +135,7 @@ class CartDetails extends Component {
               totalPrice={totalPrice}
               toggleModal={this.toggleModal}
               clientWidth={clientWidth}
+              handleSetActiveTab={handleSetActiveTab}
             />
           </div>
         </div>

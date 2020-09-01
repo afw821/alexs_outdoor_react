@@ -153,7 +153,7 @@ class Products extends Component {
       indexOfUpdatedProduct,
     } = this.state;
 
-    const { user } = this.props;
+    const { user, handleSetActiveTab } = this.props;
     const { totalCount, data: products } = this.getPagedData();
     return (
       <>
@@ -202,6 +202,7 @@ class Products extends Component {
                 user={user}
                 handleDelete={this.handleTogglePrompt}
                 handleToggleUpdate={this.handleToggleUpdate}
+                handleSetActiveTab={handleSetActiveTab}
               />
             </div>
             <div className="row">

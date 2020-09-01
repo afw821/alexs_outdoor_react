@@ -2,7 +2,13 @@ import React from "react";
 import _arrayBufferToBase64 from "../utils/toBase64String";
 import { Link } from "react-router-dom";
 
-const ProductCard = ({ products, user, handleDelete, handleToggleUpdate }) => {
+const ProductCard = ({
+  products,
+  user,
+  handleDelete,
+  handleToggleUpdate,
+  handleSetActiveTab,
+}) => {
   return products.map((product, index) => (
     <div className="col-4 d-flex justify-content-center" key={product.id}>
       <div
@@ -61,7 +67,11 @@ const ProductCard = ({ products, user, handleDelete, handleToggleUpdate }) => {
                 </Link>
               )}
               {!user && (
-                <Link to="/login" className="btn btn-primary">
+                <Link
+                  to="/login"
+                  className="btn btn-primary"
+                  onClick={() => handleSetActiveTab("Login")}
+                >
                   Login to Shop
                 </Link>
               )}

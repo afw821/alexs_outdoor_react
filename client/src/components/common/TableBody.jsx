@@ -63,6 +63,7 @@ const TableBody = (props) => {
             </td>
             <td>
               {" "}
+              {clientWidth > 560 ? "" : <span>{product.product.name}</span>}
               <img
                 style={{ maxHeight: "100px", maxWidth: "100px" }}
                 src={`data:image/png;base64,${product.product.imgSrc}`}

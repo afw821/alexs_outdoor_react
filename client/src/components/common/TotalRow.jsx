@@ -12,31 +12,14 @@ import {
   MDBIcon,
 } from "mdbreact";
 import { Link } from "react-router-dom";
-const TotalRow = ({ totalPrice, toggleModal, clientWidth }) => {
+const TotalRow = ({
+  totalPrice,
+  toggleModal,
+  clientWidth,
+  handleSetActiveTab,
+}) => {
   return (
-    // <div className="card" style={{ backgroundColor: "whitesmoke" }}>
-    //   <div className="card-body">
-    //     <div className="row">
-    //       <div className="col-2">
-    //         <h5>Total:</h5>
-    //       </div>
-    //       <div
-    //         className="col-8 d-flex justify-content-end"
-    //         style={{ paddingRight: "80px" }}
-    //       >
-    //         <span>
-    //           <strong>${parseFloat(totalPrice.toFixed(2))}</strong>
-    //         </span>
-    //       </div>
-    //       <div className="col-2">
-    //         <button onClick={toggleModal} className="btn btn-sm btn-primary">
-    //           Checkout
-    //         </button>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
-    <MDBCard className="text-center">
+    <MDBCard className={`text-center ${clientWidth > 400 ? "" : "tr-width"}`}>
       <MDBCardHeader>
         <MDBNav
           className={clientWidth < 750 ? "d-flex justify-content-center" : ""}
@@ -83,7 +66,11 @@ const TotalRow = ({ totalPrice, toggleModal, clientWidth }) => {
         </MDBCardText>
 
         <Link to="/products">
-          <MDBBtn className={clientWidth < 750 ? "btn-sm" : ""} color="primary">
+          <MDBBtn
+            className={clientWidth < 750 ? "btn-sm" : ""}
+            onClick={() => handleSetActiveTab("Products")}
+            color="primary"
+          >
             Continue Shopping
           </MDBBtn>
         </Link>

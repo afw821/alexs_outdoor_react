@@ -26,7 +26,7 @@ class ProductForm extends Form {
   };
 
   schema = {
-    imageSrc: Joi.string().label("Image Source"),
+    imageSrc: Joi.string().label("Image"),
     file: Joi.label("File"),
     name: Joi.string().required().label("Product Name"),
     stock: Joi.number().required().label("Stock"),
@@ -49,6 +49,8 @@ class ProductForm extends Form {
 
   mapToViewModel(product) {
     return {
+      imageSrc: "",
+      file: null,
       name: product.name,
       stock: product.inStock,
       description: product.description,

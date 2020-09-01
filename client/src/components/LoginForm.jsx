@@ -4,6 +4,7 @@ import { MDBCard, MDBCardBody, MDBModalFooter } from "mdbreact";
 import { login } from "../services/authService";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
+import Loader from "./common/Loader";
 
 class LoginForm extends Form {
   state = {
@@ -12,6 +13,7 @@ class LoginForm extends Form {
       loginPassword: "",
     },
     errors: {},
+    showLoader: false,
   };
 
   schema = {
@@ -21,69 +23,79 @@ class LoginForm extends Form {
 
   doSubmit = async () => {
     try {
+      this.setState({ showLoader: true });
       const { data } = this.state;
       await login(data.username, data.loginPassword);
 
       window.location = "/products";
     } catch (ex) {
+      console.log("errrrrrrrrrrrrr");
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
         errors.username = ex.response.data;
-        this.setState({ errors });
+        this.setState({ errors, showLoader: false });
       }
     }
   };
 
   render() {
     return (
-      <div className="row">
-        <div className="col-4"></div>
-        <div className="col-sm-4 mt-3">
-          <MDBCard style={{ marginTop: "100px" }}>
-            <MDBCardBody>
-              <form className="mt-4" onSubmit={this.handleSubmit}>
-                <p className="h5 text-center mb-4">Log In</p>
-                <div className="grey-text">
-                  <div className="form-row">
-                    <div className="col">
-                      {this.renderMDBInput(
-                        "Username",
-                        "user",
-                        "text",
-                        "username"
-                      )}
-                    </div>
-                  </div>
-                  <div className="form-row">
-                    <div className="col">
-                      {this.renderMDBInput(
-                        "Password",
-                        "lock",
-                        "password",
-                        "loginPassword"
-                      )}
-                    </div>
-                  </div>
-                  <div className="row pb-3">
-                    <div className="col">
-                      {this.renderBtn("Login", "primary", "submit")}
-                    </div>
-                  </div>
-                </div>
-              </form>
-              <MDBModalFooter className="d-flex justify-content-center">
-                <div className="row">
-                  <div className="col">
-                    <p onClick={() => this.props.handleSetActiveTab("Sign Up")}>
-                      Not a member?<Link to="/register"> Sign Up</Link>
-                    </p>
-                  </div>
-                </div>
-              </MDBModalFooter>
-            </MDBCardBody>
-          </MDBCard>
+      <>
+        <div className="row login-loader">
+          <div className="col d-flex justify-content-center">
+            <Loader showLoader={this.state.showLoader} />
+          </div>
         </div>
-      </div>
+        <div className="row">
+          <div className="col d-flex justify-content-center mt-3">
+            <MDBCard className="form-width" style={{ marginTop: "100px" }}>
+              <MDBCardBody>
+                <form className="mt-4" onSubmit={this.handleSubmit}>
+                  <p className="h5 text-center mb-4">Log In</p>
+                  <div className="grey-text">
+                    <div className="form-row">
+                      <div className="col">
+                        {this.renderMDBInput(
+                          "Username",
+                          "user",
+                          "text",
+                          "username"
+                        )}
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="col">
+                        {this.renderMDBInput(
+                          "Password",
+                          "lock",
+                          "password",
+                          "loginPassword"
+                        )}
+                      </div>
+                    </div>
+                    <div className="row pb-3">
+                      <div className="col">
+                        {this.renderBtn("Login", "primary", "submit")}
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <MDBModalFooter className="d-flex justify-content-center">
+                  <div className="row">
+                    <div className="col">
+                      <p
+                        onClick={() => this.props.handleSetActiveTab("Sign Up")}
+                      >
+                        Not a member?<Link to="/register"> Sign Up</Link>
+                      </p>
+                    </div>
+                  </div>
+                </MDBModalFooter>
+              </MDBCardBody>
+            </MDBCard>
+          </div>
+        </div>
+      </>
     );
   }
 }

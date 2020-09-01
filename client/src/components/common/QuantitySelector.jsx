@@ -35,6 +35,26 @@ const QuantitySelector = ({
       ) : (
         ""
       )}
+      {clientWidth > 740 ? (
+        ""
+      ) : (
+        <div className="row mt-2 pl-3">
+          <div className="col-4 mr-1 responsive-quantity d-flex justify-content-center align-items-center">
+            <i
+              class="fa fa-minus fa-lg"
+              onClick={() => calculateQuantity(product.quantity, index, false)}
+              aria-hidden="true"
+            ></i>
+          </div>
+          <div className="col-4 responsive-quantity d-flex justify-content-center align-items-center">
+            <i
+              class="fa fa-plus fa-lg"
+              onClick={() => calculateQuantity(product.quantity, index, true)}
+              aria-hidden="true"
+            ></i>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

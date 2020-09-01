@@ -1,5 +1,4 @@
 import React from "react";
-import { MDBSpinner } from "mdbreact";
 const Loader = ({ showLoader }) => {
   return (
     <div

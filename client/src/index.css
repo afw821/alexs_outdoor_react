@@ -36,6 +36,35 @@ body {
   padding-left: 125px !important;
 }
 
+.cart-padding {
+  padding: 0 10%;
+}
+
+.tr-width {
+  width: 125%;
+}
+
+.responsive-quantity {
+  border: 1px solid gray;
+  border-radius: 5px;
+  height: 1.5rem;
+  cursor: pointer;
+}
+.h100 {
+  min-height: 100vh; /* will cover the 100% of viewport */
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 209px; /*//this needs to be the height of the footer*/
+  background-color: #fdf9f3; /* height of your footer */
+}
+
+.login-loader {
+  z-index: 10000000;
+  position: relative;
+  top: 350px;
+}
+
 /* small screen mobile devices */
 @media only screen and (max-width: 559px) {
   .form-width {
