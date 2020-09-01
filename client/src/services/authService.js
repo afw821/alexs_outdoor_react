@@ -46,7 +46,7 @@ export function getJwt() {
 }
 
 export async function regenerateToken(user) {
-  const token = await http.post(apiUrl + "/auth/generateToken/", user);
+  const token = await http.post(deployedApiUrl + "/auth/generateToken/", user);
 
   return token;
 }
