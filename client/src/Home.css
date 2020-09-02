@@ -1,0 +1,19 @@
+#contactformpage .view {
+  background-image: url("https://mdbootstrap.com/img/Photos/Slides/img%20(45).jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  min-height: 50vh;
+}
+
+#contactformpage {
+  margin-top: 75px;
+}
+
+#contactformpage h6 {
+  line-height: 1.7;
+}
+
+#contactformpage .form-check {
+  margin-bottom: 0 !important;
+}

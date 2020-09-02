@@ -27,6 +27,7 @@ import { deleteCartByPkId } from "./services/cartService";
 import { updateCart } from "./services/cartService";
 import { activeTabRefresh } from "./utils/activeTabRefresh";
 import "react-toastify/dist/ReactToastify.css";
+import ContactPage from "./components/ContactForm2";
 
 class App extends Component {
   state = {

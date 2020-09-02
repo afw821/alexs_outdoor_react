@@ -5,6 +5,7 @@ import { getStates } from "../utils/getStates";
 import Joi from "joi-browser";
 import { register } from "../services/userService";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 class RegisterForm extends Form {
   state = {
@@ -40,20 +41,6 @@ class RegisterForm extends Form {
     isAdmin: Joi.label("Administrator"),
   };
 
-  componentDidMount() {
-    console.log("cdm");
-  }
-
-  componentDidUpdate(prevProps) {
-    console.log("cdu from register.jsx", prevProps);
-    if (prevProps.location.pathname !== "/register") {
-      console.log("it is not the path");
-    }
-    // if (this.props.activeTab !== prevProps.activeTab) {
-    //   console.log("cdu !== from RegisterForm.jsx");
-    // }
-  }
-
   doSubmit = async () => {
     try {
       const { data } = this.state;
@@ -70,16 +57,11 @@ class RegisterForm extends Form {
         data.password,
         data.isAdmin
       );
-      //set active tab
-      handleSetActiveTab("Login");
-
       this.props.history.push("/login");
-      // window.location = "/home";
+      handleSetActiveTab("Login");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.firstEmail = ex.response.data;
-        this.setState({ errors });
+        toast.error(ex.response.data);
       }
     }
   };

@@ -17,10 +17,6 @@ class Form extends Component {
     if (firstPassword !== password) return "Passwords must match";
     else return "Passwords match!";
   };
-  doEmailsMatch = (email, firstEmail) => {
-    if (firstEmail !== email) return "Emails must match";
-    else return "They match!";
-  };
 
   validateOnSubmit = () => {
     const options = { abortEarly: false };
