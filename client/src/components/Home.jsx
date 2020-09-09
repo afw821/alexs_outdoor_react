@@ -1,28 +1,20 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import {
-  MDBNavbar,
-  MDBNavbarBrand,
-  MDBNavbarNav,
-  MDBNavItem,
-  MDBNavLink,
-  MDBNavbarToggler,
-  MDBCollapse,
-  MDBMask,
-  MDBRow,
-  MDBCol,
-  MDBBtn,
-  MDBView,
-  MDBContainer,
-  MDBFormInline,
-  MDBCard,
-  MDBCardBody,
-  MDBInput,
-} from "mdbreact";
+import { MDBMask, MDBRow, MDBBtn, MDBView, MDBContainer } from "mdbreact";
+import { Link } from "react-router-dom";
+import HomeItem from "./common/HomeItem";
 import "../Home.css";
 
 class Home extends Component {
+  componentDidMount() {
+    console.log("cdm from home", this.props);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("cdu from home prev props");
+  }
   render() {
+    const { handleSetActiveTab, clientWidth, activeTab } = this.props;
+
     return (
       <div id="contactformpage">
         <MDBView>
@@ -43,9 +35,22 @@ class Home extends Component {
                   sapiente, fugiat! Commodi sequi non animi ea dolor molestiae
                   iste.
                 </h6>
-                <MDBBtn outline color="white">
-                  Learn More
-                </MDBBtn>
+                <Link
+                  to="/products"
+                  onClick={() => handleSetActiveTab("Products")}
+                >
+                  <MDBBtn outline color="white">
+                    Products
+                  </MDBBtn>
+                </Link>
+                <Link
+                  to="/contact"
+                  onClick={() => handleSetActiveTab("Contact")}
+                >
+                  <MDBBtn outline color="white">
+                    Contact
+                  </MDBBtn>
+                </Link>
               </div>
             </MDBRow>
           </MDBContainer>
@@ -53,16 +58,38 @@ class Home extends Component {
 
         <MDBContainer>
           <div className="row" style={{ padding: "5%" }}>
-            <div className="col d-flex justify-content-center">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
+            <div className="col">
+              <div className="row">
+                <div className="col d-flex justify-content-center">
+                  <h1>This Site Is</h1>
+                </div>
+              </div>
+              <div className="item-wrapper-container clearfix">
+                <HomeItem
+                  header="Built with React"
+                  paragraph="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua."
+                />
+                <HomeItem
+                  header="Built with Node.js"
+                  paragraph="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua."
+                />
+                <HomeItem
+                  header="Built with MySQL"
+                  paragraph="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua."
+                />
+                <HomeItem
+                  header="Built with Express"
+                  paragraph="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua."
+                />
+              </div>
             </div>
           </div>
         </MDBContainer>

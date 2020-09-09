@@ -65,8 +65,22 @@ body {
   top: 350px;
 }
 
+/* // ---------------ClearFix-------------------// */
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 /* small screen mobile devices */
 @media only screen and (max-width: 559px) {
+  div.item {
+    width: 96%;
+    float: left;
+    height: 12rem;
+    margin: 0.5rem 2%;
+  }
+
   .form-width {
     width: 75%;
   }
@@ -86,6 +100,13 @@ body {
 
 /* medium screen ipads / small Laptops */
 @media only screen and (min-width: 560px) {
+  div.item {
+    width: 46%;
+    float: left;
+    height: 12rem;
+    margin: 0.5rem 2%;
+  }
+
   .form-width {
     width: 55%;
   }
@@ -111,6 +132,13 @@ body {
 
 /* This is default...Desktop */
 @media only screen and (min-width: 1140px) {
+  div.item {
+    width: 21%;
+    float: left;
+    height: 24rem;
+    margin: 0.5rem 2%;
+  }
+
   .form-width {
     width: 35%;
   }

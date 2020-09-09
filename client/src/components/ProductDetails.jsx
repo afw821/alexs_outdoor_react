@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { getProductByPKId } from "./../services/productService";
 import { getCategoryByPKId } from "./../services/categoryService";
+import QuantitySelector from "./common/QuantitySelector";
 import _arrayBufferToBase64 from "./../utils/toBase64String";
 import "../input.css";
+
 class ProductDetails extends Component {
   state = {
     data: {
@@ -17,7 +19,7 @@ class ProductDetails extends Component {
       name: "",
       price: "",
     },
-    userQuantity: 1,
+    quantity: 1,
   };
 
   mapToViewModel(product, category) {
@@ -35,13 +37,14 @@ class ProductDetails extends Component {
     };
   }
 
-  addQuantity = () => {
-    this.setState({ userQuantity: this.state.userQuantity + 1 });
+  addOrSubtract = (isAdd) => {
+    return isAdd ? this.state.quantity + 1 : this.state.quantity - 1;
   };
 
-  subtractQuantity = () => {
-    if (this.state.userQuantity === 1) return;
-    this.setState({ userQuantity: this.state.userQuantity - 1 });
+  calculateQuantity = (qunatity, index, isAdd) => {
+    if (!isAdd && this.state.quantity === 1) return; //if we are subtracting we don't want to go below 1
+
+    this.setState({ quantity: this.addOrSubtract(isAdd) });
   };
 
   calculatePrice = (price, quantity) => {
@@ -59,14 +62,14 @@ class ProductDetails extends Component {
   }
 
   render() {
-    const { data, userQuantity } = this.state;
-    const { handleAddToCart } = this.props;
+    const { data, quantity } = this.state;
+    const { handleAddToCart, clientWidth, user } = this.props;
     return (
       <div className="row" style={{ marginTop: "155px" }}>
         <div className="col-6 d-flex justify-content-center">
           <div className="row">
             <div className="col">
-              <div className="card" style={{ width: "17vw" }}>
+              <div className="card" style={{ width: "50%" }}>
                 <img
                   className="card-img-top"
                   src={`data:image/png;base64,${data.imgSrc}`}
@@ -100,23 +103,11 @@ class ProductDetails extends Component {
             >
               <div className="row">
                 <div className="col-sm-7">
-                  <div className="def-number-input number-input mt-2">
-                    <button
-                      onClick={this.subtractQuantity}
-                      className="minus"
-                    ></button>
-                    <input
-                      className="quantity"
-                      name="quantity"
-                      onChange={() => console.log("changed")}
-                      value={userQuantity}
-                      type="number"
-                    />
-                    <button
-                      onClick={this.addQuantity}
-                      className="plus"
-                    ></button>
-                  </div>
+                  <QuantitySelector
+                    clientWidth={clientWidth}
+                    calculateQuantity={this.calculateQuantity}
+                    product={this.state}
+                  />
                 </div>
                 <div className="col-sm-5">
                   <button
@@ -129,7 +120,7 @@ class ProductDetails extends Component {
               </div>
               <div className="row">
                 <div className="col">
-                  <p>${this.calculatePrice(data.price, userQuantity)}</p>
+                  <p>${this.calculatePrice(data.price, quantity)}</p>
                 </div>
               </div>
             </div>

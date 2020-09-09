@@ -124,13 +124,13 @@ class App extends Component {
 
   handleAddToCart = async (state) => {
     try {
-      const { data: product, userQuantity } = state;
+      const { data: product, quantity } = state;
       const userId = this.state.user.id;
       const productId = product.id;
       //add item to cart
       const { data } = await addItemToCart(
         `user-cart-${userId}`,
-        userQuantity,
+        quantity,
         userId,
         productId
       );
@@ -357,7 +357,17 @@ class App extends Component {
             />
             <Route path="/contact" component={ContactForm} />
             <Route path="/logout" component={Logout} />
-            <Route path="/home" component={Home} />
+            <Route
+              path="/home"
+              render={(props) => (
+                <Home
+                  {...props}
+                  activeTab={activeTab}
+                  handleSetActiveTab={this.handleSetActiveTab}
+                  clientWidth={clientWidth}
+                />
+              )}
+            />
             <Route path="/not-found" component={NotFound} />
             <Redirect from="/" exact to="/home" />
             <Redirect to="/not-found" />
