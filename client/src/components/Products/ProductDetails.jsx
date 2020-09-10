@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import { getProductByPKId } from "./../services/productService";
-import { getCategoryByPKId } from "./../services/categoryService";
-import QuantitySelector from "./common/QuantitySelector";
-import _arrayBufferToBase64 from "./../utils/toBase64String";
-import "../input.css";
+import { getProductByPKId } from "../../services/productService";
+import { getCategoryByPKId } from "../../services/categoryService";
+import QuantitySelector from "../Shared/QuantitySelector";
+import _arrayBufferToBase64 from "../../utils/toBase64String";
+import ProductDetailImage from "./ProductDetailImage";
+import ProductDetailName from "./ProductDetailName";
+import ProductDetailDesc from "./ProductDetailDesc";
+import "../../input.css";
 
 class ProductDetails extends Component {
   state = {
@@ -41,6 +44,8 @@ class ProductDetails extends Component {
     return isAdd ? this.state.quantity + 1 : this.state.quantity - 1;
   };
 
+  handleChangeQuantity = () => {}; //deprecated
+
   calculateQuantity = (qunatity, index, isAdd) => {
     if (!isAdd && this.state.quantity === 1) return; //if we are subtracting we don't want to go below 1
 
@@ -63,38 +68,23 @@ class ProductDetails extends Component {
 
   render() {
     const { data, quantity } = this.state;
-    const { handleAddToCart, clientWidth, user } = this.props;
+    const {
+      handleAddToCart,
+      clientWidth,
+      user,
+      handleChangeQuantity,
+    } = this.props;
     return (
       <div className="row" style={{ marginTop: "155px" }}>
         <div className="col-6 d-flex justify-content-center">
-          <div className="row">
-            <div className="col">
-              <div className="card" style={{ width: "50%" }}>
-                <img
-                  className="card-img-top"
-                  src={`data:image/png;base64,${data.imgSrc}`}
-                  alt="picture of product"
-                />
-              </div>
-            </div>
-          </div>
+          <ProductDetailImage alt="picture of product" data={data} />
         </div>
         <div className="col-6">
           <div className="row">
-            <div
-              className="col-7 d-flex justify-content-center"
-              style={{ borderBottom: "2px solid black" }}
-            >
-              <h2>{data.name}</h2>
-            </div>
+            <ProductDetailName data={data} />
           </div>
           <div className="row mt-4">
-            <div
-              className="col-7 d-flex justify-content-center"
-              style={{ borderBottom: "2px solid black" }}
-            >
-              <p>{data.description}</p>
-            </div>
+            <ProductDetailDesc data={data} />
           </div>
           <div className="row mt-4">
             <div
@@ -105,6 +95,7 @@ class ProductDetails extends Component {
                 <div className="col-sm-7">
                   <QuantitySelector
                     clientWidth={clientWidth}
+                    handleChangeQuantity={this.handleChangeQuantity}
                     calculateQuantity={this.calculateQuantity}
                     product={this.state}
                   />

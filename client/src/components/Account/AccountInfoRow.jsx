@@ -1,8 +1,6 @@
 import React from "react";
 
-const AccountInfoRow = (props) => {
-  const label = props.label;
-  const user = props.user;
+const AccountInfoRow = ({ label, user }) => {
   return (
     <div className="row h30">
       <div className="col-4">

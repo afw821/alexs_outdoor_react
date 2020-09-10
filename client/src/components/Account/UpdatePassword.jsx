@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Form from "./common/Form";
+import Form from "../Shared/Form";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
-import { updatePassword } from "../services/authService";
+import { updatePassword } from "../../services/authService";
 
 class UpdatePassword extends Form {
   state = {

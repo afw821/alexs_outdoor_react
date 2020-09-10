@@ -1,22 +1,22 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import AdminPortal from "./components/AdminPortal";
-import RegisterForm from "./components/RegisterForm";
-import NotFound from "./components/NotFound";
-import LoginForm from "./components/LoginForm";
-import NavBar from "./components/NavBar";
+import AdminPortal from "./components/Admin/AdminPortal";
+import RegisterForm from "./components/Register/RegisterForm";
+import NotFound from "./components/Shared/NotFound";
+import LoginForm from "./components/Login/LoginForm";
+import NavBar from "./components/Layout/NavBar";
 import auth from "./services/authService";
-import Home from "./components/Home";
-import Logout from "./components/Logout";
-import Footer from "./components/Footer";
-import UserDetails from "./components/UserDetails";
-import Products from "./components/Products";
-import ProductDetails from "./components/ProductDetails";
-import ProtectedRoute from "./components/common/ProtectedRoute";
-import UpdatePassword from "./components/UpdatePassword";
-import CartDetails from "./components/CartDetails";
-import ContactForm from "./components/ContactForm";
-import AdminProtectedRoute from "./components/common/AdminProctedRoute";
+import Home from "./components/Home/Home";
+import Logout from "./components/Logout/Logout";
+import Footer from "./components/Layout/Footer";
+import UserDetails from "./components/Account/UserDetails";
+import Products from "./components/Products/Products";
+import ProductDetails from "./components/Products/ProductDetails";
+import ProtectedRoute from "./components/Shared/ProtectedRoute";
+import UpdatePassword from "./components/Account/UpdatePassword";
+import CartDetails from "./components/Cart/CartDetails";
+import ContactForm from "./components/Contact/ContactForm";
+import AdminProtectedRoute from "./components/Shared/AdminProctedRoute";
 import _arrayBufferToBase64 from "./utils/toBase64String";
 import { ToastContainer, toast } from "react-toastify";
 import { addItemToCart } from "./services/cartService";
@@ -27,7 +27,7 @@ import { deleteCartByPkId } from "./services/cartService";
 import { updateCart } from "./services/cartService";
 import { activeTabRefresh } from "./utils/activeTabRefresh";
 import "react-toastify/dist/ReactToastify.css";
-import ContactPage from "./components/ContactForm2";
+import ContactPage from "./components/Contact/ContactForm2";
 
 class App extends Component {
   state = {

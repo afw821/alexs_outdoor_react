@@ -1,9 +1,9 @@
 import React from "react";
-import Form from "./common/Form";
+import Form from "../Shared/Form";
 import { MDBCard, MDBCardBody, MDBModalFooter } from "mdbreact";
-import { getStates } from "../utils/getStates";
+import { getStates } from "../../utils/getStates";
 import Joi from "joi-browser";
-import { register } from "../services/userService";
+import { register } from "../../services/userService";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 

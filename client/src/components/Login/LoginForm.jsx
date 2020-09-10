@@ -1,10 +1,10 @@
 import React from "react";
-import Form from "../components/common/Form";
+import Form from "../Shared/Form";
 import { MDBCard, MDBCardBody, MDBModalFooter } from "mdbreact";
-import { login } from "../services/authService";
+import { login } from "../../services/authService";
 import Joi from "joi-browser";
 import { Link } from "react-router-dom";
-import Loader from "./common/Loader";
+import Loader from "../Shared/Loader";
 
 class LoginForm extends Form {
   state = {

@@ -1,8 +1,8 @@
 import React from "react";
-import Form from "./common/Form";
+import Form from "../Shared/Form";
 import Joi from "joi-browser";
-import { sendEmail } from "../services/emailService";
-import PopUpModal from "./common/PopUpModal";
+import PopUpModal from "../Shared/PopUpModal";
+import { sendEmail } from "../../services/emailService";
 import { toast } from "react-toastify";
 class ContactForm extends Form {
   state = {

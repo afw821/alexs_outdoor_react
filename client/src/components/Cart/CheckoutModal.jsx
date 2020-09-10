@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import TableHead from "./TableHead";
-import TableBody from "./TableBody";
-import { getCartTableOptions } from "./../../utils/cartOptions";
-import { regenerateToken, loginWithJwt } from "../../services/authService";
-import { updateProductQuant } from "../../services/productService";
+import Loader from "../Shared/Loader";
+import TableHead from "../Shared/TableHead";
+import TableBody from "../Shared/TableBody";
+import { getCartTableOptions } from "../../utils/tableOptions";
 import { purchase } from "../../services/purchaseService";
+import { regenerateToken, loginWithJwt } from "../../services/authService";
 import { sendEmailPurchase } from "../../services/emailService";
+import { toast } from "react-toastify";
+import { updateProductQuant } from "../../services/productService";
 import {
   MDBBtn,
   MDBModal,
@@ -13,8 +15,6 @@ import {
   MDBModalHeader,
   MDBModalFooter,
 } from "mdbreact";
-import { toast } from "react-toastify";
-import Loader from "./Loader";
 
 class CheckoutModal extends Component {
   makePurchase = async (productsInCart) => {

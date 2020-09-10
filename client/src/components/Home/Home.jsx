@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { MDBMask, MDBRow, MDBBtn, MDBView, MDBContainer } from "mdbreact";
 import { Link } from "react-router-dom";
-import HomeItem from "./common/HomeItem";
-import "../Home.css";
+import HomeItem from "./HomeItem";
+import "../../Home.css";
 
 class Home extends Component {
   componentDidMount() {

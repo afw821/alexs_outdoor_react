@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { updateProductQuant } from "../services/productService";
-import _arrayBufferToBase64 from "../utils/toBase64String";
-import TableHead from "./common/TableHead";
-import TableBody from "./common/TableBody";
-import TotalRow from "./common/TotalRow";
-import CheckoutModal from "./common/CheckoutModal";
-import { purchase } from "../services/purchaseService";
-import { getCartTableOptions } from "../utils/cartOptions";
+import _arrayBufferToBase64 from "../../utils/toBase64String";
+import CheckoutModal from "./CheckoutModal";
+import TableHead from "../Shared/TableHead";
+import TableBody from "../Shared/TableBody";
+import TotalRow from "./TotalRow";
+import { getCartTableOptions } from "../../utils/tableOptions";
+import { purchase } from "../../services/purchaseService";
 import { toast } from "react-toastify";
+import { updateProductQuant } from "../../services/productService";
 
 class CartDetails extends Component {
   state = {
@@ -55,12 +55,12 @@ class CartDetails extends Component {
   };
 
   renderTableHeaderOptions = (clientWidth) => {
-    const options = getCartTableOptions();
+    const { cartOptions } = getCartTableOptions();
     if (clientWidth < 560) {
       //need to splice the first
-      return options.slice(1);
+      return cartOptions.slice(1);
     } else {
-      return options;
+      return cartOptions;
     }
   };
 

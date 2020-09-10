@@ -1,5 +1,5 @@
 import React from "react";
-import _arrayBufferToBase64 from "../utils/toBase64String";
+import _arrayBufferToBase64 from "../../utils/toBase64String";
 import { Link } from "react-router-dom";
 
 const ProductCard = ({

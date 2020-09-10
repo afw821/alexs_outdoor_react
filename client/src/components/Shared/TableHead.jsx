@@ -1,7 +1,6 @@
 import React from "react";
 
-const TableHead = (props) => {
-  const { options, clientWidth } = props;
+const TableHead = ({ options, clientWidth }) => {
   return (
     <thead className="thead-dark">
       <tr>

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { getProductByPKId } from "../services/productService";
-import _arrayBufferToBase64 from "../utils/toBase64String";
-
+import { getProductByPKId } from "../../services/productService";
+import _arrayBufferToBase64 from "../../utils/toBase64String";
+import TableHead from "./../Shared/TableHead";
+import { getCartTableOptions } from "../../utils/tableOptions";
 class OrderInfo extends Component {
   state = {
     products: [],
@@ -58,6 +59,24 @@ class OrderInfo extends Component {
     const formattedDate = `${month} ${day}, ${fullYr} - ${hr}:${mins} hrs`;
     return formattedDate;
   };
+  filterOptions = (orderOptions, ...rest) => {
+    const filtered = orderOptions.filter((option) =>
+      rest.length > 1
+        ? option.header !== rest[0] && option.header !== rest[1]
+        : option.header !== rest[0]
+    );
+    return filtered;
+  };
+
+  renderTableHeaderOptions = (clientWidth) => {
+    const { orderOptions } = getCartTableOptions();
+
+    if (clientWidth < 400)
+      return this.filterOptions(orderOptions, "Quantity", "Purchase Date");
+    else if (clientWidth < 467)
+      return this.filterOptions(orderOptions, "Purchase Date");
+    else return orderOptions;
+  };
 
   render() {
     const { user, clientWidth } = this.props;
@@ -67,22 +86,7 @@ class OrderInfo extends Component {
     else {
       return (
         <table className="table">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col">Product</th>
-              {clientWidth < 400 ? (
-                <th style={{ display: "none" }}></th>
-              ) : (
-                <th scope="col">Quantity</th>
-              )}
-              {clientWidth < 467 ? (
-                <th style={{ display: "none" }}></th>
-              ) : (
-                <th scope="col">Purchase Date</th>
-              )}
-              <th scope="col"></th>
-            </tr>
-          </thead>
+          <TableHead options={this.renderTableHeaderOptions(clientWidth)} />
           <tbody>
             {this.state.products.map((product, i) => (
               <tr key={i}>

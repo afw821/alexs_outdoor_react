@@ -1,11 +1,10 @@
 import React from "react";
-import Form from "./common/Form";
+import Form from "../Shared/Form";
 import Joi from "joi-browser";
-import { getUserById } from "../services/userService";
-import { getStates } from "../utils/getStates";
-import { updateUser } from "../services/userService";
+import { getStates } from "../../utils/getStates";
+import { updateUser, getUserById } from "../../services/userService";
 import { toast } from "react-toastify";
-import { regenerateToken, loginWithJwt } from "../services/authService";
+import { regenerateToken, loginWithJwt } from "../../services/authService";
 
 class AccountEditForm extends Form {
   state = {

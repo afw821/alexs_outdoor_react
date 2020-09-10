@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { getProducts, deleteProduct } from "./../services/productService";
-import ProductCard from "./ProductCard";
-import ListItem from "./common/ListItem";
-import { getCategories } from "../services/categoryService";
+import ListItem from "../Shared/ListItem";
 import _ from "lodash";
-import Paginator from "./common/Paginator";
-import { paginate } from "./../utils/paginate";
-import SearchBox from "./common/SearchBox";
+import ModalPrompt from "../Shared/ModalPrompt";
+import Paginator from "../Shared/Paginator";
+import ProductCard from "../Products/ProductCard";
+import SearchBox from "../Shared/SearchBox";
+import UpdateProduct from "../Products/UpdateProduct";
+import { paginate } from "../../utils/paginate";
+import { getProducts, deleteProduct } from "../../services/productService";
+import { getCategories } from "../../services/categoryService";
 import { toast } from "react-toastify";
-import UpdateProduct from "./common/UpdateProduct";
-import ModalPrompt from "./common/ModalPrompt";
 
 class Products extends Component {
   state = {

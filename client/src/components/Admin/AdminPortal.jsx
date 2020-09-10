@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import ProductForm from "../components/ProductForm";
-import ListItem from "./common/ListItem";
-import CategoryManager from "./CategoryManager";
-import DropDownBtn from "./common/DropDownBtn";
+import ProductForm from "../Shared/ProductForm";
+import ListItem from "../Shared/ListItem";
+import CategoryManager from "../Admin/CategoryManager";
+import DropDownBtn from "../Shared/DropDownBtn";
 
 class AdminPortal extends Component {
   state = {

@@ -6,7 +6,7 @@ import {
   MDBModalHeader,
   MDBModalFooter,
 } from "mdbreact";
-import ProductForm from "./../ProductForm";
+import ProductForm from "../Shared/ProductForm";
 
 class UpdateProduct extends Component {
   render() {

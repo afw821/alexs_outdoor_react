@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Form from "../components/common/Form";
+import Form from "../Shared/Form";
 import Joi from "joi-browser";
-import { addCategory } from "../services/categoryService";
+import { addCategory } from "../../services/categoryService";
 import { toast } from "react-toastify";
 
 class CategoryManager extends Form {

@@ -1,14 +1,14 @@
 import React from "react";
-import Form from "./common/Form";
+import _arrayBufferToBase64 from "../../utils/toBase64String";
+import Form from "./Form";
 import {
   addProduct,
   getProductByPKId,
   updateProduct,
-} from "../services/productService";
+} from "../../services/productService";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
-import { getCategories } from "../services/categoryService";
-import _arrayBufferToBase64 from "./../utils/toBase64String";
+import { getCategories } from "../../services/categoryService";
 
 class ProductForm extends Form {
   state = {

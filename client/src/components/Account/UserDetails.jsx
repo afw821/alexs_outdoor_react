@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import AccountInfo from "./AccountInfo";
-import ListItem from "./common/ListItem";
+import AccountInfo from "../Account/AccountInfo";
+import ListItem from "../Shared/ListItem";
 import OrderInfo from "./OrderInfo";
 import { Link } from "react-router-dom";
-import DropDownBtn from "./common/DropDownBtn";
+import DropDownBtn from "../Shared/DropDownBtn";
 
 class UserDetails extends Component {
   state = {
