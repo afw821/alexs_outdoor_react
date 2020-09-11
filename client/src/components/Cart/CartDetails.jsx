@@ -4,10 +4,12 @@ import CheckoutModal from "./CheckoutModal";
 import TableHead from "../Shared/TableHead";
 import TableBody from "../Shared/TableBody";
 import TotalRow from "./TotalRow";
-import { getCartTableOptions } from "../../utils/tableOptions";
+import QuantitySelector from "../Shared/QuantitySelector";
+import { getCartTableOptions } from "../../utils/tableHeaderOptions";
 import { purchase } from "../../services/purchaseService";
 import { toast } from "react-toastify";
 import { updateProductQuant } from "../../services/productService";
+import { getTableRowOptions } from "./../../utils/tableRowOptions";
 
 class CartDetails extends Component {
   state = {
@@ -64,8 +66,29 @@ class CartDetails extends Component {
     }
   };
 
+  renderTableRowOptions = (
+    calculateQuantity,
+    clientWidth,
+    handleRemoveFromCart,
+    removeBtn,
+    calculatePrice
+  ) => {
+    const { trItems: allOptions } = getTableRowOptions(
+      null,
+      calculateQuantity,
+      this.handleChangeQuantity,
+      clientWidth,
+      handleRemoveFromCart,
+      removeBtn,
+      calculatePrice
+    );
+    if (clientWidth < 561) return allOptions.slice(1);
+    else return allOptions;
+  };
+
   render() {
-    const { showModal } = this.state;
+    const { showModal, removeBtn } = this.state;
+
     const {
       productsInCart,
       totalPrice,
@@ -75,6 +98,7 @@ class CartDetails extends Component {
       clientWidth,
       handleSetActiveTab,
     } = this.props;
+
     if (productsInCart.length === 0)
       return (
         <div style={{ marginTop: "100px" }} className="row">
@@ -119,12 +143,13 @@ class CartDetails extends Component {
                 items={productsInCart}
                 handleHover={this.handleHover}
                 handleLeave={this.handleLeave}
-                handleRemoveFromCart={handleRemoveFromCart}
-                handleChangeQuantity={this.handleChangeQuantity} //deprecated
-                calculateQuantity={calculateQuantity}
-                calculatePrice={this.calculatePrice}
-                removeBtn={this.state.removeBtn}
-                clientWidth={clientWidth}
+                trItems={this.renderTableRowOptions(
+                  calculateQuantity,
+                  clientWidth,
+                  handleRemoveFromCart,
+                  removeBtn,
+                  this.calculatePrice
+                )}
               />
             </table>
           </div>

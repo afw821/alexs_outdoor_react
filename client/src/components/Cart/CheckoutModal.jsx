@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import Loader from "../Shared/Loader";
+import Table from "..//Shared/Table";
 import TableHead from "../Shared/TableHead";
 import TableBody from "../Shared/TableBody";
-import { getCartTableOptions } from "../../utils/tableOptions";
+import { getCartTableOptions } from "../../utils/tableHeaderOptions";
 import { purchase } from "../../services/purchaseService";
 import { regenerateToken, loginWithJwt } from "../../services/authService";
 import { sendEmailPurchase } from "../../services/emailService";
 import { toast } from "react-toastify";
 import { updateProductQuant } from "../../services/productService";
+import { getTableRowOptions } from "./../../utils/tableRowOptions";
 import {
   MDBBtn,
   MDBModal,
@@ -70,6 +72,27 @@ class CheckoutModal extends Component {
       }
     });
   };
+
+  renderTableRowOptions = (
+    calculateQuantity,
+    clientWidth,
+    handleRemoveFromCart,
+    removeBtn,
+    calculatePrice
+  ) => {
+    const { trItems: allOptions } = getTableRowOptions(
+      null,
+      calculateQuantity,
+      this.handleChangeQuantity,
+      clientWidth,
+      handleRemoveFromCart,
+      removeBtn,
+      calculatePrice
+    );
+    if (clientWidth < 561) return allOptions.slice(1);
+    else return allOptions;
+  };
+
   render() {
     const {
       isOpen,
@@ -88,6 +111,8 @@ class CheckoutModal extends Component {
       handleToggleLoader,
       clientWidth,
     } = this.props;
+
+    const { cartOptions } = getCartTableOptions();
     return (
       <>
         <MDBModal
@@ -101,23 +126,22 @@ class CheckoutModal extends Component {
             any changes
           </MDBModalHeader>
           <MDBModalBody>
-            <table className="table">
-              <TableHead
-                clientWidth={clientWidth}
-                options={getCartTableOptions()}
-              />
+            <Table />
+            {/* <table className="table">
+              <TableHead clientWidth={clientWidth} options={cartOptions} />
               <TableBody
                 items={productsInCart}
                 handleHover={handleHover}
                 handleLeave={handleLeave}
-                handleRemoveFromCart={handleRemoveFromCart}
-                handleChangeQuantity={handleChangeQuantity} //deprecated
-                calculateQuantity={calculateQuantity}
-                calculatePrice={calculatePrice}
-                removeBtn={removeBtn}
-                clientWidth={clientWidth}
+                trItems={this.renderTableRowOptions(
+                  calculateQuantity,
+                  clientWidth,
+                  handleRemoveFromCart,
+                  removeBtn,
+                  calculatePrice
+                )}
               />
-            </table>
+            </table> */}
           </MDBModalBody>
           <MDBModalBody>
             <div className="row">

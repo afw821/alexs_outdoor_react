@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { getProductByPKId } from "../../services/productService";
 import _arrayBufferToBase64 from "../../utils/toBase64String";
+import Table from "../Shared/Table";
 import TableHead from "./../Shared/TableHead";
-import { getCartTableOptions } from "../../utils/tableOptions";
+import TableBody from "./../Shared/TableBody";
+import { getCartTableOptions } from "../../utils/tableHeaderOptions";
+import { getTableRowOptions } from "./../../utils/tableRowOptions";
+
 class OrderInfo extends Component {
   state = {
     products: [],
@@ -27,6 +31,14 @@ class OrderInfo extends Component {
 
     this.setState({ products: productsArray });
   }
+
+  handleHover = (e, index) => {
+    e.currentTarget.style.backgroundColor = "whitesmoke";
+  };
+
+  handleLeave = (e, index) => {
+    e.currentTarget.style.backgroundColor = "white";
+  };
 
   getCurrentMonth = (index) => {
     const monthArr = [
@@ -56,14 +68,15 @@ class OrderInfo extends Component {
     const hr = date.getHours();
     const mins = date.getMinutes();
     const month = this.getCurrentMonth(index);
-    const formattedDate = `${month} ${day}, ${fullYr} - ${hr}:${mins} hrs`;
-    return formattedDate;
+    return `${month} ${day}, ${fullYr} - ${hr}:${mins} hrs`;
   };
-  filterOptions = (orderOptions, ...rest) => {
+
+  filterTableOptions = (orderOptions, property, ...rest) => {
+    //for mobile reponsiveness
     const filtered = orderOptions.filter((option) =>
       rest.length > 1
-        ? option.header !== rest[0] && option.header !== rest[1]
-        : option.header !== rest[0]
+        ? option[property] !== rest[0] && option[property] !== rest[1]
+        : option[property] !== rest[0]
     );
     return filtered;
   };
@@ -72,45 +85,41 @@ class OrderInfo extends Component {
     const { orderOptions } = getCartTableOptions();
 
     if (clientWidth < 400)
-      return this.filterOptions(orderOptions, "Quantity", "Purchase Date");
+      return this.filterTableOptions(
+        orderOptions,
+        "header",
+        "Quantity",
+        "Purchase Date"
+      );
     else if (clientWidth < 467)
-      return this.filterOptions(orderOptions, "Purchase Date");
+      return this.filterTableOptions(orderOptions, "header", "Purchase Date");
     else return orderOptions;
+  };
+
+  renderTableRowOptions = (clientWidth) => {
+    const { trItemsForOrder: allOptions } = getTableRowOptions(this.formatDate);
+    if (clientWidth < 400)
+      return this.filterTableOptions(allOptions, "id", 3, 2);
+    else if (clientWidth < 467)
+      return this.filterTableOptions(allOptions, "id", 3);
+    else return allOptions;
   };
 
   render() {
     const { user, clientWidth } = this.props;
+    const { products } = this.state;
 
     if (user.Purchases.length === 0)
       return <div>{`You have no purchases ${user.firstName}!`}</div>;
     else {
       return (
-        <table className="table">
-          <TableHead options={this.renderTableHeaderOptions(clientWidth)} />
-          <tbody>
-            {this.state.products.map((product, i) => (
-              <tr key={i}>
-                <th>{product.product.name}</th>
-                {clientWidth < 400 ? (
-                  <td style={{ display: "none" }}></td>
-                ) : (
-                  <td>{product.quantity}</td>
-                )}
-                {clientWidth < 467 ? (
-                  <td style={{ display: "none" }}></td>
-                ) : (
-                  <td>{this.formatDate(product.purchaseDate)}</td>
-                )}
-                <td>
-                  <img
-                    style={{ maxHeight: "100px", maxWidth: "100px" }}
-                    src={`data:image/png;base64,${product.product.imgSrc}`}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table
+          options={this.renderTableHeaderOptions(clientWidth)}
+          items={products}
+          handleHover={this.handleHover}
+          handleLeave={this.handleLeave}
+          trItems={this.renderTableRowOptions(clientWidth)}
+        />
       );
     }
   }

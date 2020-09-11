@@ -21,6 +21,10 @@ body {
   height: 100%;
   position: relative;
 }
+
+.bg-color {
+  background-color: #f4f5f6;
+}
 .font-bolder {
   font-weight: bolder;
 }

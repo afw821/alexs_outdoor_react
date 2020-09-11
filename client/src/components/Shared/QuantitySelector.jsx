@@ -41,7 +41,7 @@ const QuantitySelector = ({
         <div className="row mt-2 pl-3">
           <div className="col-4 mr-1 responsive-quantity d-flex justify-content-center align-items-center">
             <i
-              class="fa fa-minus fa-lg"
+              className="fa fa-minus fa-lg"
               onClick={() => calculateQuantity(product.quantity, index, false)}
               aria-hidden="true"
             ></i>
