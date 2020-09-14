@@ -2,16 +2,16 @@ import React from "react";
 
 const ProductDetailImage = ({ data, alt }) => {
   return (
-    <div className="row">
-      <div className="col">
-        <div className="card" style={{ width: "55%" }}>
-          <img
-            className="card-img-top"
-            src={`data:image/png;base64,${data.imgSrc}`}
-            alt={alt}
-          />
-        </div>
-      </div>
+    <div
+      className="card img-responsive"
+      style={{ width: "400px", height: "400px" }}
+    >
+      <img
+        className="card-img-top img-responsive"
+        src={`data:image/png;base64,${data.imgSrc}`}
+        alt={alt}
+        style={{ width: "400px", height: "400px" }}
+      />
     </div>
   );
 };

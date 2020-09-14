@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { getProductByPKId } from "../../services/productService";
 import { getCategoryByPKId } from "../../services/categoryService";
+import { MDBBtn, MDBIcon } from "mdbreact";
 import QuantitySelector from "../Shared/QuantitySelector";
 import _arrayBufferToBase64 from "../../utils/toBase64String";
 import ProductDetailImage from "./ProductDetailImage";
@@ -75,49 +76,54 @@ class ProductDetails extends Component {
       handleChangeQuantity,
     } = this.props;
     return (
-      <div className="row" style={{ marginTop: "155px" }}>
-        <div className="col-6 d-flex justify-content-center">
-          <ProductDetailImage alt="picture of product" data={data} />
-        </div>
-        <div className="col-6">
-          <div className="row">
-            <ProductDetailName data={data} />
+      <>
+        <div className="row" style={{ marginTop: "155px" }}>
+          <div className="col-6 d-flex justify-content-center">
+            <ProductDetailImage alt="picture of product" data={data} />
           </div>
-          <div className="row mt-4">
-            <ProductDetailDesc data={data} />
-          </div>
-          <div className="row mt-4">
-            <div
-              className="col-sm-7"
-              style={{ borderBottom: "2px solid black" }}
-            >
+          <div className="col-6">
+            <div className="product-details-wrapper">
               <div className="row">
-                <div className="col-sm-7">
-                  <QuantitySelector
-                    clientWidth={clientWidth}
-                    handleChangeQuantity={this.handleChangeQuantity}
-                    calculateQuantity={this.calculateQuantity}
-                    product={this.state}
-                  />
-                </div>
-                <div className="col-sm-5">
-                  <button
-                    onClick={() => handleAddToCart(this.state)}
-                    className="btn btn-sm btn-primary mt-2"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
+                <ProductDetailName data={data} />
               </div>
-              <div className="row">
-                <div className="col">
-                  <p>${this.calculatePrice(data.price, quantity)}</p>
+              <div className="row mt-4">
+                <ProductDetailDesc data={data} />
+              </div>
+              <div className="row mt-4">
+                <div
+                  className="col-sm-10"
+                  style={{ borderBottom: "2px solid black" }}
+                >
+                  <div className="row">
+                    <div className="col-sm-4">
+                      <QuantitySelector
+                        clientWidth={clientWidth}
+                        handleChangeQuantity={this.handleChangeQuantity}
+                        calculateQuantity={this.calculateQuantity}
+                        product={this.state}
+                      />
+                    </div>
+                    <div className="col-sm-8" style={{ paddingLeft: "80px" }}>
+                      <MDBBtn
+                        onClick={() => handleAddToCart(this.state)}
+                        className="btn btn-sm btn-primary mt-2 d-flex justify-content-center"
+                        style={{ width: "25%" }}
+                      >
+                        <MDBIcon icon="cart-plus" size="2x" />
+                      </MDBBtn>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <p>${this.calculatePrice(data.price, quantity)}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

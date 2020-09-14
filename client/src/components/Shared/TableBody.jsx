@@ -1,18 +1,7 @@
 import React from "react";
 import QuantitySelector from "./QuantitySelector";
 
-const TableBody = ({
-  items,
-  handleHover,
-  handleLeave,
-  handleRemoveFromCart,
-  handleChangeQuantity,
-  calculateQuantity,
-  calculatePrice,
-  removeBtn,
-  clientWidth,
-  trItems,
-}) => {
+const TableBody = ({ items, handleHover, handleLeave, trItems }) => {
   const renderCell = (product, index, column) => {
     return column.content(product, index);
   };

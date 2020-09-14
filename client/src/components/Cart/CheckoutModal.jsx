@@ -115,33 +115,25 @@ class CheckoutModal extends Component {
     const { cartOptions } = getCartTableOptions();
     return (
       <>
-        <MDBModal
-          isOpen={isOpen}
-          //toggle={toggle}
-          fullHeight
-          position="top"
-        >
+        <MDBModal isOpen={isOpen} fullHeight position="top">
           <MDBModalHeader>
             {user.firstName}, review your purchase information below and make
             any changes
           </MDBModalHeader>
           <MDBModalBody>
-            <Table />
-            {/* <table className="table">
-              <TableHead clientWidth={clientWidth} options={cartOptions} />
-              <TableBody
-                items={productsInCart}
-                handleHover={handleHover}
-                handleLeave={handleLeave}
-                trItems={this.renderTableRowOptions(
-                  calculateQuantity,
-                  clientWidth,
-                  handleRemoveFromCart,
-                  removeBtn,
-                  calculatePrice
-                )}
-              />
-            </table> */}
+            <Table
+              options={cartOptions}
+              items={productsInCart}
+              handleHover={handleHover}
+              handleLeave={handleLeave}
+              trItems={this.renderTableRowOptions(
+                calculateQuantity,
+                clientWidth,
+                handleRemoveFromCart,
+                removeBtn,
+                calculatePrice
+              )}
+            />
           </MDBModalBody>
           <MDBModalBody>
             <div className="row">
