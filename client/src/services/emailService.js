@@ -7,7 +7,7 @@ export function sendEmail(name, email, message) {
     email,
     message,
   };
-  return http.post(apiUrl + "/messages", data);
+  return http.post(deployedApiUrl + "/messages", data);
 }
 
 export function sendEmailPurchase(name, email, message, toEmail, purchaseObj) {
@@ -19,5 +19,5 @@ export function sendEmailPurchase(name, email, message, toEmail, purchaseObj) {
     toEmail: toEmail,
     purchaseObj: JSON.stringify(purchaseObj),
   };
-  return http.post(apiUrl + "/messages/purchase", data);
+  return http.post(deployedApiUrl + "/messages/purchase", data);
 }

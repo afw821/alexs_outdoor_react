@@ -10,5 +10,5 @@ export function purchase(name, UserId, ProductId, quantity) {
     UserId: UserId,
     ProductId: ProductId,
   };
-  return http.post(apiUrl + "/purchases", obj);
+  return http.post(deployedApiUrl + "/purchases", obj);
 }
