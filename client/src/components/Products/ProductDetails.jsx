@@ -75,10 +75,14 @@ class ProductDetails extends Component {
     return (
       <>
         <div className="row" style={{ marginTop: "155px" }}>
-          <div className="col d-flex justify-content-center">
+          <div
+            className={`${
+              clientWidth < 1000 ? "col mb-5" : "col-4"
+            } d-flex justify-content-center`}
+          >
             <ProductDetailImage alt="picture of product" data={data} />
           </div>
-          {clientWidth < 749 ? (
+          {clientWidth < 1000 ? (
             ""
           ) : (
             <ProductDetailWrapper
@@ -93,7 +97,7 @@ class ProductDetails extends Component {
             />
           )}
         </div>
-        {clientWidth > 749 ? (
+        {clientWidth > 1000 ? (
           ""
         ) : (
           <div className="row product-desc-row">

@@ -6,12 +6,17 @@ const QuantitySelector = ({
   product,
   index,
   clientWidth,
+  renderedFromDetails, //don't need to make mobile res from product details
 }) => {
   return (
     <div
-      className={clientWidth > 740 ? "def-number-input number-input mt-2" : ""}
+      className={
+        clientWidth > `${renderedFromDetails ? 100 : 740}`
+          ? "def-number-input number-input mt-2"
+          : ""
+      }
     >
-      {clientWidth > 740 ? (
+      {clientWidth > `${renderedFromDetails ? 100 : 740}` ? (
         <button
           onClick={() => calculateQuantity(product.quantity, index, false)}
           className="minus"
@@ -20,14 +25,18 @@ const QuantitySelector = ({
         ""
       )}
       <input
-        style={clientWidth < 740 ? { width: "75%" } : { "": "" }}
+        style={
+          clientWidth < `${renderedFromDetails ? 100 : 740}`
+            ? { width: "75%" }
+            : { "": "" }
+        }
         className="quantity"
         name="quantity"
         onChange={() => handleChangeQuantity(product.quantity, index)} //Deprecated
         value={product.quantity}
         type="number"
       />
-      {clientWidth > 740 ? (
+      {clientWidth > `${renderedFromDetails ? 100 : 740}` ? (
         <button
           onClick={() => calculateQuantity(product.quantity, index, true)}
           className="plus"
@@ -35,7 +44,7 @@ const QuantitySelector = ({
       ) : (
         ""
       )}
-      {clientWidth > 740 ? (
+      {clientWidth > `${renderedFromDetails ? 100 : 740}` ? (
         ""
       ) : (
         <div className="row mt-2 pl-3">
