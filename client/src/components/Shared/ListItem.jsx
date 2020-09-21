@@ -10,11 +10,11 @@ const ListItem = ({ selectedTab, items, handleChange }) => {
           onClick={() => handleChange(item)}
           className={
             item.name === selectedTab.name
-              ? "list-group-item active"
+              ? "list-group-item active-tab"
               : "list-group-item"
           }
         >
-          {item.name}
+          <strong>{item.name}</strong>
         </li>
       ))}
     </ul>

@@ -7,17 +7,17 @@ export function sendEmail(name, email, message) {
     email,
     message,
   };
-  return http.post(apiUrl + "/messages", data);
+  return http.post(deployedApiUrl + "/messages", data);
 }
 
-export function sendEmailPurchase(name, email, message, toEmail, purchaseObj) {
-  console.log("purchase obj stringify", JSON.stringify(purchaseObj));
+export function sendEmailPurchase(name, toEmail, purchaseObj) {
+  console.log("purchase obj ", purchaseObj);
+  let html;
   const data = {
     name: name,
-    email: email,
-    message: message,
     toEmail: toEmail,
-    purchaseObj: JSON.stringify(purchaseObj),
+    html: html,
   };
-  return http.post(apiUrl + "/messages/purchase", data);
+  console.log("data from email service", data);
+  //return http.post(apiUrl + "/messages/purchase", data);
 }

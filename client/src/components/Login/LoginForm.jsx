@@ -29,7 +29,6 @@ class LoginForm extends Form {
 
       window.location = "/products";
     } catch (ex) {
-      console.log("errrrrrrrrrrrrr");
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
         errors.username = ex.response.data;

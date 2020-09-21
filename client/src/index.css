@@ -74,6 +74,13 @@ body {
   top: 350px;
 }
 
+.list-group-item.active-tab {
+  z-index: 2;
+  color: black;
+  background-color: whitesmoke;
+  border-left: 3px solid #8095cc;
+}
+
 /* // ---------------ClearFix-------------------// */
 .clearfix:after {
   content: "";
@@ -129,7 +136,7 @@ body {
   }
 
   .tab-width {
-    width: 175%;
+    width: 130%;
   }
 }
 
@@ -161,14 +168,14 @@ body {
   }
 
   .tab-width {
-    width: 140%;
+    width: 110%;
   }
 }
 
 /* X-Large Custom */
 @media only screen and (min-width: 1450px) {
   .tab-width {
-    width: 110%;
+    width: 100%;
   }
 
   .form-width-multiple-items {

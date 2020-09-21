@@ -8,9 +8,24 @@ const ProductCard = ({
   handleDelete,
   handleToggleUpdate,
   handleSetActiveTab,
+  clientWidth,
 }) => {
+  const renderStyles = (clientWidth) => {
+    if (clientWidth > 1360) {
+      return "d-flex justify-content-center col-4";
+    } else if (clientWidth < 1360 && clientWidth > 1000) {
+      return "d-flex justify-content-end col-6";
+    } else if (clientWidth < 1000 && clientWidth > 900) {
+      return "d-flex justify-content-center col-4";
+    } else if (clientWidth < 900 && clientWidth > 600) {
+      return "d-flex justify-content-center col-6";
+    } else if (clientWidth < 600) {
+      return "d-flex justify-content-center col-12";
+    }
+  };
+
   return products.map((product, index) => (
-    <div className="col-4 d-flex justify-content-center" key={product.id}>
+    <div className={renderStyles(clientWidth)} key={product.id}>
       <div
         className="card"
         style={{

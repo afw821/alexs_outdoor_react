@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import Loader from "../Shared/Loader";
 import Table from "..//Shared/Table";
-import TableHead from "../Shared/TableHead";
-import TableBody from "../Shared/TableBody";
 import { getCartTableOptions } from "../../utils/tableHeaderOptions";
 import { purchase } from "../../services/purchaseService";
 import { regenerateToken, loginWithJwt } from "../../services/authService";
@@ -10,6 +8,7 @@ import { sendEmailPurchase } from "../../services/emailService";
 import { toast } from "react-toastify";
 import { updateProductQuant } from "../../services/productService";
 import { getTableRowOptions } from "./../../utils/tableRowOptions";
+import renderEmailTemplate from "./../../utils/renderEmailTemplate";
 import {
   MDBBtn,
   MDBModal,
@@ -20,30 +19,33 @@ import {
 
 class CheckoutModal extends Component {
   makePurchase = async (productsInCart) => {
-    const { firstName, lastName, email } = this.props.user;
-    this.props.handleToggleLoader();
+    const { firstName, lastName, email, id } = this.props.user;
+    const { handleToggleLoader } = this.props;
+
+    handleToggleLoader();
+
     const message = `Here is you purchase information ${firstName}`;
-    console.log(this.props.user);
     console.log("products in the cart", productsInCart);
-    const result = await sendEmailPurchase(
-      `${lastName}, ${firstName}`,
-      email,
-      message,
-      email
-      //productsInCart
-    );
-    console.log("result from send email", result);
-    productsInCart.forEach(async (product, index) => {
+    // const result = await sendEmailPurchase(
+    //   `${lastName}, ${firstName}`,
+    //   email,
+    //   message,
+    //   email
+    //   //productsInCart
+    // );
+    //console.log("result from send email", result);
+    productsInCart.forEach(async (product, index, array) => {
       try {
-        console.log("purchaseeee", product);
+        console.log("purchase completed array.length", array.length);
         const userQuant = product.quantity;
         const ProductId = product.product.id;
-        const purchaseName = `UserId# ${this.props.user.id} ${this.props.user.lastName}, ${this.props.user.firstName} - ID# ${ProductId} / ${product.product.name}`;
+        const purchaseName = `UserId# ${id} ${lastName}, ${firstName} - ID# ${ProductId} / ${product.product.name}`;
 
         const { data: updateResult } = await updateProductQuant(
           userQuant,
           ProductId
         );
+
         if (updateResult) {
           var purchaseResult = await purchase(
             purchaseName,
@@ -56,7 +58,7 @@ class CheckoutModal extends Component {
         if (purchaseResult.status === 200 && index === 0) {
           setTimeout(() => {
             toast.info("Purchase was successful!");
-            this.props.handleToggleLoader();
+            handleToggleLoader(); //this removes loader
           }, 2000);
         }
         if (purchaseResult.status === 200) {
@@ -65,6 +67,14 @@ class CheckoutModal extends Component {
           if (index === 0) {
             const { data: token } = await regenerateToken(userClone);
             if (token) loginWithJwt(token);
+          }
+          if (index === array.length - 1) {
+            //send email on last iteration with all products in array
+            console.log("purchase completed index === array.length - 1", index);
+            console.log("purchase completed index === array.length - 1", array);
+            //sendEmailPurchase();
+
+            renderEmailTemplate(array);
           }
         }
       } catch (ex) {

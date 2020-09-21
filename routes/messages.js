@@ -19,18 +19,10 @@ router.post(
 router.post(
   "/purchase",
   ash(async (req, res) => {
-    const { name, email, message, toEmail, purchasesObj } = req.body;
+    const { name, toEmail, html } = req.body;
     console.log("----------Name-------------", name);
-    console.log("----------Email-------------", email);
-    console.log("----------message-------------", message);
-    console.log("----------Purchase Obj-------------", purchasesObj);
-    const result = await sendMsgPurchase(
-      email,
-      message,
-      name,
-      toEmail,
-      purchasesObj
-    );
+    console.log("----------html-------------", html);
+    const result = await sendMsgPurchase(name, toEmail, html);
     if (!result)
       res.status(400).send({ sent: false, message: "Error Sending Message" });
 

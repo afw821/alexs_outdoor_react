@@ -8,6 +8,7 @@ import {
   MDBNavItem,
   MDBNavLink,
   MDBIcon,
+  MDBBadge,
 } from "mdbreact";
 
 class NavBar extends Component {
@@ -167,16 +168,9 @@ class NavBar extends Component {
                   style={{ marginRight: "10px" }}
                   onClick={(e) => handleSetActiveTab("Cart")}
                 >
-                  <MDBNavLink
-                    id="cart-number"
-                    name="Cart_Number"
-                    to={`/cart/${user.id}`}
-                    style={
-                      activeTab === "Cart" ? { color: "#f6b519" } : { "": "" }
-                    }
-                  >
-                    <strong>{user.Carts.length}</strong>
-                  </MDBNavLink>
+                  <MDBBadge color="danger" className="ml-2">
+                    {user.Carts.length}
+                  </MDBBadge>
                 </MDBNavItem>
               )}
               {this.props.user && (

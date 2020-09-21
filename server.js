@@ -8,23 +8,45 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 //set root diectory
 global.__basedir = __dirname;
-
+//whtlist origins
+const whitelist = [
+  "http://localhost:3000",
+  "https://alexsoutdoorstore.herokuapp.com/",
+];
 //middleware
-app.use(cors());
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
-  next();
-});
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin
+      if (!origin) return callback(null, true);
+      if (whitelist.indexOf(origin) === -1) {
+        var message = `The CORS policy for this origin doesn't 
+                  allow access from the particular origin.`;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "*");
+//   next();
+// });
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client", "build"))); //for heroku deployment
 }
-
 app.use(bodyParser.json({ limit: "500mb" }));
-app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(
+  bodyParser.urlencoded({
+    limit: "500mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
 
 //startup
 require("./startup/routes")(app);

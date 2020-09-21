@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import ListItem from "../Shared/ListItem";
 import _ from "lodash";
 import ModalPrompt from "../Shared/ModalPrompt";
 import Paginator from "../Shared/Paginator";
 import ProductCard from "../Products/ProductCard";
-import SearchBox from "../Shared/SearchBox";
 import UpdateProduct from "../Products/UpdateProduct";
 import { paginate } from "../../utils/paginate";
 import { getProducts, deleteProduct } from "../../services/productService";
 import { getCategories } from "../../services/categoryService";
 import { toast } from "react-toastify";
+import ProductFilterCol from "./ProductFilterCol";
+import ProductFilterMobile from "./ProductFilterMobile";
 
 class Products extends Component {
   state = {
@@ -153,7 +153,7 @@ class Products extends Component {
       indexOfUpdatedProduct,
     } = this.state;
 
-    const { user, handleSetActiveTab } = this.props;
+    const { user, handleSetActiveTab, clientWidth } = this.props;
     const { totalCount, data: products } = this.getPagedData();
     return (
       <>
@@ -173,29 +173,29 @@ class Products extends Component {
           btnText={"Delete Product"}
           handleClick={this.handleDelete}
         />
+        {clientWidth < 1000 && (
+          <ProductFilterMobile
+            searchQuery={searchQuery}
+            handleSearch={this.handleSearch}
+            categories={categories}
+            selectedTab={selectedTab}
+            handleTabChange={this.handleTabChange}
+          />
+        )}
         <div className="row" style={{ marginTop: "85px" }}>
-          <div className="col-2">
-            <div className="row">
-              <div className="col">
-                <SearchBox value={searchQuery} onChange={this.handleSearch} />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col d-flex justify-content-center">
-                <h5 style={{ fontWeight: "bolder" }}>Filter By Category</h5>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <ListItem
-                  items={categories}
-                  selectedTab={selectedTab}
-                  handleChange={this.handleTabChange}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="col-8">
+          {clientWidth < 1000 ? (
+            ""
+          ) : (
+            <ProductFilterCol
+              searchQuery={searchQuery}
+              handleSearch={this.handleSearch}
+              categories={categories}
+              selectedTab={selectedTab}
+              handleTabChange={this.handleTabChange}
+            />
+          )}
+
+          <div className={`${clientWidth > 1000 ? "col-8" : "col-12"}`}>
             <div className="row">
               <ProductCard
                 products={products}
@@ -203,6 +203,7 @@ class Products extends Component {
                 handleDelete={this.handleTogglePrompt}
                 handleToggleUpdate={this.handleToggleUpdate}
                 handleSetActiveTab={handleSetActiveTab}
+                clientWidth={clientWidth}
               />
             </div>
             <div className="row">
