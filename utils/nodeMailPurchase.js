@@ -9,6 +9,8 @@ function sendMsgPurchase(name, toEmail, html) {
       pass: process.env.EMAIL_PASSWORD,
     },
   });
+
+  console.log("---------------HTML-------------", html);
   var mailOptions = {
     from: "afw821@gmail.com",
     to: toEmail,
@@ -24,9 +26,9 @@ function sendMsgPurchase(name, toEmail, html) {
       console.log(
         "-----------------Email sent:--------------------- " + info.response
       );
+      return true;
     }
   });
-
   return true;
 }
 

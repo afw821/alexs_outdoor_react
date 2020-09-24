@@ -173,6 +173,7 @@ class Products extends Component {
           btnText={"Delete Product"}
           handleClick={this.handleDelete}
         />
+
         {clientWidth < 1000 && (
           <ProductFilterMobile
             searchQuery={searchQuery}
@@ -196,6 +197,14 @@ class Products extends Component {
           )}
 
           <div className={`${clientWidth > 1000 ? "col-8" : "col-12"}`}>
+            <div className="row mt-3 ml-5">
+              <Paginator
+                itemsCount={totalCount}
+                pageSize={pageSize}
+                onPageChange={this.handlePageChange}
+                currentPage={currentPage}
+              />
+            </div>
             <div className="row">
               <ProductCard
                 products={products}
@@ -204,14 +213,6 @@ class Products extends Component {
                 handleToggleUpdate={this.handleToggleUpdate}
                 handleSetActiveTab={handleSetActiveTab}
                 clientWidth={clientWidth}
-              />
-            </div>
-            <div className="row">
-              <Paginator
-                itemsCount={totalCount}
-                pageSize={pageSize}
-                onPageChange={this.handlePageChange}
-                currentPage={currentPage}
               />
             </div>
           </div>

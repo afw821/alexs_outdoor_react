@@ -20,9 +20,8 @@ router.post(
   "/purchase",
   ash(async (req, res) => {
     const { name, toEmail, html } = req.body;
-    console.log("----------Name-------------", name);
-    console.log("----------html-------------", html);
     const result = await sendMsgPurchase(name, toEmail, html);
+
     if (!result)
       res.status(400).send({ sent: false, message: "Error Sending Message" });
 

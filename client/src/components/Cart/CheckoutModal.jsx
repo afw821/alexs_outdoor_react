@@ -24,19 +24,8 @@ class CheckoutModal extends Component {
 
     handleToggleLoader();
 
-    const message = `Here is you purchase information ${firstName}`;
-    console.log("products in the cart", productsInCart);
-    // const result = await sendEmailPurchase(
-    //   `${lastName}, ${firstName}`,
-    //   email,
-    //   message,
-    //   email
-    //   //productsInCart
-    // );
-    //console.log("result from send email", result);
     productsInCart.forEach(async (product, index, array) => {
       try {
-        console.log("purchase completed array.length", array.length);
         const userQuant = product.quantity;
         const ProductId = product.product.id;
         const purchaseName = `UserId# ${id} ${lastName}, ${firstName} - ID# ${ProductId} / ${product.product.name}`;
@@ -69,12 +58,8 @@ class CheckoutModal extends Component {
             if (token) loginWithJwt(token);
           }
           if (index === array.length - 1) {
-            //send email on last iteration with all products in array
-            console.log("purchase completed index === array.length - 1", index);
-            console.log("purchase completed index === array.length - 1", array);
-            //sendEmailPurchase();
-
-            renderEmailTemplate(array);
+            const html = renderEmailTemplate(array);
+            sendEmailPurchase(`${lastName}, ${firstName}`, email, html);
           }
         }
       } catch (ex) {
