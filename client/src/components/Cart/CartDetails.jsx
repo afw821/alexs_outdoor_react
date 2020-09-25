@@ -10,6 +10,7 @@ import { purchase } from "../../services/purchaseService";
 import { toast } from "react-toastify";
 import { updateProductQuant } from "../../services/productService";
 import { getTableRowOptions } from "./../../utils/tableRowOptions";
+import Table from "./../Shared/Table";
 
 class CartDetails extends Component {
   state = {
@@ -134,24 +135,19 @@ class CartDetails extends Component {
           style={{ marginTop: "100px" }}
         >
           <div className="col-8">
-            <table className="table">
-              <TableHead
-                clientWidth={clientWidth}
-                options={this.renderTableHeaderOptions(clientWidth)}
-              />
-              <TableBody
-                items={productsInCart}
-                handleHover={this.handleHover}
-                handleLeave={this.handleLeave}
-                trItems={this.renderTableRowOptions(
-                  calculateQuantity,
-                  clientWidth,
-                  handleRemoveFromCart,
-                  removeBtn,
-                  this.calculatePrice
-                )}
-              />
-            </table>
+            <Table
+              options={this.renderTableHeaderOptions(clientWidth)}
+              items={productsInCart}
+              handleHover={this.handleHover}
+              handleLeave={this.handleLeave}
+              trItems={this.renderTableRowOptions(
+                calculateQuantity,
+                clientWidth,
+                handleRemoveFromCart,
+                removeBtn,
+                this.calculatePrice
+              )}
+            />
           </div>
         </div>
         <div className="row d-flex justify-content-center">

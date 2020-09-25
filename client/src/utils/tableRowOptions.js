@@ -44,6 +44,7 @@ export function getTableRowOptions(
           product={product}
           index={index}
           clientWidth={clientWidth}
+          renderedFromDetails={false}
         />
       ),
     },
