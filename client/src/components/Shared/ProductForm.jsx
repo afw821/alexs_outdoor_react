@@ -135,9 +135,6 @@ class ProductForm extends Form {
   };
 
   render() {
-    const lineBreakStyle = {
-      borderBottom: "1px solid lightgray",
-    };
     const { imageSrc, selectedCategoryId } = this.state.data;
     const { categories } = this.state;
     const { productId } = this.props;
@@ -145,7 +142,7 @@ class ProductForm extends Form {
       <>
         <div
           className="jumbotron form-width-multiple-items"
-          style={{ marginTop: "80px", backgroundColor: "whitesmoke" }}
+          style={{ marginTop: "80px" }}
         >
           {!productId && (
             <>
@@ -155,7 +152,7 @@ class ProductForm extends Form {
                 </div>
               </div>
               <div className="row d-flex justify-content-center">
-                <div className="col-10" style={lineBreakStyle}></div>
+                <div className="col-10"></div>
               </div>
             </>
           )}

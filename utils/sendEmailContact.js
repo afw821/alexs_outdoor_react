@@ -1,7 +1,8 @@
 const nodemailer = require("nodemailer");
+const renderContactHtml = require("./renderContactHtml");
 require("dotenv").config();
 
-function sendEmail(email, message, name) {
+function sendEmailContact(fromEmail, message, name) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -11,10 +12,10 @@ function sendEmail(email, message, name) {
   });
 
   var mailOptions = {
-    from: email,
+    from: fromEmail,
     to: "afw821@gmail.com",
     subject: `From:${name}`,
-    html: `<h1>Message: ${message} Email: ${email}</h1>`,
+    html: renderContactHtml(fromEmail, message, name),
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -31,4 +32,4 @@ function sendEmail(email, message, name) {
   return true;
 }
 
-module.exports = sendEmail;
+module.exports = sendEmailContact;

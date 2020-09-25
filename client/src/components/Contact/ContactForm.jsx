@@ -2,7 +2,7 @@ import React from "react";
 import Form from "../Shared/Form";
 import Joi from "joi-browser";
 import PopUpModal from "../Shared/PopUpModal";
-import { sendEmail } from "../../services/emailService";
+import { sendEmailContact } from "../../services/emailService";
 import { toast } from "react-toastify";
 class ContactForm extends Form {
   state = {
@@ -28,7 +28,11 @@ class ContactForm extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      const result = await sendEmail(data.email, data.message, data.name);
+      const result = await sendEmailContact(
+        data.email,
+        data.message,
+        data.name
+      );
 
       if (result) {
         const data = {
@@ -47,9 +51,6 @@ class ContactForm extends Form {
   };
 
   render() {
-    const lineBreakStyle = {
-      borderBottom: "1px solid lightgray",
-    };
     return (
       <>
         <PopUpModal
@@ -63,10 +64,7 @@ class ContactForm extends Form {
             className="col d-flex justify-content-center"
             style={{ marginTop: "100px" }}
           >
-            <div
-              className="jumbotron jumbotron-fluid form-width"
-              style={{ backgroundColor: "whitesmoke" }}
-            >
+            <div className="jumbotron jumbotron-fluid form-width">
               <div className="container">
                 <div className="row">
                   <div className="col d-flex justify-content-center">
@@ -74,7 +72,7 @@ class ContactForm extends Form {
                   </div>
                 </div>
                 <div className="row d-flex justify-content-center">
-                  <div className="col-10" style={lineBreakStyle}></div>
+                  <div className="col-10"></div>
                 </div>
                 <div className="row">
                   <div className="col">

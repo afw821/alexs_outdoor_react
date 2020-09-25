@@ -29,7 +29,6 @@ class Form extends Component {
   };
 
   handleChange = ({ currentTarget: input }) => {
-    console.log("handle change");
     const errors = { ...this.state.errors };
     const data = { ...this.state.data };
     switch (input.name) {
@@ -203,7 +202,7 @@ class Form extends Component {
         name={name}
         onChange={this.handleChange}
         className="browser-default custom-select"
-        style={{ borderBottom: "1px solid lightgray" }}
+        style={{ border: "none" }}
       >
         <option>{label}</option>
         {options.map((state) => (

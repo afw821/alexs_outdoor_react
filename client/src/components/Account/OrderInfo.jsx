@@ -110,7 +110,7 @@ class OrderInfo extends Component {
     const { products } = this.state;
 
     if (user.Purchases.length === 0)
-      return <div>{`You have no purchases ${user.firstName}!`}</div>;
+      return <div>{`You have no purchases ${user.firstName}`}</div>;
     else {
       return (
         <Table

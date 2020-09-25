@@ -1,7 +1,8 @@
 const nodemailer = require("nodemailer");
+const renderRegisterHtml = require("../utils/renderRegisterHtml");
 require("dotenv").config();
 
-function sendMsgPurchase(name, toEmail, html) {
+function sendEmailRegister(fromEmail, name) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -10,12 +11,11 @@ function sendMsgPurchase(name, toEmail, html) {
     },
   });
 
-  console.log("---------------HTML-------------", html);
   var mailOptions = {
     from: "afw821@gmail.com",
-    to: toEmail,
-    subject: `${name}, here is your purchase summary`,
-    html: html,
+    to: fromEmail,
+    subject: `Thanks for signing up for Alex's Outdoors!`,
+    html: renderRegisterHtml(fromEmail, name),
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -26,10 +26,10 @@ function sendMsgPurchase(name, toEmail, html) {
       console.log(
         "-----------------Email sent:--------------------- " + info.response
       );
-      return true;
     }
   });
+
   return true;
 }
 
-module.exports = sendMsgPurchase;
+module.exports = sendEmailRegister;

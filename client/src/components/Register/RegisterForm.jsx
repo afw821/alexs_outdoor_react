@@ -6,6 +6,7 @@ import Joi from "joi-browser";
 import { register } from "../../services/userService";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { sendEmailRegister } from "../../services/emailService";
 
 class RegisterForm extends Form {
   state = {
@@ -45,7 +46,7 @@ class RegisterForm extends Form {
     try {
       const { data } = this.state;
       const { handleSetActiveTab } = this.props;
-      await register(
+      const user = await register(
         data.firstName,
         data.lastName,
         data.address,
@@ -57,8 +58,11 @@ class RegisterForm extends Form {
         data.password,
         data.isAdmin
       );
-      this.props.history.push("/login");
-      handleSetActiveTab("Login");
+      if (user) {
+        this.props.history.push("/login");
+        handleSetActiveTab("Login");
+        sendEmailRegister(user.email, `${user.firstName} ${user.lastName}`);
+      }
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         toast.error(ex.response.data);
