@@ -34,12 +34,16 @@ class CategoryManager extends Form {
     }
   };
   render() {
+    const lineBreakStyle = {
+      borderBottom: "1px solid lightgray",
+    };
     return (
       <>
         <div
           className="jumbotron form-width-multiple-items"
           style={{
             height: "350px",
+            backgroundColor: "whitesmoke",
             marginTop: "100px",
           }}
         >
@@ -50,7 +54,7 @@ class CategoryManager extends Form {
               </div>
             </div>
             <div className="row d-flex justify-content-center">
-              <div className="col-10"></div>
+              <div className="col-10" style={lineBreakStyle}></div>
             </div>
             <div className="row">
               <div className="col">

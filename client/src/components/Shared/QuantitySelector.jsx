@@ -18,9 +18,7 @@ const QuantitySelector = ({
     >
       {clientWidth > `${renderedFromDetails ? 100 : 740}` ? (
         <button
-          onClick={() =>
-            calculateQuantity(product.quantity, index, false, product)
-          }
+          onClick={() => calculateQuantity(product.quantity, index, false)}
           className="minus"
         ></button>
       ) : (
@@ -40,9 +38,7 @@ const QuantitySelector = ({
       />
       {clientWidth > `${renderedFromDetails ? 100 : 740}` ? (
         <button
-          onClick={() =>
-            calculateQuantity(product.quantity, index, true, product)
-          }
+          onClick={() => calculateQuantity(product.quantity, index, true)}
           className="plus"
         ></button>
       ) : (

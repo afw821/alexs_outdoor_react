@@ -1,7 +1,22 @@
 import React, { Component } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
+import AdminPortal from "./components/Admin/AdminPortal";
+import RegisterForm from "./components/Register/RegisterForm";
+import NotFound from "./components/Shared/NotFound";
+import LoginForm from "./components/Login/LoginForm";
 import NavBar from "./components/Layout/NavBar";
 import auth from "./services/authService";
+import Home from "./components/Home/Home";
+import Logout from "./components/Logout/Logout";
 import Footer from "./components/Layout/Footer";
+import UserDetails from "./components/Account/UserDetails";
+import Products from "./components/Products/Products";
+import ProductDetails from "./components/Products/ProductDetails";
+import ProtectedRoute from "./components/Shared/ProtectedRoute";
+import UpdatePassword from "./components/Account/UpdatePassword";
+import CartDetails from "./components/Cart/CartDetails";
+import ContactForm from "./components/Contact/ContactForm";
+import AdminProtectedRoute from "./components/Shared/AdminProctedRoute";
 import _arrayBufferToBase64 from "./utils/toBase64String";
 import { ToastContainer, toast } from "react-toastify";
 import { addItemToCart } from "./services/cartService";
@@ -13,7 +28,6 @@ import { updateCart } from "./services/cartService";
 import { activeTabRefresh } from "./utils/activeTabRefresh";
 import "react-toastify/dist/ReactToastify.css";
 import ContactPage from "./components/Contact/ContactForm2";
-import ClientRoutes from "./components/Layout/ClientRoutes";
 
 class App extends Component {
   state = {
@@ -180,14 +194,13 @@ class App extends Component {
       }
     }
   };
-  calculateQuantity = async (currentQuantity, currentIndex, add, product) => {
+  calculateQuantity = async (currentQuantity, currentIndex, add) => {
     try {
       //clone state
       const productsInCart = [...this.state.productsInCart];
       var user = { ...this.state.user };
 
-      if (currentQuantity === 1 && !add)
-        return this.handleRemoveFromCart(null, product); //remove from cart if user clicks to 0
+      if (productsInCart[currentIndex].quantity === 0 && !add) return;
 
       let totalPrice = this.state.totalPrice;
       const pricePerUnit = productsInCart[currentIndex].product.price;
@@ -255,17 +268,110 @@ class App extends Component {
           activeTab={activeTab}
         />
         <div className="container-fluid h100">
-          <ClientRoutes
-            user={user}
-            clientWidth={clientWidth}
-            handleRemoveFromCart={this.handleRemoveFromCart}
-            handleSetActiveTab={this.handleSetActiveTab}
-            calculateQuantity={this.calculateQuantity}
-            totalPrice={totalPrice}
-            productsInCart={productsInCart}
-            handleAddToCart={this.handleAddToCart}
-            activeTab={activeTab}
-          />
+          <Switch>
+            <ProtectedRoute
+              path="/account/:id"
+              exact
+              render={(props) => (
+                <UserDetails {...props} user={user} clientWidth={clientWidth} />
+              )}
+            />
+            <ProtectedRoute
+              path="/updatePassword/:id"
+              exact
+              render={(props) => (
+                <UpdatePassword
+                  {...props}
+                  user={user}
+                  clientWidth={clientWidth}
+                />
+              )}
+            />
+            <ProtectedRoute
+              path="/cart/:id"
+              exact
+              render={(props) => (
+                <CartDetails
+                  {...props}
+                  handleRemoveFromCart={this.handleRemoveFromCart}
+                  handleSetActiveTab={this.handleSetActiveTab}
+                  calculateQuantity={this.calculateQuantity}
+                  totalPrice={totalPrice}
+                  productsInCart={productsInCart}
+                  user={user}
+                  clientWidth={clientWidth}
+                />
+              )}
+            />
+            <ProtectedRoute
+              path="/product/:id"
+              render={(props) => (
+                <ProductDetails
+                  {...props}
+                  handleAddToCart={this.handleAddToCart}
+                  user={user}
+                  clientWidth={clientWidth}
+                />
+              )}
+            />
+            <AdminProtectedRoute
+              path="/adminPortal"
+              exact
+              render={(props) => (
+                <AdminPortal {...props} user={user} clientWidth={clientWidth} />
+              )}
+            />
+            <Route
+              path="/products"
+              exact
+              render={(props) => (
+                <Products
+                  {...props}
+                  user={user}
+                  handleSetActiveTab={this.handleSetActiveTab}
+                  clientWidth={clientWidth}
+                />
+              )}
+            />
+            <Route
+              path="/register"
+              render={(props) => (
+                <RegisterForm
+                  {...props}
+                  activeTab={activeTab}
+                  handleSetActiveTab={this.handleSetActiveTab}
+                  clientWidth={clientWidth}
+                />
+              )}
+            />
+            <Route
+              path="/login"
+              render={(props) => (
+                <LoginForm
+                  {...props}
+                  activeTab={activeTab}
+                  handleSetActiveTab={this.handleSetActiveTab}
+                  clientWidth={clientWidth}
+                />
+              )}
+            />
+            <Route path="/contact" component={ContactForm} />
+            <Route path="/logout" component={Logout} />
+            <Route
+              path="/home"
+              render={(props) => (
+                <Home
+                  {...props}
+                  activeTab={activeTab}
+                  handleSetActiveTab={this.handleSetActiveTab}
+                  clientWidth={clientWidth}
+                />
+              )}
+            />
+            <Route path="/not-found" component={NotFound} />
+            <Redirect from="/" exact to="/home" />
+            <Redirect to="/not-found" />
+          </Switch>
           <Footer clientWidth={clientWidth} />
         </div>
       </>

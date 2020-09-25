@@ -58,8 +58,8 @@ class CheckoutModal extends Component {
             if (token) loginWithJwt(token);
           }
           if (index === array.length - 1) {
-            const html = await renderEmailTemplate(array, lastName, firstName);
-            sendEmailPurchase(`${lastName}, ${firstName}`, email, html, id);
+            const html = renderEmailTemplate(array);
+            sendEmailPurchase(`${lastName}, ${firstName}`, email, html);
           }
         }
       } catch (ex) {
