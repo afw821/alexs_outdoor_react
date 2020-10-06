@@ -4,6 +4,7 @@ import { getCategoryByPKId } from "../../services/categoryService";
 import _arrayBufferToBase64 from "../../utils/toBase64String";
 import ProductDetailImage from "./ProductDetailImage";
 import ProductDetailWrapper from "./ProductDetailWrapper";
+import { toast } from "react-toastify";
 import "../../input.css";
 
 class ProductDetails extends Component {
@@ -39,6 +40,12 @@ class ProductDetails extends Component {
   }
 
   addOrSubtract = (isAdd) => {
+    if (this.state.quantity >= this.state.data.inStock && isAdd) {
+      toast.info(
+        `Oops, we only have ${this.state.data.inStock} left in stock!`
+      );
+      return (this.state.quantity = this.state.data.inStock);
+    }
     return isAdd ? this.state.quantity + 1 : this.state.quantity - 1;
   };
 

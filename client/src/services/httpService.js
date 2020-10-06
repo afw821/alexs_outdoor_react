@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { apiUrl, deployedApiUrl } from "../config.json";
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
@@ -13,16 +14,21 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
-function setJwt(jwt) {
-  axios.defaults.headers.common["x-auth-token"] = jwt;
-}
+// function setJwt(jwt) {
+//   axios.defaults.headers.common["x-auth-token"] = jwt;
+// }
 
-//const instance = axios.create({})
+// const instance = axios.create({
+//   baseURL: apiUrl,
+//   data: {
+//     token: sessionStorage.getItem("token"),
+//   },
+// });
 
 export default {
   get: axios.get,
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
-  setJwt,
+  //setJwt,
 };

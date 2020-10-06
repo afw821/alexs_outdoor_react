@@ -1,7 +1,7 @@
 import http from "./httpService";
 import { apiUrl, deployedApiUrl } from "../config.json";
 
-export function getPurchases() {}
+export function getPurchases() {} // not in use
 
 export function purchase(name, UserId, ProductId, quantity) {
   const obj = {
@@ -9,6 +9,7 @@ export function purchase(name, UserId, ProductId, quantity) {
     quantity: quantity,
     UserId: UserId,
     ProductId: ProductId,
+    token: sessionStorage.getItem("token"),
   };
   return http.post(deployedApiUrl + "/purchases", obj);
 }

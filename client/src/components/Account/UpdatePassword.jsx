@@ -22,6 +22,7 @@ class UpdatePassword extends Form {
 
   doSubmit = async () => {
     try {
+      console.log("do Submit");
       const { data } = this.state;
       const { user } = this.props;
       const result = await updatePassword(
@@ -40,9 +41,9 @@ class UpdatePassword extends Form {
         });
       }
     } catch (ex) {
-      if (ex.response.stauts === 400 || ex.response.status === 404)
+      if (ex.response.status === 400 || ex.response.status === 404)
         toast.error(ex.response.data);
-      else if (ex.response.stauts === 500)
+      else if (ex.response.status === 500)
         toast.error("There was an unexpected error");
     }
   };
@@ -79,12 +80,12 @@ class UpdatePassword extends Form {
                       "Confirm New Password",
                       "password"
                     )}
+                    <div className="row">
+                      <div className="col d-flex justify-content-center">
+                        {this.renderBtn("Submit", "blue", "submit")}
+                      </div>
+                    </div>
                   </form>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col d-flex justify-content-center">
-                  <button className="btn btn-primary">Submit</button>
                 </div>
               </div>
             </div>

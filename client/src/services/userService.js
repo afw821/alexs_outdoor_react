@@ -31,7 +31,10 @@ export async function register(
 }
 
 export async function getUserById(id) {
-  const user = await http.get(deployedApiUrl + `/users/${id}`);
+  const reqBody = {
+    token: sessionStorage.getItem("token"),
+  };
+  const user = await http.post(deployedApiUrl + `/users/${id}`, reqBody);
 
   return user;
 }
@@ -58,6 +61,7 @@ export async function updateUser(
     zipCode,
     email,
     isAdmin,
+    token: sessionStorage.getItem("token"),
   };
   const result = await http.put(deployedApiUrl + `/users/${id}`, reqBody);
 

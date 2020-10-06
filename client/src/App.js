@@ -182,12 +182,19 @@ class App extends Component {
   };
   calculateQuantity = async (currentQuantity, currentIndex, add, product) => {
     try {
+      const inStock = product.product.inStock;
       //clone state
       const productsInCart = [...this.state.productsInCart];
       var user = { ...this.state.user };
 
       if (currentQuantity === 1 && !add)
         return this.handleRemoveFromCart(null, product); //remove from cart if user clicks to 0
+
+      if (currentQuantity >= inStock && add) {
+        return toast.info(
+          `There are only ${inStock} of ${product.product.name} left in stock!`
+        );
+      }
 
       let totalPrice = this.state.totalPrice;
       const pricePerUnit = productsInCart[currentIndex].product.price;

@@ -33,6 +33,7 @@ router.post(
   "/",
   ash(async (req, res) => {
     const { email, password } = req.body;
+
     let user = await db.User.findOne({
       where: {
         email: email,
@@ -54,7 +55,9 @@ router.put(
   "/updatePassword",
   auth,
   ash(async (req, res) => {
-    const { email, oldPassword, newPassword } = req.body;
+    const { email, oldPassword, newPassword, token } = req.body;
+
+    console.log("-------Token from update PW req body-------", token);
 
     let user = await db.User.findOne({
       where: {

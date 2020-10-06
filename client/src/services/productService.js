@@ -6,14 +6,19 @@ export function getProducts() {
 }
 
 export function addProduct(formData) {
+  //auth token passed here
+  console.log("Form data from addProduct", formData);
+  //const config = { data: { token: sessionStorage.getItem("token") } };
   return http.post(deployedApiUrl + "/products", formData);
 }
 
 export function getProductByPKId(productId) {
+  // no auth
   return http.get(deployedApiUrl + `/products/byPK/${productId}`);
 }
 
 export function updateProductQuant(userQuant, productId) {
+  //no auth but may need to add
   const obj = {
     userQuant: userQuant,
   };
@@ -21,9 +26,16 @@ export function updateProductQuant(userQuant, productId) {
 }
 
 export function updateProduct(product, productId) {
+  //auth
   return http.post(deployedApiUrl + `/products/byPK/${productId}`, product);
 }
 
 export function deleteProduct(productId) {
-  return http.delete(deployedApiUrl + `/products/byPK/${productId}`);
+  //auth
+  const config = {
+    data: {
+      token: sessionStorage.getItem("token"),
+    },
+  };
+  return http.delete(deployedApiUrl + `/products/byPK/${productId}`, config);
 }

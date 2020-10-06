@@ -55,14 +55,18 @@ const QuantitySelector = ({
           <div className="col-4 mr-1 responsive-quantity d-flex justify-content-center align-items-center">
             <i
               className="fa fa-minus fa-lg"
-              onClick={() => calculateQuantity(product.quantity, index, false)}
+              onClick={() =>
+                calculateQuantity(product.quantity, index, false, product)
+              }
               aria-hidden="true"
             ></i>
           </div>
           <div className="col-4 responsive-quantity d-flex justify-content-center align-items-center">
             <i
               className="fa fa-plus fa-lg"
-              onClick={() => calculateQuantity(product.quantity, index, true)}
+              onClick={() =>
+                calculateQuantity(product.quantity, index, true, product)
+              }
               aria-hidden="true"
             ></i>
           </div>

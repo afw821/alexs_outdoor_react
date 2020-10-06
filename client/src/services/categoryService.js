@@ -8,6 +8,7 @@ export function getCategories() {
 export function addCategory(category) {
   const obj = {
     name: category,
+    token: sessionStorage.getItem("token"),
   };
   return http.post(deployedApiUrl + "/categories", obj);
 }

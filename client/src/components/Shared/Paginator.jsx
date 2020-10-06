@@ -3,7 +3,8 @@ import _ from "lodash";
 
 const Paginator = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
   const pagesCount = Math.ceil(itemsCount / pageSize);
-  if (pagesCount === 1) return null;
+  console.log("pages Count", pagesCount);
+  if (pagesCount === 1 || pagesCount === 0) return null;
   const pages = _.range(1, pagesCount + 1);
 
   return (

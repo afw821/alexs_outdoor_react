@@ -46,8 +46,6 @@ app.use(
     parameterLimit: 50000,
   })
 );
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
 
 //startup
 require("./startup/routes")(app);

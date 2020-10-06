@@ -22,7 +22,8 @@ router.post(
   })
 );
 
-router.get(
+router.post(
+  //getting user by id
   "/:id",
   auth,
   ash(async (req, res) => {

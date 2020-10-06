@@ -1,6 +1,5 @@
 import AccountInfoRow from "./AccountInfoRow";
 import React, { Component } from "react";
-import { getUserById } from "../../services/userService";
 import AccountEditForm from "./AccountEditForm";
 
 class AccountInfo extends Component {

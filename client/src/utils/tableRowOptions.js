@@ -10,6 +10,7 @@ export function getTableRowOptions(
   removeBtn,
   calculatePrice
 ) {
+  //these are the table row items for Cart Details Page
   const trItems = [
     {
       id: 1,
@@ -69,7 +70,7 @@ export function getTableRowOptions(
       ),
     },
   ];
-
+  //these are the table row items for order info page
   const trItemsForOrder = [
     {
       id: 1,

@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import _arrayBufferToBase64 from "../../utils/toBase64String";
 import CheckoutModal from "./CheckoutModal";
-import TableHead from "../Shared/TableHead";
-import TableBody from "../Shared/TableBody";
 import TotalRow from "./TotalRow";
-import QuantitySelector from "../Shared/QuantitySelector";
 import { getCartTableOptions } from "../../utils/tableHeaderOptions";
 import { purchase } from "../../services/purchaseService";
 import { toast } from "react-toastify";

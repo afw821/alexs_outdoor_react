@@ -9,12 +9,13 @@ const admin = require("../middleware/admin");
 //post a product
 router.post(
   "/",
-  [auth, admin],
   upload.single("file"),
+  [auth, admin],
   ash(async (req, res) => {
-    //const { name, inStock } = req.body;
     if (!req.file) return res.status(400).send(`You must select a file.`);
-    const { name, inStock, CategoryId, price, description } = req.body;
+
+    const { name, inStock, CategoryId, price, description, token } = req.body;
+
     const product = await db.Product.create({
       name: name,
       price: price,
@@ -69,8 +70,8 @@ router.get(
 //use this when admin need to update product
 router.post(
   "/byPK/:id",
-  [auth, admin],
   upload.single("file"),
+  [auth, admin],
   ash(async (req, res) => {
     if (!req.file) return res.status(400).send("You must select a file.");
     const { name, inStock, CategoryId, price, description } = req.body;

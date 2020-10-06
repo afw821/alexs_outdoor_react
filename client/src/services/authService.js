@@ -2,7 +2,7 @@ import http from "./httpService";
 import jwtDecode from "jwt-decode";
 import { apiUrl, deployedApiUrl } from "../config.json";
 
-http.setJwt(getJwt());
+//http.setJwt(getJwt());
 
 export async function login(email, password) {
   const { data: jwt } = await http.post(deployedApiUrl + "/auth", {
@@ -17,6 +17,7 @@ export function updatePassword(email, oldPassword, newPassword) {
     email: email,
     oldPassword: oldPassword,
     newPassword: newPassword,
+    token: sessionStorage.getItem("token"),
   };
   const result = http.put(deployedApiUrl + "/auth/updatePassword", reqBody);
 

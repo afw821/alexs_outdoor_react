@@ -95,7 +95,9 @@ class ProductForm extends Form {
         closeModal,
         handleUpdateView,
         indexOfUpdatedProduct,
+        user,
       } = this.props;
+
       const formData = new FormData();
       formData.append("file", file, file.name);
       formData.append("name", name);
@@ -103,6 +105,8 @@ class ProductForm extends Form {
       formData.append("description", description);
       formData.append("price", parseFloat(price));
       formData.append("CategoryId", parseInt(selectedCategoryId));
+
+      formData.append("token", sessionStorage.getItem("token"));
       if (productId)
         var { data: updatedProduct } = await updateProduct(formData, productId);
       else var { data } = await addProduct(formData);
