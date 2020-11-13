@@ -11,5 +11,5 @@ export function purchase(name, UserId, ProductId, quantity) {
     ProductId: ProductId,
     token: sessionStorage.getItem("token"),
   };
-  return http.post(deployedApiUrl + "/purchases", obj);
+  return http.post(apiUrl + "/purchases", obj);
 }
