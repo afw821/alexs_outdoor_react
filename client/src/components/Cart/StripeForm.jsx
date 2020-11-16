@@ -1,29 +1,27 @@
-import React from "react";
+import React, { Component } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import axios from "axios";
+import {
+  makePayment,
+  createPaymentMethod,
+} from "../../services/paymentService";
 
-export const StripeForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-
+const StripeForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-    });
+    const billing_details = {};
+    const elements = useElements();
+    const card = elements.getElement(CardElement);
+    const { error, paymentMethod } = await createPaymentMethod(
+      "card",
+      card,
+      billing_details
+    );
 
     if (!error) {
       console.log("Stripe 23 | token generated!", paymentMethod);
       try {
         const { id } = paymentMethod;
-        const response = await axios.post(
-          "http://localhost:8080/stripe/charge",
-          {
-            amount: 999,
-            id: id,
-          }
-        );
+        const response = await makePayment(amount, id);
 
         console.log("Stripe 35 | data", response.data.success);
         if (response.data.success) {
@@ -44,3 +42,5 @@ export const StripeForm = () => {
     </form>
   );
 };
+
+export default StripeForm;
