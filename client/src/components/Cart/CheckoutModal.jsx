@@ -1,14 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import Loader from "../Shared/Loader";
 import Table from "..//Shared/Table";
 import { getCartTableOptions } from "../../utils/tableHeaderOptions";
-import { purchase } from "../../services/purchaseService";
-import { regenerateToken, loginWithJwt } from "../../services/authService";
-import { sendEmailPurchase } from "../../services/emailService";
-import { toast } from "react-toastify";
-import { updateProductQuant } from "../../services/productService";
 import { getTableRowOptions } from "./../../utils/tableRowOptions";
-import renderEmailTemplate from "./../../utils/renderEmailTemplate";
+import StripeContainer from "../Cart/StripeContainer";
+import { makePurchase } from "../../utils/makePurchase";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import {
   MDBBtn,
   MDBModal,
@@ -16,59 +13,33 @@ import {
   MDBModalHeader,
   MDBModalFooter,
 } from "mdbreact";
+import {
+  makePayment,
+  createPaymentMethod,
+} from "../../services/paymentService";
 
-class CheckoutModal extends Component {
-  makePurchase = async (productsInCart) => {
-    const { firstName, lastName, email, id } = this.props.user;
-    const { handleToggleLoader } = this.props;
+const CheckoutModal = ({
+  isOpen,
+  closeModal,
+  user,
+  productsInCart,
+  handleHover,
+  handleLeave,
+  handleRemoveFromCart,
+  calculateQuantity,
+  calculatePrice,
+  removeBtn,
+  showLoader,
+  handleChangeQuantity,
+  handleToggleLoader,
+  clientWidth,
+  totalPrice,
+}) => {
+  //stripe payment
+  const elements = useElements();
+  const stripe = useStripe();
 
-    handleToggleLoader();
-
-    productsInCart.forEach(async (product, index, array) => {
-      try {
-        const userQuant = product.quantity;
-        const ProductId = product.product.id;
-        const purchaseName = `UserId# ${id} ${lastName}, ${firstName} - ID# ${ProductId} / ${product.product.name}`;
-
-        const { data: updateResult } = await updateProductQuant(
-          userQuant,
-          ProductId
-        );
-
-        if (updateResult) {
-          var purchaseResult = await purchase(
-            purchaseName,
-            this.props.user.id,
-            ProductId,
-            userQuant
-          );
-        }
-
-        if (purchaseResult.status === 200 && index === 0) {
-          setTimeout(() => {
-            toast.info("Purchase was successful!");
-            handleToggleLoader(); //this removes loader
-          }, 2000);
-        }
-        if (purchaseResult.status === 200) {
-          const userClone = { ...this.props.user };
-          userClone.Purchases.push(purchaseResult.data);
-          if (index === 0) {
-            const { data: token } = await regenerateToken(userClone);
-            if (token) loginWithJwt(token);
-          }
-          if (index === array.length - 1) {
-            const html = await renderEmailTemplate(array, lastName, firstName);
-            sendEmailPurchase(`${lastName}, ${firstName}`, email, html, id);
-          }
-        }
-      } catch (ex) {
-        if (ex.response.status === 400) toast.error(ex.response.data);
-      }
-    });
-  };
-
-  renderTableRowOptions = (
+  const renderTableRowOptions = (
     calculateQuantity,
     clientWidth,
     handleRemoveFromCart,
@@ -78,7 +49,7 @@ class CheckoutModal extends Component {
     const { trItems: allOptions } = getTableRowOptions(
       null,
       calculateQuantity,
-      this.handleChangeQuantity,
+      handleChangeQuantity,
       clientWidth,
       handleRemoveFromCart,
       removeBtn,
@@ -88,71 +59,111 @@ class CheckoutModal extends Component {
     else return allOptions;
   };
 
-  render() {
-    const {
-      isOpen,
-      closeModal,
-      user,
-      handlePurchase,
-      productsInCart,
-      handleHover,
-      handleLeave,
-      handleRemoveFromCart,
-      handleChangeQuantity,
-      calculateQuantity,
-      calculatePrice,
-      removeBtn,
-      showLoader,
-      handleToggleLoader,
-      clientWidth,
-    } = this.props;
+  const handleSubmitPurchasePayment = async (e) => {
+    e.preventDefault();
+    //post the putchase to the database
+    makePurchase(productsInCart, handleToggleLoader, user);
+    //process payment on stripe server
+    const card = elements.getElement(CardElement);
+    const { error, paymentMethod } = await createPaymentMethod(
+      "card",
+      card,
+      billing_details,
+      stripe
+    );
 
-    const { cartOptions } = getCartTableOptions();
-    return (
-      <>
-        <MDBModal isOpen={isOpen} fullHeight position="top">
-          <MDBModalHeader>
-            {user.firstName}, review your purchase information below and make
-            any changes
-          </MDBModalHeader>
-          <MDBModalBody>
-            <Table
-              options={cartOptions}
-              items={productsInCart}
-              handleHover={handleHover}
-              handleLeave={handleLeave}
-              trItems={this.renderTableRowOptions(
-                calculateQuantity,
-                clientWidth,
-                handleRemoveFromCart,
-                removeBtn,
-                calculatePrice
-              )}
-            />
-          </MDBModalBody>
+    if (!error) {
+      console.log("Stripe 23 | token generated!", paymentMethod);
+      try {
+        const { id } = paymentMethod;
+        const response = await makePayment(totalPrice, id);
+
+        console.log("Stripe 35 | data", response.data.success);
+        if (response.data.success) {
+          console.log("StripeForm.js 25 | payment successful!");
+        }
+      } catch (error) {
+        console.log("StripeForm.js 28 | ", error);
+      }
+    } else alert(error.message);
+  };
+
+  const billing_details = {
+    address: {
+      city: user.city,
+      country: "US",
+      line1: user.address,
+      line2: user.address2,
+      postal_code: user.zipCode,
+      state: user.state,
+    },
+    phone: "7706422208",
+    name: `${user.firstName} ${user.lastName}`,
+    email: user.email,
+  };
+  const { cartOptions } = getCartTableOptions();
+  return (
+    <>
+      <MDBModal isOpen={isOpen} fullHeight position="top">
+        <MDBModalHeader>
+          {user.firstName}, review your purchase information below and make any
+          changes
+        </MDBModalHeader>
+        <MDBModalBody>
+          <Table
+            options={cartOptions}
+            items={productsInCart}
+            handleHover={handleHover}
+            handleLeave={handleLeave}
+            trItems={renderTableRowOptions(
+              calculateQuantity,
+              clientWidth,
+              handleRemoveFromCart,
+              removeBtn,
+              calculatePrice
+            )}
+          />
+        </MDBModalBody>
+        <MDBModalBody>
+          <div className="row">
+            <div className="col d-flex justify-content-center">
+              <Loader showLoader={showLoader} />
+            </div>
+          </div>
+        </MDBModalBody>
+        <form onSubmit={handleSubmitPurchasePayment}>
           <MDBModalBody>
             <div className="row">
-              <div className="col d-flex justify-content-center">
-                <Loader showLoader={showLoader} />
+              <div className="col">
+                <StripeContainer
+                  amount={totalPrice}
+                  billing_details={billing_details}
+                />
               </div>
             </div>
           </MDBModalBody>
 
           <MDBModalFooter>
+            <strong>{totalPrice}</strong>
+
             <MDBBtn color="secondary" onClick={closeModal}>
               Close
             </MDBBtn>
+
             <MDBBtn
+              type="submit"
               color="primary"
-              onClick={() => this.makePurchase(productsInCart)}
+              // onClick={() =>
+              //   makePurchase(productsInCart, handleToggleLoader, user)
+              // }
             >
               Purchase
             </MDBBtn>
           </MDBModalFooter>
-        </MDBModal>
-      </>
-    );
-  }
-}
+        </form>
+      </MDBModal>
+    </>
+  );
+};
 
 export default CheckoutModal;

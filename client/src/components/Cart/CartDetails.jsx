@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import { updateProductQuant } from "../../services/productService";
 import { getTableRowOptions } from "./../../utils/tableRowOptions";
 import Table from "./../Shared/Table";
-
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 class CartDetails extends Component {
   state = {
     removeBtn: {
@@ -87,6 +88,11 @@ class CartDetails extends Component {
   render() {
     const { showModal, removeBtn } = this.state;
 
+    const PUBLIC_KEY =
+      "pk_test_51HPq8RA4jGUOIiwlAOGSSgUpJiAnuF7UqT2HLnf6SxSb2vaMlBM6PjwytLyKOR5xL4mRjwexPRzczvlLefyrxpIB00Xhst7EN9";
+
+    const stripeTestPromise = loadStripe(PUBLIC_KEY);
+
     const {
       productsInCart,
       totalPrice,
@@ -107,23 +113,26 @@ class CartDetails extends Component {
       );
     return (
       <>
-        <CheckoutModal
-          user={user}
-          isOpen={showModal}
-          handlePurchase={this.handlePurchase}
-          closeModal={this.toggleModal}
-          productsInCart={productsInCart}
-          handleHover={this.handleHover}
-          handleLeave={this.handleLeave}
-          handleRemoveFromCart={handleRemoveFromCart}
-          handleChangeQuantity={this.handleChangeQuantity}
-          calculateQuantity={calculateQuantity}
-          calculatePrice={this.calculatePrice}
-          removeBtn={this.state.removeBtn}
-          showLoader={this.state.showLoader}
-          handleToggleLoader={this.handleToggleLoader}
-          clientWidth={clientWidth}
-        />
+        <Elements stripe={stripeTestPromise}>
+          <CheckoutModal
+            user={user}
+            isOpen={showModal}
+            handlePurchase={this.handlePurchase}
+            closeModal={this.toggleModal}
+            productsInCart={productsInCart}
+            handleHover={this.handleHover}
+            handleLeave={this.handleLeave}
+            handleRemoveFromCart={handleRemoveFromCart}
+            handleChangeQuantity={this.handleChangeQuantity}
+            calculateQuantity={calculateQuantity}
+            calculatePrice={this.calculatePrice}
+            removeBtn={this.state.removeBtn}
+            showLoader={this.state.showLoader}
+            handleToggleLoader={this.handleToggleLoader}
+            clientWidth={clientWidth}
+            totalPrice={totalPrice}
+          />
+        </Elements>
 
         <div
           className={`row ${

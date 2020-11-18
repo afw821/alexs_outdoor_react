@@ -1,9 +1,7 @@
 import http from "./httpService";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { apiUrl, deployedApiUrl } from "../config.json";
-const stripe = useStripe();
 
-export async function createPaymentMethod(type, card, billing_details) {
+export async function createPaymentMethod(type, card, billing_details, stripe) {
   const { error, paymentMethod } = await stripe.createPaymentMethod({
     type,
     card,
@@ -17,9 +15,13 @@ export async function createPaymentMethod(type, card, billing_details) {
 }
 
 export function makePayment(amount, id) {
+  amount = amount.toString().replace(".", "");
+
   const data = {
     amount,
     id,
   };
-  return http.post(apiUrl + "/stripe/charge", data);
+
+  console.log("data", data);
+  //return http.post(apiUrl + "/stripe/charge", data);
 }
