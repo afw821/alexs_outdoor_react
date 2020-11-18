@@ -4,8 +4,13 @@ import { sendEmailPurchase } from "../services/emailService";
 import { toast } from "react-toastify";
 import { updateProductQuant } from "../services/productService";
 import renderEmailTemplate from "./../utils/renderEmailTemplate";
-
-export async function makePurchase(productsInCart, handleToggleLoader, user) {
+//This is called after Stripe payment is successful
+export async function makePurchase(
+  productsInCart,
+  handleToggleLoader,
+  user,
+  stripePaymentId
+) {
   const { firstName, lastName, email, id } = user;
 
   handleToggleLoader();
@@ -15,18 +20,19 @@ export async function makePurchase(productsInCart, handleToggleLoader, user) {
       const userQuant = product.quantity;
       const ProductId = product.product.id;
       const purchaseName = `UserId# ${id} ${lastName}, ${firstName} - ID# ${ProductId} / ${product.product.name}`;
-
+      //first we update the product for new quantity
       const { data: updateResult } = await updateProductQuant(
         userQuant,
         ProductId
       );
-
+      //if that's successful then we post the purchase
       if (updateResult) {
         var purchaseResult = await purchase(
           purchaseName,
           user.id,
           ProductId,
-          userQuant
+          userQuant,
+          stripePaymentId
         );
       }
 
@@ -38,8 +44,10 @@ export async function makePurchase(productsInCart, handleToggleLoader, user) {
       }
       if (purchaseResult.status === 200) {
         const userClone = { ...user };
+        //when all is successful then we update user infor and regenerate a new token on the server
         userClone.Purchases.push(purchaseResult.data);
         if (index === 0) {
+          //only need to regenerate token once / do it on first iteration
           const { data: token } = await regenerateToken(userClone);
           if (token) loginWithJwt(token);
         }

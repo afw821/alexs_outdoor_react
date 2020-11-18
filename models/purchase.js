@@ -9,6 +9,10 @@ module.exports = function (connection, Sequelize) {
       type: Sequelize.INTEGER,
       allowNull: false,
     },
+    stripePaymentId: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   });
 
   Purchase.associate = function (models) {

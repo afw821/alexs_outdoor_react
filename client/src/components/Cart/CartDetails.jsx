@@ -40,17 +40,16 @@ class CartDetails extends Component {
   toggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
   };
-
-  handlePurchase = async (userQuant, ProductId, name, UserId) => {
-    try {
-      console.log("making purchase cart details handlePurchase.");
-      const updateResult = await updateProductQuant(userQuant, ProductId);
-      const result = await purchase(name, UserId, ProductId, userQuant);
-      return result;
-    } catch (ex) {
-      if (ex.response.status === 400) toast.error(ex.response.data);
-    }
-  };
+  //DEPRECATED
+  // handlePurchase = async (userQuant, ProductId, name, UserId) => {
+  //   try {
+  //     const updateResult = await updateProductQuant(userQuant, ProductId);
+  //     const result = await purchase(name, UserId, ProductId, userQuant);
+  //     return result;
+  //   } catch (ex) {
+  //     if (ex.response.status === 400) toast.error(ex.response.data);
+  //   }
+  // };
   handleToggleLoader = () => {
     this.setState({ showLoader: !this.state.showLoader });
   };
@@ -117,7 +116,7 @@ class CartDetails extends Component {
           <CheckoutModal
             user={user}
             isOpen={showModal}
-            handlePurchase={this.handlePurchase}
+            // handlePurchase={this.handlePurchase} deprecated
             closeModal={this.toggleModal}
             productsInCart={productsInCart}
             handleHover={this.handleHover}

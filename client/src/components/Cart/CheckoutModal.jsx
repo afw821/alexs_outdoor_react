@@ -17,6 +17,7 @@ import {
   makePayment,
   createPaymentMethod,
 } from "../../services/paymentService";
+import { toast } from "react-toastify";
 
 const CheckoutModal = ({
   isOpen,
@@ -46,6 +47,7 @@ const CheckoutModal = ({
     removeBtn,
     calculatePrice
   ) => {
+    //table row options for table
     const { trItems: allOptions } = getTableRowOptions(
       null,
       calculateQuantity,
@@ -58,36 +60,7 @@ const CheckoutModal = ({
     if (clientWidth < 561) return allOptions.slice(1);
     else return allOptions;
   };
-
-  const handleSubmitPurchasePayment = async (e) => {
-    e.preventDefault();
-    //post the putchase to the database
-    makePurchase(productsInCart, handleToggleLoader, user);
-    //process payment on stripe server
-    const card = elements.getElement(CardElement);
-    const { error, paymentMethod } = await createPaymentMethod(
-      "card",
-      card,
-      billing_details,
-      stripe
-    );
-
-    if (!error) {
-      console.log("Stripe 23 | token generated!", paymentMethod);
-      try {
-        const { id } = paymentMethod;
-        const response = await makePayment(totalPrice, id);
-
-        console.log("Stripe 35 | data", response.data.success);
-        if (response.data.success) {
-          console.log("StripeForm.js 25 | payment successful!");
-        }
-      } catch (error) {
-        console.log("StripeForm.js 28 | ", error);
-      }
-    } else alert(error.message);
-  };
-
+  //Stripe Payment Billing details
   const billing_details = {
     address: {
       city: user.city,
@@ -101,6 +74,43 @@ const CheckoutModal = ({
     name: `${user.firstName} ${user.lastName}`,
     email: user.email,
   };
+
+  const handleSubmitPurchasePayment = async (e) => {
+    //handles posting purchase and processing STRIPE payment
+    e.preventDefault();
+    //process payment on stripe server
+    const card = elements.getElement(CardElement);
+    const { error, paymentMethod } = await createPaymentMethod(
+      "card",
+      card,
+      billing_details,
+      stripe
+    );
+
+    if (!error) {
+      //console.log("Stripe 23 | token generated!", paymentMethod);
+      try {
+        const { id: stripePaymentId } = paymentMethod;
+        const { data } = await makePayment(totalPrice, stripePaymentId);
+
+        //console.log("Stripe 35 | data", data.success);
+        if (data.success) {
+          //post the putchase to the database
+          await makePurchase(
+            productsInCart,
+            handleToggleLoader,
+            user,
+            stripePaymentId
+          );
+          toast.success("Payment Was Successful!");
+        }
+      } catch (error) {
+        toast.error("Payment Was Unsuccessful");
+      }
+    } else
+      toast.error("Error creating payment on Stripe server", error.message);
+  };
+
   const { cartOptions } = getCartTableOptions();
   return (
     <>
@@ -135,10 +145,7 @@ const CheckoutModal = ({
           <MDBModalBody>
             <div className="row">
               <div className="col">
-                <StripeContainer
-                  amount={totalPrice}
-                  billing_details={billing_details}
-                />
+                <StripeContainer />
               </div>
             </div>
           </MDBModalBody>
@@ -150,13 +157,7 @@ const CheckoutModal = ({
               Close
             </MDBBtn>
 
-            <MDBBtn
-              type="submit"
-              color="primary"
-              // onClick={() =>
-              //   makePurchase(productsInCart, handleToggleLoader, user)
-              // }
-            >
+            <MDBBtn type="submit" color="primary">
               Purchase
             </MDBBtn>
           </MDBModalFooter>
