@@ -10,10 +10,14 @@ class AccountInfo extends Component {
       handleCancelClick,
       handleUserUpdate,
       clientWidth,
+      expandRow,
     } = this.props;
     if (showAccountInfoRow) {
       return (
-        <div className="account-row-wrapper">
+        <div
+          className="account-row-wrapper"
+          style={expandRow ? { width: "150%" } : {}}
+        >
           <AccountInfoRow label="First Name" user={user.firstName} />
           <AccountInfoRow label="Last Name" user={user.lastName} />
           <AccountInfoRow label="Email" user={user.email} />

@@ -254,7 +254,7 @@ class App extends Component {
 
     return (
       <>
-        <ToastContainer />
+        <ToastContainer autoClose={3000} hideProgressBar />
         <NavBar
           handleSetActiveTab={this.handleSetActiveTab}
           count={count}
