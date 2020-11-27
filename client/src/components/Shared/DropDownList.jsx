@@ -8,7 +8,6 @@ const DropDownList = ({
   error,
   selectedItem,
 }) => {
-  console.log("selected item", selectedItem);
   return (
     <div className="form-group">
       <label className="font-bolder" htmlFor={name}>

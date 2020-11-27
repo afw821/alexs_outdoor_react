@@ -18,8 +18,17 @@ import {
   createPaymentMethod,
 } from "../../services/paymentService";
 import { toast } from "react-toastify";
-import { MDBJumbotron, MDBNav, MDBNavItem, MDBNavLink } from "mdbreact";
-import AccountInfo from "./../Account/AccountInfo";
+import {
+  MDBJumbotron,
+  MDBNav,
+  MDBNavItem,
+  MDBNavLink,
+  MDBTabContent,
+  MDBTabPane,
+  MDBCard,
+  MDBCardBody,
+} from "mdbreact";
+import AccountInfoRow from "./../Account/AccountInfoRow";
 
 const CheckoutModal = ({
   isOpen,
@@ -159,40 +168,48 @@ const CheckoutModal = ({
                     <MDBNavLink
                       link
                       to="#"
-                      active={true}
-                      //onClick={this.toggle("1")}
+                      active={activeTab === "1"}
+                      onClick={() => setActveTab("1")}
                       role="tab"
                     >
-                      Home
+                      Billing
                     </MDBNavLink>
                   </MDBNavItem>
                   <MDBNavItem>
                     <MDBNavLink
                       link
                       to="#"
-                      active={false}
-                      //onClick={this.toggle("2")}
+                      active={activeTab === "2"}
+                      onClick={() => setActveTab("2")}
                       role="tab"
                     >
-                      Profile
+                      Payment
                     </MDBNavLink>
                   </MDBNavItem>
                 </MDBNav>
                 <MDBTabContent activeItem={activeTab}>
                   <MDBTabPane tabId="1" role="tabpanel">
-                    <p className="mt-2"></p>
+                    <p className="mt-2 ml-3">
+                      <AccountInfoRow label="Email" user={user.email} />
+                    </p>
+                    <p className="mt-2 ml-3">
+                      <AccountInfoRow label="Country" user="United States" />
+                    </p>
                   </MDBTabPane>
                   <MDBTabPane tabId="2" role="tabpanel">
-                    <p className="mt-2"></p>
+                    <p className="mt-2">
+                      <MDBCard style={{ backgroundColor: "lightgray" }}>
+                        <MDBCardBody>
+                          <StripeContainer />
+                        </MDBCardBody>
+                      </MDBCard>
+                    </p>
                     <p></p>
-                  </MDBTabPane>
-                  <MDBTabPane tabId="3" role="tabpanel">
-                    <p className="mt-2"></p>
                   </MDBTabPane>
                 </MDBTabContent>
               </div>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <div className="col-4"></div>
               <div className="col-4">
                 <MDBJumbotron>
@@ -226,7 +243,7 @@ const CheckoutModal = ({
                   </p>
                 </MDBJumbotron>
               </div>
-            </div>
+            </div> */}
           </MDBModalBody>
 
           <MDBModalFooter>
