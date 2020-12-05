@@ -3,7 +3,6 @@ import Loader from "../Shared/Loader";
 import Table from "..//Shared/Table";
 import { getCartTableOptions } from "../../utils/tableHeaderOptions";
 import { getTableRowOptions } from "./../../utils/tableRowOptions";
-import StripeContainer from "../Stripe/StripeContainer";
 import { makePurchase } from "../../utils/makePurchase";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import {
@@ -12,23 +11,14 @@ import {
   MDBModalBody,
   MDBModalHeader,
   MDBModalFooter,
+  MDBBadge,
 } from "mdbreact";
 import {
   makePayment,
   createPaymentMethod,
 } from "../../services/paymentService";
 import { toast } from "react-toastify";
-import {
-  MDBJumbotron,
-  MDBNav,
-  MDBNavItem,
-  MDBNavLink,
-  MDBTabContent,
-  MDBTabPane,
-  MDBCard,
-  MDBCardBody,
-} from "mdbreact";
-import AccountInfoRow from "./../Account/AccountInfoRow";
+import StripePaymentWrapper from "./../Stripe/StripePaymentWrapper";
 
 const CheckoutModal = ({
   isOpen,
@@ -48,8 +38,11 @@ const CheckoutModal = ({
   totalPrice,
 }) => {
   //local state
+
   const [paymentInProcess, setInProcess] = useState(false);
-  const [activeTab, setActveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState("1");
+  const [displayValidation, setDisplayValidation] = useState(false);
+  const [cardError, setError] = useState({});
   //stripe payment
   const elements = useElements();
   const stripe = useStripe();
@@ -124,11 +117,35 @@ const CheckoutModal = ({
       } catch (error) {
         toast.error("Payment Was Unsuccessful");
       }
-    } else
-      toast.error("Error creating payment on Stripe server", error.message);
+    } else {
+      //user didn't enter correct info
+      console.log("error", error);
+      if (
+        error.message === "Your card number is incomplete." ||
+        error.message === "Your card number is invalid." ||
+        error.message
+      ) {
+        //toast.error("Error creating payment on Stripe server", error.message);
+        setDisplayValidation(true);
+        setError({ displayMessage: true, message: error.message });
+        setInProcess(false);
+      }
+    }
   };
 
   const { cartOptions } = getCartTableOptions();
+  //makes CC form mobile responsive
+  const calculatePadding = (clientWidth) => {
+    switch (true) {
+      case clientWidth > 975:
+        return { padding: "0 25%" };
+      case clientWidth <= 975 && clientWidth >= 500:
+        return { padding: "0 15%" };
+      case clientWidth < 500:
+        return { padding: "0 5%" };
+    }
+  };
+
   return (
     <>
       <MDBModal isOpen={isOpen} fullHeight position="top">
@@ -161,89 +178,20 @@ const CheckoutModal = ({
         <form onSubmit={handleSubmitPurchasePayment}>
           <MDBModalBody>
             <div className="row">
-              <div className="col-4"></div>
-              <div className="col-4">
-                <MDBNav className="nav-tabs mt-5">
-                  <MDBNavItem>
-                    <MDBNavLink
-                      link
-                      to="#"
-                      active={activeTab === "1"}
-                      onClick={() => setActveTab("1")}
-                      role="tab"
-                    >
-                      Billing
-                    </MDBNavLink>
-                  </MDBNavItem>
-                  <MDBNavItem>
-                    <MDBNavLink
-                      link
-                      to="#"
-                      active={activeTab === "2"}
-                      onClick={() => setActveTab("2")}
-                      role="tab"
-                    >
-                      Payment
-                    </MDBNavLink>
-                  </MDBNavItem>
-                </MDBNav>
-                <MDBTabContent activeItem={activeTab}>
-                  <MDBTabPane tabId="1" role="tabpanel">
-                    <p className="mt-2 ml-3">
-                      <AccountInfoRow label="Email" user={user.email} />
-                    </p>
-                    <p className="mt-2 ml-3">
-                      <AccountInfoRow label="Country" user="United States" />
-                    </p>
-                  </MDBTabPane>
-                  <MDBTabPane tabId="2" role="tabpanel">
-                    <p className="mt-2">
-                      <MDBCard style={{ backgroundColor: "lightgray" }}>
-                        <MDBCardBody>
-                          <StripeContainer />
-                        </MDBCardBody>
-                      </MDBCard>
-                    </p>
-                    <p></p>
-                  </MDBTabPane>
-                </MDBTabContent>
+              <div
+                className="col width-col"
+                style={calculatePadding(clientWidth)}
+              >
+                <StripePaymentWrapper
+                  user={user}
+                  setActiveTab={setActiveTab}
+                  activeTab={activeTab}
+                  clientWidth={clientWidth}
+                  error={cardError}
+                  handleResetError={setError}
+                />
               </div>
             </div>
-            {/* <div className="row">
-              <div className="col-4"></div>
-              <div className="col-4">
-                <MDBJumbotron>
-                  <p className="lead">
-                    Please Fill Out Credit Card Information Below
-                  </p>
-                  <p className="">
-                    Payments are processed by{" "}
-                    <a href="www.stripe.com" target="_blank">
-                      Stripe
-                    </a>
-                    , a third party payment processing API
-                  </p>
-                  <hr className="my-2" />
-                  <p className="d-flex justify-content-center">Account Info</p>
-                  <p>
-                    <div className="row">
-                      <div className="col" style={{ margin: "0 25%" }}>
-                        <AccountInfo
-                          showAccountInfoRow={true}
-                          expandRow={true}
-                          clientWidth={clientWidth}
-                          user={user}
-                        />
-                      </div>
-                    </div>
-                  </p>
-                  <p>Billing info Same as Account Info?</p>
-                  <p>
-                    <StripeContainer />
-                  </p>
-                </MDBJumbotron>
-              </div>
-            </div> */}
           </MDBModalBody>
 
           <MDBModalFooter>

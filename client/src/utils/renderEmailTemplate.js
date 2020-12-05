@@ -1,4 +1,10 @@
-export default async function renderEmailTemplate(array, lastName, firstName) {
+export default async function renderEmailTemplate(
+  array,
+  lastName,
+  firstName,
+  stripePaymentId
+) {
+  //stripePaymentId === OrderId
   const priceArray = [];
 
   const calculateTotal = (quantity, price) => {
@@ -176,6 +182,7 @@ export default async function renderEmailTemplate(array, lastName, firstName) {
                           </tbody>
                         </table>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Total Purchased: $${await overallPrice()}</p>
+                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Your Order # is : ${stripePaymentId}</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Thank you for purchasing from our site!</p>
                         
                       </td>

@@ -8,10 +8,9 @@ import {
   MDBBtn,
   MDBNav,
   MDBNavItem,
-  MDBNavLink,
-  MDBIcon,
 } from "mdbreact";
 import { Link } from "react-router-dom";
+import CCIcons from "./../Shared/CCIcons";
 const TotalRow = ({
   totalPrice,
   toggleModal,
@@ -33,29 +32,7 @@ const TotalRow = ({
             >
               Checkout
             </MDBBtn>
-            <MDBIcon
-              style={
-                clientWidth > 749 ? { fontSize: "45px" } : { fontSize: "30px" }
-              }
-              fab
-              icon="cc-visa"
-              className="mr-1"
-            />
-            <MDBIcon
-              style={
-                clientWidth > 749 ? { fontSize: "45px" } : { fontSize: "30px" }
-              }
-              fab
-              icon="cc-mastercard"
-              className="mr-1"
-            />
-            <MDBIcon
-              style={
-                clientWidth > 749 ? { fontSize: "45px" } : { fontSize: "30px" }
-              }
-              fab
-              icon="cc-amex"
-            />
+            <CCIcons clientWidth={clientWidth} />
           </MDBNavItem>
         </MDBNav>
       </MDBCardHeader>

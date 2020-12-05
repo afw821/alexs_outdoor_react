@@ -53,7 +53,13 @@ export async function makePurchase(
         }
         if (index === array.length - 1) {
           //last iteration send email only once with all items in purchase(array)
-          const html = await renderEmailTemplate(array, lastName, firstName);
+          const html = await renderEmailTemplate(
+            array,
+            lastName,
+            firstName,
+            stripePaymentId
+          );
+
           sendEmailPurchase(`${lastName}, ${firstName}`, email, html, id);
         }
       }
