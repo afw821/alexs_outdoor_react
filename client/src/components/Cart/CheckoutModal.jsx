@@ -12,6 +12,8 @@ import {
   MDBModalHeader,
   MDBModalFooter,
   MDBBadge,
+  MDBCard,
+  MDBCardBody,
 } from "mdbreact";
 import {
   makePayment,
@@ -178,6 +180,17 @@ const CheckoutModal = ({
         <form onSubmit={handleSubmitPurchasePayment}>
           <MDBModalBody>
             <div className="row">
+              <dic className="col d-flex justify-content-center">
+                <MDBCard>
+                  <MDBCardBody>
+                    <strong>
+                      Total: $ {parseFloat(totalPrice).toFixed(2)}
+                    </strong>
+                  </MDBCardBody>
+                </MDBCard>
+              </dic>
+            </div>
+            <div className="row">
               <div
                 className="col width-col"
                 style={calculatePadding(clientWidth)}
@@ -195,8 +208,6 @@ const CheckoutModal = ({
           </MDBModalBody>
 
           <MDBModalFooter>
-            <strong>{totalPrice}</strong>
-
             <MDBBtn color="secondary" onClick={closeModal}>
               Close
             </MDBBtn>

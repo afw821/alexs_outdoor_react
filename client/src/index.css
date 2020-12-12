@@ -31,10 +31,6 @@ body {
 .brd_transparent {
   border-bottom: 2px solid transparent;
 }
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-} */
 
 .form-padding {
   padding-left: 125px !important;
@@ -51,6 +47,11 @@ body {
 
 .tr-width {
   width: 125%;
+}
+
+.quantity-selector-fix {
+  position: relative;
+  bottom: 5px;
 }
 
 .responsive-quantity {

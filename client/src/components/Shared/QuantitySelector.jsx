@@ -21,7 +21,7 @@ const QuantitySelector = ({
           onClick={() =>
             calculateQuantity(product.quantity, index, false, product)
           }
-          className="minus"
+          className="minus quantity-selector-fix"
         ></button>
       ) : (
         ""
@@ -43,7 +43,7 @@ const QuantitySelector = ({
           onClick={() =>
             calculateQuantity(product.quantity, index, true, product)
           }
-          className="plus"
+          className="plus quantity-selector-fix"
         ></button>
       ) : (
         ""

@@ -7,7 +7,7 @@ export function sendEmailContact(name, email, message) {
     email,
     message,
   };
-  return http.post(apiUrl + "/messages/contact", data);
+  return http.post(deployedApiUrl + "/messages/contact", data);
 }
 
 export function sendEmailRegister(fromEmail, name) {
@@ -15,7 +15,7 @@ export function sendEmailRegister(fromEmail, name) {
     fromEmail,
     name,
   };
-  return http.post(apiUrl + "/messages/register", data);
+  return http.post(deployedApiUrl + "/messages/register", data);
 }
 
 export function sendEmailPurchase(name, toEmail, html, userId) {
@@ -26,5 +26,5 @@ export function sendEmailPurchase(name, toEmail, html, userId) {
     userId: userId,
   };
 
-  return http.post(apiUrl + "/messages/purchase", data);
+  return http.post(deployedApiUrl + "/messages/purchase", data);
 }
