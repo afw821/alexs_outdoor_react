@@ -24,6 +24,7 @@ router.post("/", async (req, res) => {
     res.json({
       message: "Payment Failed",
       success: false,
+      error: error,
     });
   }
 });

@@ -115,6 +115,8 @@ const CheckoutModal = ({
           );
           toast.success("Payment Was Successful!");
           setInProcess(false);
+        } else if (data.error) {
+          toast.error("Payment Processing Was Unsuccessful");
         }
       } catch (error) {
         toast.error("Payment Was Unsuccessful");
