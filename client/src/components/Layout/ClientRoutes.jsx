@@ -14,7 +14,9 @@ import AdminPortal from "../Admin/AdminPortal";
 import RegisterForm from "../Register/RegisterForm";
 import NotFound from "../Shared/NotFound";
 import LoginForm from "../Login/LoginForm";
-
+import ForgotPWEmailForm from "./../Forgot_PW/ForgotPWEmailForm";
+import UpdateForgottenPWForm from "../Forgot_PW/UpdateForgottenPWForm";
+import ExpiredLink from "./../Forgot_PW/ExpiredLink";
 const ClientRoutes = ({
   user,
   clientWidth,
@@ -69,6 +71,18 @@ const ClientRoutes = ({
           />
         )}
       />
+      <Route
+        path="/:userId/:token"
+        exact
+        render={(props) => (
+          <UpdateForgottenPWForm
+            {...props}
+            user={user}
+            handleSetActiveTab={handleSetActiveTab}
+            clientWidth={clientWidth}
+          />
+        )}
+      />
       <AdminProtectedRoute
         path="/adminPortal"
         exact
@@ -110,6 +124,8 @@ const ClientRoutes = ({
           />
         )}
       />
+      <Route path="/passwordRecovery" component={ForgotPWEmailForm} />
+      <Route path="/expiredLink" component={ExpiredLink} />
       <Route path="/contact" component={ContactForm} />
       <Route path="/logout" component={Logout} />
       <Route

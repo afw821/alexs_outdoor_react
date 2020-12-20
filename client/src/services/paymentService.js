@@ -23,5 +23,5 @@ export function makePayment(amount, id) {
   };
 
   console.log("data", data);
-  return http.post(deployedApiUrl + "/stripe/charge", data);
+  return http.post(apiUrl + "/stripe/charge", data);
 }

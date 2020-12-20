@@ -5,23 +5,11 @@ import { apiUrl, deployedApiUrl } from "../config.json";
 //http.setJwt(getJwt());
 
 export async function login(email, password) {
-  const { data: jwt } = await http.post(deployedApiUrl + "/auth", {
+  const { data: jwt } = await http.post(apiUrl + "/auth", {
     email,
     password,
   });
   sessionStorage.setItem("token", jwt);
-}
-
-export function updatePassword(email, oldPassword, newPassword) {
-  const reqBody = {
-    email: email,
-    oldPassword: oldPassword,
-    newPassword: newPassword,
-    token: sessionStorage.getItem("token"),
-  };
-  const result = http.put(deployedApiUrl + "/auth/updatePassword", reqBody);
-
-  return result;
 }
 
 export function loginWithJwt(jwt) {
@@ -42,12 +30,22 @@ export function getCurrentUser() {
   }
 }
 
+export async function isPwResetUrlStillActive(token, userId) {
+  const reqBody = {
+    token: token,
+    userId: userId,
+  };
+  const { data } = await http.post(apiUrl + "/auth/isTokenValid", reqBody);
+  console.log("isTokenvalid from auth service", data.isTokenValid);
+  return data.isTokenValid;
+}
+
 export function getJwt() {
   return sessionStorage.getItem("token");
 }
 
 export async function regenerateToken(user) {
-  const token = await http.post(deployedApiUrl + "/auth/generateToken/", user);
+  const token = await http.post(apiUrl + "/auth/generateToken/", user);
 
   return token;
 }

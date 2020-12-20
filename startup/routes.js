@@ -6,6 +6,7 @@ const users = require("../routes/users");
 const auth = require("../routes/auth");
 const categories = require("../routes/categories");
 const payments = require("../routes/stripe");
+const forgot_pw = require("../routes/forgotPassword");
 module.exports = function (app) {
   app.use("/api/purchases", purchases);
   app.use("/api/messages", messages);
@@ -15,4 +16,5 @@ module.exports = function (app) {
   app.use("/api/auth", auth);
   app.use("/api/categories", categories);
   app.use("/api/stripe/charge", payments);
+  app.use("/api/forgotPassword", forgot_pw);
 };

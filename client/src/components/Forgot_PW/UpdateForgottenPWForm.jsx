@@ -1,43 +1,57 @@
-import React, { Component } from "react";
+import React from "react";
 import Form from "../Shared/Form";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
-import { updatePassword } from "../../services/passwordService";
-
-class UpdatePassword extends Form {
+import { updateForgetPw } from "../../services/passwordService";
+import { isPwResetUrlStillActive } from "./../../services/authService";
+class UpdateForgottenPWForm extends Form {
   state = {
     data: {
-      oldPassword: "",
       firstPassword: "",
       password: "",
     },
     errors: {},
+    submitted: false,
   };
 
   schema = {
-    oldPassword: Joi.string().required().min(5).max(50).label("Old Password"),
-    firstPassword: Joi.string().required().min(5).max(50).label("New Password"),
-    password: Joi.string().required().min(5).max(50).label("Password"),
+    firstPassword: Joi.string().required().label("First Password"),
+    password: Joi.string().required().label("Password"),
   };
 
+  async componentDidMount() {
+    const { token, userId } = this.props.match.params;
+    const isTokenValid = await isPwResetUrlStillActive(token, userId);
+    if (!isTokenValid) {
+      this.props.history.push("/expiredLink");
+    }
+  }
+
   doSubmit = async () => {
+    const { token, userId } = this.props.match.params;
+
     try {
-      const { data } = this.state;
-      const { user } = this.props;
-      const result = await updatePassword(
-        user.email,
-        data.oldPassword,
+      this.setState({ showLoader: true });
+      const { data, errors } = this.state;
+
+      const { data: result } = await updateForgetPw(
+        userId,
+        token,
         data.password
       );
-      if (result) {
+      if (result.complete) {
         toast.success("Password Successfully Updated");
         this.setState({
           data: {
-            oldPassword: "",
             firstPassword: "",
             password: "",
           },
+          submitted: true,
         });
+        //redirect to login
+        setTimeout(() => {
+          this.props.history.push("/login");
+        }, 2000);
       }
     } catch (ex) {
       if (ex.response.status === 400 || ex.response.status === 404)
@@ -58,17 +72,12 @@ class UpdatePassword extends Form {
             <div className="container">
               <div className="row">
                 <div className="col d-flex justify-content-center">
-                  <h5 className="font-bolder">Update Password</h5>
+                  <h5 className="font-bolder">Reset Password</h5>
                 </div>
               </div>
               <div className="row">
                 <div className="col">
                   <form className="mt-4" onSubmit={this.handleSubmit}>
-                    {this.renderInput(
-                      "oldPassword",
-                      "Old Password",
-                      "password"
-                    )}
                     {this.renderInput(
                       "firstPassword",
                       "New Password",
@@ -95,4 +104,4 @@ class UpdatePassword extends Form {
   }
 }
 
-export default UpdatePassword;
+export default UpdateForgottenPWForm;

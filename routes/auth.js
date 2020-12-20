@@ -23,7 +23,8 @@ function generateAuthToken(user) {
       Purchases: user.Purchases,
       Carts: user.Carts,
     },
-    process.env.JWT_PRIVATEKEY
+    process.env.JWT_PRIVATEKEY,
+    { expiresIn: 3600 } //make it expire in one hr
   );
 
   return token;
@@ -56,8 +57,6 @@ router.put(
   auth,
   ash(async (req, res) => {
     const { email, oldPassword, newPassword, token } = req.body;
-
-    console.log("-------Token from update PW req body-------", token);
 
     let user = await db.User.findOne({
       where: {
@@ -108,5 +107,23 @@ router.post(
     res.header("x-auth-token", token).send(token);
   })
 );
+//is token still valid
+router.post("/isTokenValid", async (req, res) => {
+  try {
+    const { token, userId } = req.body;
+
+    let user = await db.User.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    const secret = user.password + "-" + user.createdAt;
+    const decoded = jwt.verify(token, secret);
+
+    if (decoded.userId == userId) res.json({ isTokenValid: true });
+  } catch (ex) {
+    if (ex) res.json({ ex, isTokenValid: false });
+  }
+});
 
 module.exports = router;

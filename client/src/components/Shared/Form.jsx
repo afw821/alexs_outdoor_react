@@ -125,6 +125,15 @@ class Form extends Component {
 
   renderInput(name, label, type = "text") {
     const { data, errors } = this.state;
+
+    const returnClassName = (errors) => {
+      if (errors.password === "Passwords must match")
+        return "alert alert-danger";
+      else if (errors.password === '"Password" is not allowed to be empty')
+        return "alert alert-danger";
+      else return "alert alert-success";
+    };
+    console.log("after function");
     return (
       <>
         <Input
@@ -139,15 +148,7 @@ class Form extends Component {
           <div className="alert alert-danger">{errors[name]}</div>
         )}
         {name === "password" && errors[name] && (
-          <div
-            className={
-              errors.password === "Passwords must match"
-                ? "alert alert-danger"
-                : "alert alert-success"
-            }
-          >
-            {errors[name]}
-          </div>
+          <div className={returnClassName(errors)}>{errors[name]}</div>
         )}
       </>
     );

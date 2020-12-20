@@ -80,13 +80,27 @@ class LoginForm extends Form {
                   </div>
                 </form>
                 <MDBModalFooter className="d-flex justify-content-center">
-                  <div className="row">
-                    <div className="col">
-                      <p
-                        onClick={() => this.props.handleSetActiveTab("Sign Up")}
-                      >
-                        Not a member?<Link to="/register"> Sign Up</Link>
-                      </p>
+                  <div className="modal-footer-wrapper-div d-flex flex-column">
+                    <div className="row">
+                      <div className="col">
+                        <p
+                          onClick={() =>
+                            this.props.handleSetActiveTab("Sign Up")
+                          }
+                        >
+                          Not a member?<Link to="/register"> Sign Up</Link>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        <p>
+                          <Link to="/passwordRecovery">
+                            {" "}
+                            Forgotten Password?
+                          </Link>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </MDBModalFooter>
