@@ -12,5 +12,5 @@ export function purchase(name, UserId, ProductId, quantity, stripePaymentId) {
     token: sessionStorage.getItem("token"),
     stripePaymentId: stripePaymentId,
   };
-  return http.post(apiUrl + "/purchases", obj);
+  return http.post(deployedApiUrl + "/purchases", obj);
 }

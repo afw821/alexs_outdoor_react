@@ -14,7 +14,8 @@ exports.usePasswordHashToMakeToken = ({
   return token;
 };
 
-exports.getPasswordResetURL = (user, token) => `${appUrl}/${user.id}/${token}`;
+exports.getPasswordResetURL = (user, token) =>
+  `${deployedAppUrl}/${user.id}/${token}`;
 
 exports.resetPasswordTemplate = (user, url) => {
   const from = "afw821@gmail.com";

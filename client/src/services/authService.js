@@ -5,7 +5,7 @@ import { apiUrl, deployedApiUrl } from "../config.json";
 //http.setJwt(getJwt());
 
 export async function login(email, password) {
-  const { data: jwt } = await http.post(apiUrl + "/auth", {
+  const { data: jwt } = await http.post(deployedApiUrl + "/auth", {
     email,
     password,
   });
@@ -35,7 +35,10 @@ export async function isPwResetUrlStillActive(token, userId) {
     token: token,
     userId: userId,
   };
-  const { data } = await http.post(apiUrl + "/auth/isTokenValid", reqBody);
+  const { data } = await http.post(
+    deployedApiUrl + "/auth/isTokenValid",
+    reqBody
+  );
   console.log("isTokenvalid from auth service", data.isTokenValid);
   return data.isTokenValid;
 }
@@ -45,7 +48,7 @@ export function getJwt() {
 }
 
 export async function regenerateToken(user) {
-  const token = await http.post(apiUrl + "/auth/generateToken/", user);
+  const token = await http.post(deployedApiUrl + "/auth/generateToken/", user);
 
   return token;
 }

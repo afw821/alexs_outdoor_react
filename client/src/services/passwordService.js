@@ -8,7 +8,7 @@ export function updatePassword(email, oldPassword, newPassword) {
     newPassword: newPassword,
     token: sessionStorage.getItem("token"),
   };
-  const result = http.put(apiUrl + "/auth/updatePassword", reqBody);
+  const result = http.put(deployedApiUrl + "/auth/updatePassword", reqBody);
 
   return result;
 }
@@ -20,7 +20,7 @@ export function updateForgetPw(userId, token, newPassword) {
     password: newPassword,
   };
   const result = http.put(
-    apiUrl + `/forgotPassword/${userId}/${token}`,
+    deployedApiUrl + `/forgotPassword/${userId}/${token}`,
     reqBody
   );
 
